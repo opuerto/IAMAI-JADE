@@ -25,7 +25,9 @@ import jade.lang.acl.UnreadableException;
 import jade.proto.ContractNetResponder;
 import jm.JMC;
 import jm.music.data.Note;
+import jm.music.data.Part;
 import jm.music.data.Phrase;
+import jm.music.data.Score;
 import jm.util.Play;
 import tools.ensemble.interfaces.Acompaniment;
 import tools.ensemble.interfaces.Leader;
@@ -47,14 +49,16 @@ public class Musician extends Agent implements Leader,SongStructure,Acompaniment
 
 
     //Elements of the Score
-    public static int tempos;
-    public static int timeSignatureNumerator;
-    public static int timeSignatureDenominator;
+    public  int tempos;
+    public  int timeSignatureNumerator;
+    public  int timeSignatureDenominator;
     public static String tuneForm;
-    public static int measures;
+    public  int measures;
 
     protected void setup()
     {
+
+        Play.midi(new Score(),false,false,1,0);
         //REgister the language and ontology
         getContentManager().registerLanguage(codec);
         getContentManager().registerOntology(musicianOnto);
@@ -224,9 +228,9 @@ public class Musician extends Agent implements Leader,SongStructure,Acompaniment
                     timeSignatureNumerator = numerator;
                     timeSignatureDenominator = denominaor;
                     tuneForm = form;
-                    System.out.println("this is the Form "+((ScoreElements) concept).getForm());
-                    System.out.println("this is the tempo "+((ScoreElements) concept).getTempo());
-                    System.out.println("this is the time signature: " + ((ScoreElements) concept).getNumerator()+ "/" + ((ScoreElements) concept).getDenominator());
+                    System.out.println("this is the tempo "+tempos);
+                    System.out.println("this is the timesignature "+timeSignatureNumerator);
+                    System.out.println("this is the denominator " + timeSignatureDenominator);
                     ACLMessage msgConfirm = msg.createReply();
                     msgConfirm.setPerformative(ACLMessage.CONFIRM);
                     msgConfirm.setContent("I got the elements of the score");
@@ -246,9 +250,10 @@ public class Musician extends Agent implements Leader,SongStructure,Acompaniment
         private boolean now;
         private float duration;
         private PlayIntroAction pia;
+        private Agent agent;
         public IntroResponder(Agent a, MessageTemplate mt)
         {
-            super(a,mt);
+            super(a,mt); this.agent = a;
         }
 
         protected ACLMessage handleCfp (ACLMessage cfp) throws NotUnderstoodException, RefuseException
@@ -276,11 +281,17 @@ public class Musician extends Agent implements Leader,SongStructure,Acompaniment
             System.out.println("duration: "+duration);
             int proposal = evaluateAction();
             if(proposal > 2)
-            {   //we provide a proposal
+            {   double t = tempos;
+                double ts = timeSignatureNumerator;
+                double meas = measures;
                 pia = new PlayIntroAction();
                 pia.setLenght(lenght);
-                pia.setDuration(calculateDuration());
+                pia.setDuration(0);
+                double s = (double) (((ts*meas)/t)*60*1000);
+                System.out.println("S: "+s);
+                pia.setDuration((float)s);
                 pia.setNow(true);
+                System.out.println(pia.getDuration()+" "+pia.getLenght());
                 System.out.println("Agent "+getLocalName()+": Proposing "+proposal);
                 ACLMessage propose = cfp.createReply();
                 propose.setLanguage(codec.getName());
@@ -309,13 +320,7 @@ public class Musician extends Agent implements Leader,SongStructure,Acompaniment
             if(performAction())
             {
 
-                Phrase p = new Phrase();
-                p.setTempo(tempos);
-                p.add(new Note(C4,QUARTER_NOTE));p.add(new Note(D4,QUARTER_NOTE));p.add(new Note(G4,QUARTER_NOTE));p.add(new Note(C4,QUARTER_NOTE));
-                p.add(new Note(E4,QUARTER_NOTE));p.add(new Note(G4,QUARTER_NOTE));
-
-                Play.midi(p);
-
+                agent.addBehaviour(new PlaySomething());
                 System.out.println("Agent "+getLocalName()+": Action successfully performed");
                 ACLMessage inform = accept.createReply();
                 inform.setPerformative(ACLMessage.INFORM);
@@ -364,9 +369,52 @@ public class Musician extends Agent implements Leader,SongStructure,Acompaniment
 
     private boolean performAction() {
         // Simulate action execution by generating a random number
+
         return (Math.random() * 5) > 2;
     }
 
+    private class PlaySomething extends OneShotBehaviour
+    {
+        public void action()
+        {
+
+            //doWait(500);
+            Score modeScore = new Score("Drunk walk demo",tempos);
+            //Play.midi(modeScore,false,false,1,1);
+            Part inst = new Part("Bass", SYNTH_BASS, 0);
+            Phrase phr = new Phrase();
+            int pitch = C3; // variable to store the calculated pitch (initialized with a start pitch value)
+            int offset;
+
+            // create a phrase of 32 quavers following a random walk within C minor.
+            for(short i=0;i<32;) {
+                // next note within plus or minus a 5th.
+                offset = 0;
+                while(offset == 0) {
+                    offset = (int)((Math.random()*14) - 7);
+                }
+                pitch += offset; // add the offset to the pitch to find the next pitch
+                // check that it is a note in the mode using the isScale method.
+                // several other scale constants are available in the JMC
+                if (pitch>=0){
+                    Note note = new Note(pitch, Q);
+                    if(note.isScale(MINOR_SCALE)) {
+                        phr.addNote(note);
+                        i++;
+                    }
+                }
+            }
+
+            // add the phrase to an instrument and that to a score
+            inst.addPhrase(phr);
+            modeScore.addPart(inst);
+
+            // create a MIDI file of the score
+
+            Play.midi(modeScore,false,false,1,1);
+
+        }
+    }
     public void setLeader(boolean leader) {
         this.leader = leader;
     }

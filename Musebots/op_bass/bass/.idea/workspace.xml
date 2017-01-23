@@ -52,11 +52,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="238">
               <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#1507#1508#0" expanded="false" />
-                <element signature="e#1584#1585#0" expanded="false" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -64,14 +60,12 @@
       <file leaf-file-name="Musician.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Musician.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="173">
-              <caret line="280" column="50" selection-start-line="280" selection-start-column="50" selection-end-line="280" selection-end-column="50" />
+            <state relative-caret-position="312">
+              <caret line="295" column="14" selection-start-line="295" selection-start-column="14" selection-end-line="295" selection-end-column="14" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#5933#5934#0" expanded="true" />
-                <element signature="e#5968#5969#0" expanded="true" />
-                <marker date="1485106596675" expanded="false" signature="3271:3290" placeholder=" { " />
-                <marker date="1485106596675" expanded="false" signature="3303:3317" placeholder=" }" />
+                <marker date="1485205260970" expanded="false" signature="3356:3375" placeholder=" { " />
+                <marker date="1485205260970" expanded="false" signature="3388:3402" placeholder=" }" />
               </folding>
             </state>
           </provider>
@@ -82,20 +76,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="408">
               <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
-              <folding>
-                <element signature="e#397#398#0" expanded="false" />
-                <element signature="e#429#430#0" expanded="false" />
-                <element signature="e#457#458#0" expanded="false" />
-                <element signature="e#490#491#0" expanded="false" />
-                <element signature="e#536#537#0" expanded="false" />
-                <element signature="e#576#577#0" expanded="false" />
-                <element signature="e#608#609#0" expanded="false" />
-                <element signature="e#645#646#0" expanded="false" />
-                <element signature="e#695#696#0" expanded="false" />
-                <element signature="e#739#740#0" expanded="false" />
-                <element signature="e#773#774#0" expanded="false" />
-                <element signature="e#812#813#0" expanded="false" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -107,11 +88,6 @@
               <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
               <folding>
                 <marker date="1485013404031" expanded="false" signature="106:164" placeholder="..." />
-                <marker date="1485013404031" expanded="true" signature="873:1052" placeholder="/**...*/" />
-                <marker date="1485013404031" expanded="false" signature="1093:1104" placeholder=" { " />
-                <marker date="1485013404031" expanded="false" signature="1123:1129" placeholder=" }" />
-                <marker date="1485013404031" expanded="true" signature="1135:1165" placeholder="/**...*/" />
-                <marker date="1485013404031" expanded="true" signature="1203:1945" placeholder="{...}" />
               </folding>
             </state>
           </provider>
@@ -446,7 +422,7 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1616" />
+    <option name="width" value="1604" />
     <option name="height" value="876" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -474,9 +450,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -717,6 +690,9 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1222,15 +1198,19 @@
       <workItem from="1484818321586" duration="8441000" />
       <workItem from="1484913364651" duration="9950000" />
       <workItem from="1485012186961" duration="18053000" />
+      <workItem from="1485187399883" duration="6616000" />
+      <workItem from="1485199291560" duration="2794000" />
+      <workItem from="1485203977607" duration="2388000" />
+      <workItem from="1485210300463" duration="1256000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="51587000" />
+    <option name="totallyTimeSpent" value="64641000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1604" height="876" extended-state="0" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1244,14 +1224,14 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24742931" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24740933" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39973083" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1272,7 +1252,9 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="3" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="antWorkspaceConfiguration">
@@ -1280,6 +1262,48 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/ontologies/musicelements/MusicElementsOntology.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+          <folding>
+            <marker date="1485013404031" expanded="false" signature="106:164" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Instruments.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="24" selection-start-line="5" selection-start-column="24" selection-end-line="5" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/interfaces/Accompaniment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="3" selection-start-line="6" selection-start-column="3" selection-end-line="7" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/interfaces/Leader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/interfaces/SongStructure.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="29" selection-start-line="6" selection-start-column="3" selection-end-line="9" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/run/Container.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -1292,11 +1316,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1507#1508#0" expanded="false" />
-            <element signature="e#1584#1585#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1306,10 +1326,8 @@
           <caret line="111" column="164" selection-start-line="109" selection-start-column="20" selection-end-line="111" selection-end-column="164" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5933#5934#0" expanded="true" />
-            <element signature="e#5968#5969#0" expanded="true" />
-            <marker date="1485106596675" expanded="false" signature="3271:3290" placeholder=" { " />
-            <marker date="1485106596675" expanded="false" signature="3303:3317" placeholder=" }" />
+            <marker date="1485205260970" expanded="false" signature="3356:3375" placeholder=" { " />
+            <marker date="1485205260970" expanded="false" signature="3388:3402" placeholder=" }" />
           </folding>
         </state>
       </provider>
@@ -1318,20 +1336,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
-          <folding>
-            <element signature="e#397#398#0" expanded="false" />
-            <element signature="e#429#430#0" expanded="false" />
-            <element signature="e#457#458#0" expanded="false" />
-            <element signature="e#490#491#0" expanded="false" />
-            <element signature="e#536#537#0" expanded="false" />
-            <element signature="e#576#577#0" expanded="false" />
-            <element signature="e#608#609#0" expanded="false" />
-            <element signature="e#645#646#0" expanded="false" />
-            <element signature="e#695#696#0" expanded="false" />
-            <element signature="e#739#740#0" expanded="false" />
-            <element signature="e#773#774#0" expanded="false" />
-            <element signature="e#812#813#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1341,11 +1346,6 @@
           <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
           <folding>
             <marker date="1485013404031" expanded="false" signature="106:164" placeholder="..." />
-            <marker date="1485013404031" expanded="true" signature="873:1052" placeholder="/**...*/" />
-            <marker date="1485013404031" expanded="false" signature="1093:1104" placeholder=" { " />
-            <marker date="1485013404031" expanded="false" signature="1123:1129" placeholder=" }" />
-            <marker date="1485013404031" expanded="true" signature="1135:1165" placeholder="/**...*/" />
-            <marker date="1485013404031" expanded="true" signature="1203:1945" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -1394,11 +1394,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1507#1508#0" expanded="false" />
-            <element signature="e#1584#1585#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1408,10 +1404,8 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5933#5934#0" expanded="true" />
-            <element signature="e#5968#5969#0" expanded="true" />
-            <marker date="1485106596675" expanded="false" signature="3271:3290" placeholder=" { " />
-            <marker date="1485106596675" expanded="false" signature="3303:3317" placeholder=" }" />
+            <marker date="1485205260970" expanded="false" signature="3356:3375" placeholder=" { " />
+            <marker date="1485205260970" expanded="false" signature="3388:3402" placeholder=" }" />
           </folding>
         </state>
       </provider>
@@ -1420,19 +1414,76 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/ontologies/musicelements/MusicElementsOntology.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
           <folding>
-            <element signature="e#397#398#0" expanded="false" />
-            <element signature="e#429#430#0" expanded="false" />
-            <element signature="e#457#458#0" expanded="false" />
-            <element signature="e#490#491#0" expanded="false" />
-            <element signature="e#536#537#0" expanded="false" />
-            <element signature="e#576#577#0" expanded="false" />
-            <element signature="e#608#609#0" expanded="false" />
-            <element signature="e#645#646#0" expanded="false" />
-            <element signature="e#695#696#0" expanded="false" />
-            <element signature="e#739#740#0" expanded="false" />
-            <element signature="e#773#774#0" expanded="false" />
-            <element signature="e#812#813#0" expanded="false" />
+            <marker date="1485013404031" expanded="false" signature="106:164" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Instruments.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="24" selection-start-line="5" selection-start-column="24" selection-end-line="5" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/interfaces/Accompaniment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="3" selection-start-line="6" selection-start-column="3" selection-end-line="7" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/interfaces/Leader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="35" selection-start-line="6" selection-start-column="4" selection-end-line="7" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/interfaces/SongStructure.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="29" selection-start-line="6" selection-start-column="3" selection-end-line="9" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/run/Container.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/musebot/MusebotAssitant.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Musician.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <marker date="1485205260970" expanded="false" signature="3356:3375" placeholder=" { " />
+            <marker date="1485205260970" expanded="false" signature="3388:3402" placeholder=" }" />
           </folding>
         </state>
       </provider>
@@ -1443,11 +1494,6 @@
           <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
           <folding>
             <marker date="1485013404031" expanded="false" signature="106:164" placeholder="..." />
-            <marker date="1485013404031" expanded="true" signature="873:1052" placeholder="/**...*/" />
-            <marker date="1485013404031" expanded="false" signature="1093:1104" placeholder=" { " />
-            <marker date="1485013404031" expanded="false" signature="1123:1129" placeholder=" }" />
-            <marker date="1485013404031" expanded="true" signature="1135:1165" placeholder="/**...*/" />
-            <marker date="1485013404031" expanded="true" signature="1203:1945" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -1496,11 +1542,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1507#1508#0" expanded="false" />
-            <element signature="e#1584#1585#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1510,91 +1552,8 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5933#5934#0" expanded="true" />
-            <element signature="e#5968#5969#0" expanded="true" />
-            <marker date="1485106596675" expanded="false" signature="3271:3290" placeholder=" { " />
-            <marker date="1485106596675" expanded="false" signature="3303:3317" placeholder=" }" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/ontologies/musicelements/MusicElementsOntology.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding>
-            <marker date="1485013404031" expanded="false" signature="106:164" placeholder="..." />
-            <marker date="1485013404031" expanded="true" signature="873:1052" placeholder="/**...*/" />
-            <marker date="1485013404031" expanded="false" signature="1093:1104" placeholder=" { " />
-            <marker date="1485013404031" expanded="false" signature="1123:1129" placeholder=" }" />
-            <marker date="1485013404031" expanded="true" signature="1135:1165" placeholder="/**...*/" />
-            <marker date="1485013404031" expanded="true" signature="1203:1945" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Instruments.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="24" selection-start-line="5" selection-start-column="24" selection-end-line="5" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/interfaces/Accompaniment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="3" selection-start-line="6" selection-start-column="3" selection-end-line="7" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/interfaces/Leader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="35" selection-start-line="6" selection-start-column="4" selection-end-line="7" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/interfaces/SongStructure.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="29" selection-start-line="6" selection-start-column="3" selection-end-line="9" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/run/Container.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/musebot/MusebotAssitant.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1507#1508#0" expanded="false" />
-            <element signature="e#1584#1585#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Musician.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5933#5934#0" expanded="true" />
-            <element signature="e#5968#5969#0" expanded="true" />
-            <marker date="1485106596675" expanded="false" signature="3271:3290" placeholder=" { " />
-            <marker date="1485106596675" expanded="false" signature="3303:3317" placeholder=" }" />
+            <marker date="1485205260970" expanded="false" signature="3356:3375" placeholder=" { " />
+            <marker date="1485205260970" expanded="false" signature="3388:3402" placeholder=" }" />
           </folding>
         </state>
       </provider>
@@ -1643,11 +1602,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1507#1508#0" expanded="false" />
-            <element signature="e#1584#1585#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1663,11 +1618,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1507#1508#0" expanded="false" />
-            <element signature="e#1584#1585#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1683,11 +1634,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1507#1508#0" expanded="false" />
-            <element signature="e#1584#1585#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1721,11 +1668,6 @@
           <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
           <folding>
             <marker date="1485013404031" expanded="false" signature="106:164" placeholder="..." />
-            <marker date="1485013404031" expanded="true" signature="873:1052" placeholder="/**...*/" />
-            <marker date="1485013404031" expanded="false" signature="1093:1104" placeholder=" { " />
-            <marker date="1485013404031" expanded="false" signature="1123:1129" placeholder=" }" />
-            <marker date="1485013404031" expanded="true" signature="1135:1165" placeholder="/**...*/" />
-            <marker date="1485013404031" expanded="true" signature="1203:1945" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -1734,20 +1676,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
-          <folding>
-            <element signature="e#397#398#0" expanded="false" />
-            <element signature="e#429#430#0" expanded="false" />
-            <element signature="e#457#458#0" expanded="false" />
-            <element signature="e#490#491#0" expanded="false" />
-            <element signature="e#536#537#0" expanded="false" />
-            <element signature="e#576#577#0" expanded="false" />
-            <element signature="e#608#609#0" expanded="false" />
-            <element signature="e#645#646#0" expanded="false" />
-            <element signature="e#695#696#0" expanded="false" />
-            <element signature="e#739#740#0" expanded="false" />
-            <element signature="e#773#774#0" expanded="false" />
-            <element signature="e#812#813#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1761,14 +1690,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Musician.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="173">
-          <caret line="280" column="50" selection-start-line="280" selection-start-column="50" selection-end-line="280" selection-end-column="50" />
+        <state relative-caret-position="312">
+          <caret line="295" column="14" selection-start-line="295" selection-start-column="14" selection-end-line="295" selection-end-column="14" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5933#5934#0" expanded="true" />
-            <element signature="e#5968#5969#0" expanded="true" />
-            <marker date="1485106596675" expanded="false" signature="3271:3290" placeholder=" { " />
-            <marker date="1485106596675" expanded="false" signature="3303:3317" placeholder=" }" />
+            <marker date="1485205260970" expanded="false" signature="3356:3375" placeholder=" { " />
+            <marker date="1485205260970" expanded="false" signature="3388:3402" placeholder=" }" />
           </folding>
         </state>
       </provider>

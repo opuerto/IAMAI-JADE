@@ -43,6 +43,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
     private ScoreElements scoreElements;
     private int steps = 0;
     private int timeout = 0;
+    private int nResponders = 0;
 
     public RequestIntro(Agent a, Codec codec, Ontology ontology)
     {
@@ -73,7 +74,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
             //Calculate the duration of the intro
             calculateDurationIntro();
             //Find a receiver
-            findOneMusician();
+            findAllReceivers();
             constructACLMessage();
             introNegotiation = new IntroNegotiation(agent,msg);
             agent.addBehaviour(introNegotiation);
@@ -102,7 +103,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
     } //Exit with the transition value to the corresponding state.
 
 
-    private void findOneMusician()
+    private void findAllReceivers()
     {
         //IF actually there is something where we can search
         if(getDataStore().containsKey(MUSICIAN_LIST))
@@ -119,13 +120,9 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
                 }
             }
         }
-        if(receivers != null)
-        {
-            //Randomly pick a musician to play the intro
-            int random = (int)(Math.random()*receivers.size());
-            receiverSelected = (AID) receivers.get(random);
-            System.out.println("Receiver selected is "+receiverSelected);
-        }
+        System.out.println("receiver "+receivers);
+        nResponders = receivers.size();
+        System.out.println("responder number "+nResponders);
 
     }
 
@@ -142,13 +139,18 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
         msg = new ACLMessage(ACLMessage.CFP);
         msg.setLanguage(codec.getName());
         msg.setOntology(ontology.getName());
-        try
+        for(int i = 0; i < receivers.size(); i++)
         {
-            //fill the content using the Ontology concept
-            myAgent.getContentManager().fillContent(msg,new Action(receiverSelected,playIntroObject));
-        }catch (Exception ex) { ex.printStackTrace(); }
-        //Set the receiver of the message
-        msg.addReceiver(receiverSelected);
+            try
+            {
+                //fill the content using the Ontology concept
+                myAgent.getContentManager().fillContent(msg,new Action((AID)receivers.elementAt(i),playIntroObject));
+            }catch (Exception ex) { ex.printStackTrace(); }
+            //Set the receiver of the message
+            msg.addReceiver((AID)receivers.elementAt(i));
+
+        }
+
         //Set the protocol that we gonna use
         msg.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
         //We indicate the deadline of the reply
@@ -179,6 +181,8 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
      */
     private class IntroNegotiation extends ContractNetInitiator
     {
+        AID responderSelectect = null;
+        int responderCtn = 0;
         public IntroNegotiation(Agent a, ACLMessage msg)
         {
             super(a,msg);
@@ -191,8 +195,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
 
         protected void handleRefuse(ACLMessage refuse) {
             System.out.println("Agent "+refuse.getSender().getName()+" refused");
-            //Try again from the beginning
-            timeout = 1;
+
         }
 
         protected void handleFailure(ACLMessage failure) {
@@ -206,14 +209,16 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
             }
             //Try again from the beginning
             timeout = 1;
-
+            // Immediate failure --> we will not receive a response from this agent
+            nResponders--;
         }
 
         protected void handleAllResponses(Vector responses, Vector acceptances)
         {
-            if (responses.size() < 1) {
+            System.out.println(responses.size());
+            if (responses.size() < nResponders) {
                 // Some responder didn't reply within the specified timeout
-                System.out.println("Timeout expired");
+                System.out.println("Timeout expired: missing "+(nResponders - responses.size())+" responses");
                 //Try again from the beginning
                 timeout = 1;
             }
@@ -229,6 +234,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
                 ms.setOntology(ontology.getName());
                 if (ms.getPerformative() == ACLMessage.PROPOSE)
                 {
+                    responderCtn++;
                     ACLMessage reply = ms.createReply();
                     reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
                    try
@@ -242,27 +248,34 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
                        ex.printStackTrace();
                    }
                     acceptances.addElement(reply);
-                   if(introDuration == getDuration)
+                   if(introDuration == getDuration && responderCtn == 1)
                    {
                        System.out.println("Same duration");
+                       responderSelectect =  ms.getSender();
                        accept = reply;
+
+
                    }
 
-
-                }
+                 }
             }
 
             //Accept the proposal
             if(accept != null)
             {
-                System.out.println("Accepting proposal from responder ");
+                System.out.println("Accepting proposal from responder "+responderSelectect );
                 accept.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+            }else
+            {
+                timeout = 1;
             }
 
 
         }
         protected void handleInform(ACLMessage inform) {
             System.out.println("Agent "+inform.getSender().getName()+" successfully performed the requested action");
+            myAgent.doWait(introDuration);
+            System.out.println("BYE BYE");
             //Go to the next state;
             steps = 1;
         }
