@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DRUMS.iml" filepath="$PROJECT_DIR$/.idea/modules/DRUMS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DRUMS_main.iml" filepath="$PROJECT_DIR$/.idea/modules/DRUMS_main.iml" group="DRUMS" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DRUMS_test.iml" filepath="$PROJECT_DIR$/.idea/modules/DRUMS_test.iml" group="DRUMS" />
+    </modules>
+  </component>
+</project>

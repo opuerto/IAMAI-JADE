@@ -1,0 +1,5 @@
+id op_piano
+mc_hostname localhost
+mc_listen_port 4747
+my_listen_port 7477
+output_channels 2

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PIANO.iml" filepath="$PROJECT_DIR$/.idea/modules/PIANO.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PIANO_main.iml" filepath="$PROJECT_DIR$/.idea/modules/PIANO_main.iml" group="PIANO" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PIANO_test.iml" filepath="$PROJECT_DIR$/.idea/modules/PIANO_test.iml" group="PIANO" />
+    </modules>
+  </component>
+</project>
