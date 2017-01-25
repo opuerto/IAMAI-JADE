@@ -29,6 +29,8 @@ import jm.music.data.Part;
 import jm.music.data.Phrase;
 import jm.music.data.Score;
 import jm.util.Play;
+import jm.util.View;
+import jm.util.Write;
 import tools.ensemble.interfaces.Acompaniment;
 import tools.ensemble.interfaces.Leader;
 import tools.ensemble.interfaces.SongStructure;
@@ -380,29 +382,19 @@ public class Musician extends Agent implements Leader,SongStructure,Acompaniment
 
             //doWait(500);
             Score modeScore = new Score("Drunk walk demo",tempos);
-            //Play.midi(modeScore,false,false,1,1);
+            modeScore.setNumerator(timeSignatureNumerator);
+
+            modeScore.setDenominator(timeSignatureDenominator);
             Part inst = new Part("Bass", SYNTH_BASS, 0);
             Phrase phr = new Phrase();
-            int pitch = C3; // variable to store the calculated pitch (initialized with a start pitch value)
-            int offset;
 
-            // create a phrase of 32 quavers following a random walk within C minor.
-            for(short i=0;i<32;) {
-                // next note within plus or minus a 5th.
-                offset = 0;
-                while(offset == 0) {
-                    offset = (int)((Math.random()*14) - 7);
-                }
-                pitch += offset; // add the offset to the pitch to find the next pitch
-                // check that it is a note in the mode using the isScale method.
-                // several other scale constants are available in the JMC
-                if (pitch>=0){
-                    Note note = new Note(pitch, Q);
-                    if(note.isScale(MINOR_SCALE)) {
-                        phr.addNote(note);
-                        i++;
-                    }
-                }
+            int pitch = C3; // variable to store the calculated pitch (initialized with a start pitch value)
+            int numberOfNotes = measures * timeSignatureNumerator;
+            System.out.println("numberOfNotes: "+numberOfNotes);
+            for (int i = 0; i < numberOfNotes; i++)
+            {
+                pitch++;
+                phr.add(new Note(pitch,QUARTER_NOTE));
             }
 
             // add the phrase to an instrument and that to a score
@@ -410,9 +402,20 @@ public class Musician extends Agent implements Leader,SongStructure,Acompaniment
             modeScore.addPart(inst);
 
             // create a MIDI file of the score
-
+             //View.notate(modeScore);
             Play.midi(modeScore,false,false,1,1);
-
+            //Write.midi(modeScore,"prueba.mid");
+            //Play.midi(phr);
+            /*double endtime = modeScore.getEndTime();
+            int numerator = modeScore.getNumerator();
+            double temp = modeScore.getTempo();
+            double numMeasure = endtime/numerator;
+            double t = (numerator*numMeasure/temp)*60*1000;
+            double getPhraseendtime = phr.getEndTime();
+            System.out.println("phrase end time: "+getPhraseendtime);
+             System.out.println("time signature: "+modeScore.getTimeSignature());
+            System.out.println("end time: "+endtime+ " numerator: "+numerator+" temp: "+temp+" numMeasure: "+numMeasure);
+            System.out.println("espere " + (int)t );*/
         }
     }
     public void setLeader(boolean leader) {

@@ -6,7 +6,7 @@ package tools.ensemble.interfaces;
 public interface SongStructure {
 
     public static final String FORM = "AABA";
-    public static final int TEMPO = 120;
+    public static final int TEMPO = 150;
     public static final int NUMERATOR = 4;
     public static final int DENOMINATOR = 4;
 }

@@ -1,1 +1,1 @@
-http://Lenovo-PC.lan:7778/acc
+http://10.0.27.196:7778/acc

@@ -7,17 +7,13 @@ import jade.content.onto.Ontology;
 import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
-import jade.core.behaviours.TickerBehaviour;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.ContractNetInitiator;
-import jm.JMC;
 import tools.ensemble.interfaces.DataStorteMusicians;
 import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ScoreElements;
 import tools.ensemble.ontologies.musicians.vocabulary.actions.PlayIntroAction;
-
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Vector;
@@ -28,22 +24,39 @@ import java.util.Vector;
  */
 public class RequestIntro extends OneShotBehaviour implements DataStorteMusicians {
 
+    //get the instance of the agent
     private Agent agent;
+    //Get the language of the ACLMessage
     private Codec codec;
+    //Get the Ontology of the ACLMessage
     private Ontology ontology;
+    //manage the exit of the state
     private int transition;
-    private int numberOfMeasures = 4;
+    //get the number of measure that will determines the lenght of the intro
+    private int numberOfMeasures = 8;
+    //Flag that check if was the first time in this state
     private int counter = 0;
-    private AID receiverSelected;
+    // a class that extend the contract-net initiator
     private IntroNegotiation introNegotiation;
+    //get the message
     private ACLMessage msg;
+    //Get the musicians from the data store
     private Vector musicians = new Vector();
+    //construct the list of musicians that will received our request to perform an intro
     private Vector receivers = new Vector();
+    //get the duration of the intro base on the elements of the score and the lenght of the intro (number of measures)
     private long introDuration;
+    //get the elements of the score
     private ScoreElements scoreElements;
+    //Evaluate the case about which action the state should perform
     private int steps = 0;
+    //handle the timeout on the ContractNet protocol if we didn't get a reply from the receiver we need to reset and try again
     private int timeout = 0;
+    //count the number of responders that we receive in the contractNet protocol
     private int nResponders = 0;
+    //Save the timestamp at the momment we got a confirm that the intro is already starting to play.
+    private long introTimestamp;
+
 
     public RequestIntro(Agent a, Codec codec, Ontology ontology)
     {
@@ -61,6 +74,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
         {
             timeout = 0;
             agent.removeBehaviour(introNegotiation);
+            introNegotiation = null;
             counter = 0;
 
 
@@ -77,6 +91,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
             findAllReceivers();
             constructACLMessage();
             introNegotiation = new IntroNegotiation(agent,msg);
+            introNegotiation.setDataStore(getDataStore());
             agent.addBehaviour(introNegotiation);
         }
 
@@ -89,6 +104,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
                 break;
             case 1:
                 agent.removeBehaviour(introNegotiation);
+                introNegotiation = null;
                 transition = 17;
 
         }
@@ -120,9 +136,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
                 }
             }
         }
-        System.out.println("receiver "+receivers);
-        nResponders = receivers.size();
-        System.out.println("responder number "+nResponders);
+         nResponders = receivers.size();
 
     }
 
@@ -168,7 +182,6 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
             double measures = numberOfMeasures;
             double tempo = scoreElements.getTempo();
             introDuration = (long) ((beatPerMeasure*measures/tempo)*60*1000);
-            System.out.println("The intro duration is "+introDuration);
         }
 
 
@@ -182,15 +195,16 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
     private class IntroNegotiation extends ContractNetInitiator
     {
         AID responderSelectect = null;
+        //Check the we only accept the first musician that propose and accept the call for proposal
         int responderCtn = 0;
         public IntroNegotiation(Agent a, ACLMessage msg)
         {
             super(a,msg);
-            System.out.println("Contract Net Initiator ready");
+            System.out.println("Negotiation Intro Started");
         }
 
         protected void handlePropose(ACLMessage propose, Vector v) {
-            System.out.println("Agent "+propose.getSender().getName()+" proposed "+propose.getContent());
+            System.out.println("Agent "+propose.getSender().getName()+" proposed ");
         }
 
         protected void handleRefuse(ACLMessage refuse) {
@@ -206,10 +220,9 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
             }
             else {
                 System.out.println("Agent "+failure.getSender().getName()+" failed");
+                timeout = 1;
             }
-            //Try again from the beginning
-            timeout = 1;
-            // Immediate failure --> we will not receive a response from this agent
+           // Immediate failure --> we will not receive a response from this agent
             nResponders--;
         }
 
@@ -223,6 +236,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
                 timeout = 1;
             }
             ACLMessage accept = null;
+            //save the duration from the responder
             long getDuration = 0;
             Enumeration e = responses.elements();
             while (e.hasMoreElements())
@@ -234,6 +248,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
                 ms.setOntology(ontology.getName());
                 if (ms.getPerformative() == ACLMessage.PROPOSE)
                 {
+                    //increment if when we got a propose performative
                     responderCtn++;
                     ACLMessage reply = ms.createReply();
                     reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
@@ -241,6 +256,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
                    {
                       ContentElement content = agent.getContentManager().extractContent(ms);
                        AgentAction action = (AgentAction) ((Action)content).getAction();
+                       //Get the duration from the responder and save it into the variable
                        if (action instanceof PlayIntroAction){ getDuration = (long) ((PlayIntroAction) action).getDuration();
                        }
 
@@ -248,9 +264,9 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
                        ex.printStackTrace();
                    }
                     acceptances.addElement(reply);
+
                    if(introDuration == getDuration && responderCtn == 1)
                    {
-                       System.out.println("Same duration");
                        responderSelectect =  ms.getSender();
                        accept = reply;
 
@@ -267,17 +283,24 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
                 accept.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
             }else
             {
+               //If there is no good proposal we try again from the beginning.
                 timeout = 1;
             }
 
 
         }
         protected void handleInform(ACLMessage inform) {
-            System.out.println("Agent "+inform.getSender().getName()+" successfully performed the requested action");
-            myAgent.doWait(introDuration);
-            System.out.println("BYE BYE");
-            //Go to the next state;
+            //Save the exact time that we got this confirmation. This will be used in the next state where we will negotiate the acompaniement
+            introTimestamp = System.currentTimeMillis();
+            getDataStore().put(INTRO_TIMESTAMP,introTimestamp);
+            System.out.println("Intro timestamp: "+introTimestamp);
+            System.out.println("Agent "+inform.getSender().getName()+" The intro has started to play");
             steps = 1;
+            //myAgent.doWait(introDuration);
+
+
+            //Go to the next state;
+
         }
 
 
