@@ -33,7 +33,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
     //manage the exit of the state
     private int transition;
     //get the number of measure that will determines the lenght of the intro
-    private int numberOfMeasures = 8;
+    private int numberOfMeasures = 6;
     //Flag that check if was the first time in this state
     private int counter = 0;
     // a class that extend the contract-net initiator
@@ -69,7 +69,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
 
     public void action()
     {
-
+        //If case that something went wrong in the contract net interaction protocol that negotiate the intro request.
         if(timeout > 0 && timeout < 2)
         {
             timeout = 0;
@@ -79,7 +79,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
 
 
         }
-        //If this is the very first time getting to this state
+        //If this is the very first time getting to this state or if the timeout reset the counter to 0
         if(counter < 1)
         {
             //Clean the list of receivers in case there is something
@@ -96,7 +96,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
         }
 
 
-
+        //Handle where I'm heading to from here.
         switch (steps)
         {
             case 0:
@@ -168,7 +168,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
         //Set the protocol that we gonna use
         msg.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
         //We indicate the deadline of the reply
-        msg.setReplyByDate(new Date(System.currentTimeMillis() + 3000));
+        msg.setReplyByDate(new Date(System.currentTimeMillis() + 30000));
 
 
     }
@@ -182,6 +182,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
             double measures = numberOfMeasures;
             double tempo = scoreElements.getTempo();
             introDuration = (long) ((beatPerMeasure*measures/tempo)*60*1000);
+            getDataStore().put(INTRO_DURATION,introDuration);
         }
 
 
@@ -233,7 +234,12 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
                 // Some responder didn't reply within the specified timeout
                 System.out.println("Timeout expired: missing "+(nResponders - responses.size())+" responses");
                 //Try again from the beginning
-                timeout = 1;
+                if (nResponders < 1)
+                {
+                    System.out.println("Non responder");
+                    timeout = 1;
+                }
+
             }
             ACLMessage accept = null;
             //save the duration from the responder
@@ -265,9 +271,9 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
                    }
                     acceptances.addElement(reply);
 
-                   if(introDuration == getDuration && responderCtn == 1)
+                   if(responderCtn == 1)
                    {
-                       responderSelectect =  ms.getSender();
+                      responderSelectect =  ms.getSender();
                        accept = reply;
 
 
@@ -284,7 +290,9 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
             }else
             {
                //If there is no good proposal we try again from the beginning.
+                System.out.println("All Rejected");
                 timeout = 1;
+
             }
 
 
@@ -292,6 +300,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
         protected void handleInform(ACLMessage inform) {
             //Save the exact time that we got this confirmation. This will be used in the next state where we will negotiate the acompaniement
             introTimestamp = System.currentTimeMillis();
+            System.out.println("duration: "+introDuration);
             getDataStore().put(INTRO_TIMESTAMP,introTimestamp);
             System.out.println("Intro timestamp: "+introTimestamp);
             System.out.println("Agent "+inform.getSender().getName()+" The intro has started to play");

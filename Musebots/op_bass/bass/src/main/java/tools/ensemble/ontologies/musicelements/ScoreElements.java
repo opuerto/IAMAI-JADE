@@ -16,21 +16,21 @@ public class ScoreElements implements Concept  {
         this.tempo=tempo;
     }
     public int getTempo() {
-        return this.tempo;
+        return tempo;
     }
     public void setNumerator(int numerator) {
         this.numerator=numerator;
     }
     public int getNumerator() {
-        return this.numerator;
+        return numerator;
     }
     public void setDenominator(int denominator) {
         this.denominator=denominator;
     }
     public int getDenominator() {
-        return this.denominator;
+        return denominator;
     }
     public void setForm (String form){this.form=form;}
-    public String getForm(){return this.form;}
+    public String getForm(){return form;}
 
 }

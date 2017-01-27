@@ -84,6 +84,12 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         requestIntro.setDataStore(fsm.getDataStore());
         //Register the state RequestINTRO To the FSM
         fsm.registerState(requestIntro,STATE_REQUEST_INTRO);
+        //Create an instance of the LEADER REQUEST ACCOMPANIEMENT behaviour.
+        LeaderRequestAccompaniement LRA = new LeaderRequestAccompaniement(this,musicianOntology,codec);
+        //Share the data store with the behaviour
+        LRA.setDataStore(fsm.getDataStore());
+        //Register the behaviour
+        fsm.registerState(LRA,STATE_LEADER_REQUEST_ACCOMPANIEMENT);
         fsm.registerLastState(new TemporaryBehaviour(),STATE_SILENT);
        /* fsm.registerState(new TemporaryBehaviour(),STATE_LEADER);
         fsm.registerState(new TemporaryBehaviour(),STATE_REQUEST_SOLO);
@@ -121,7 +127,9 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         fsm.registerTransition(STATE_SHARE_STRUCTURE,STATE_REQUEST_INTRO,4);
         fsm.registerTransition(STATE_SHARE_STRUCTURE,STATE_SHARE_STRUCTURE,28);
         fsm.registerTransition(STATE_REQUEST_INTRO,STATE_REQUEST_INTRO,29);
-        fsm.registerTransition(STATE_REQUEST_INTRO,STATE_LEADER,17);
+        fsm.registerTransition(STATE_REQUEST_INTRO,STATE_LEADER_REQUEST_ACCOMPANIEMENT,17);
+        fsm.registerTransition(STATE_LEADER_REQUEST_ACCOMPANIEMENT,STATE_LEADER_REQUEST_ACCOMPANIEMENT,30);
+        fsm.registerTransition(STATE_LEADER_REQUEST_ACCOMPANIEMENT,STATE_LEADER,31);
 
         /*fsm.registerTransition(STATE_SHARE_STRUCTURE,STATE_REQUEST_INTRO,4);
         fsm.registerTransition(STATE_REFUSE_INTRO,STATE_LEADER,17);

@@ -4,6 +4,7 @@ import jade.content.onto.*;
 import jade.content.schema.AgentActionSchema;
 import jade.content.schema.ObjectSchema;
 import jade.content.schema.PrimitiveSchema;
+import tools.ensemble.ontologies.musicians.vocabulary.actions.PlayAccompaniementAction;
 import tools.ensemble.ontologies.musicians.vocabulary.actions.PlayIntroAction;
 
 /**
@@ -25,6 +26,8 @@ public class MusicianOntology extends Ontology {
     public static final String LENGHT = "lenght";
     public static final String CUE_PLAY_NOW = "now";
     public static final String DURATION_OF_INTRO = "duration";
+    public static final String PLAY_ACCOMPANIEMENT = "PLAY_ACCOMPANIEMENT";
+    public static final String TIME_LEFT = "timeLeft";
 
 
     private static Ontology theInstance = new MusicianOntology();
@@ -47,10 +50,16 @@ public class MusicianOntology extends Ontology {
         super(NAME, BasicOntology.getInstance());
         try {
             add(new AgentActionSchema(PLAY_INTRO), PlayIntroAction.class);
+            add(new AgentActionSchema(PLAY_ACCOMPANIEMENT), PlayAccompaniementAction.class);
+
             AgentActionSchema as = (AgentActionSchema)getSchema(PLAY_INTRO);
-            as.add(LENGHT,(PrimitiveSchema)getSchema(BasicOntology.INTEGER), ObjectSchema.MANDATORY);
-            as.add(CUE_PLAY_NOW,(PrimitiveSchema)getSchema(BasicOntology.BOOLEAN));
-            as.add(DURATION_OF_INTRO,(PrimitiveSchema)getSchema(BasicOntology.FLOAT));
+                as.add(LENGHT,(PrimitiveSchema)getSchema(BasicOntology.INTEGER), ObjectSchema.MANDATORY);
+                as.add(CUE_PLAY_NOW,(PrimitiveSchema)getSchema(BasicOntology.BOOLEAN));
+                as.add(DURATION_OF_INTRO,(PrimitiveSchema)getSchema(BasicOntology.FLOAT));
+
+            as = (AgentActionSchema)getSchema(PLAY_ACCOMPANIEMENT);
+                as.add(TIME_LEFT,(PrimitiveSchema)getSchema(BasicOntology.FLOAT));
+
             }
         catch(OntologyException oe) {
             oe.printStackTrace();

@@ -38,6 +38,7 @@ import tools.ensemble.ontologies.musicelements.MusicElementsOntology;
 import tools.ensemble.ontologies.musicelements.PruebaOnto;
 import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ScoreElements;
 import tools.ensemble.ontologies.musicians.MusicianOntology;
+import tools.ensemble.ontologies.musicians.vocabulary.actions.PlayAccompaniementAction;
 import tools.ensemble.ontologies.musicians.vocabulary.actions.PlayIntroAction;
 
 public class Musician extends Agent implements Leader,SongStructure,Acompaniment, JMC {
@@ -107,6 +108,7 @@ public class Musician extends Agent implements Leader,SongStructure,Acompaniment
         //addBehaviour(new ReceiveMessage(this));
         addBehaviour(new ReceiveSongStructure(this));
         addBehaviour(new IntroResponder(this,template));
+        addBehaviour(new HandleRequestAccompaniement());
 
 
     }
@@ -244,6 +246,47 @@ public class Musician extends Agent implements Leader,SongStructure,Acompaniment
                 e.printStackTrace();
             }
         }
+    }
+
+    private class HandleRequestAccompaniement extends CyclicBehaviour
+    {
+        private long getTimeLeft;
+        public void action()
+         {
+             MessageTemplate mt = MessageTemplate.and(MessageTemplate.MatchConversationId("request-accompaniement"),MessageTemplate.MatchPerformative(ACLMessage.CFP));
+             ACLMessage msg = receive(mt);
+             if(msg == null){block(); return;}
+             try
+             {
+                 ContentElement content = getContentManager().extractContent(msg);
+                 AgentAction action = (AgentAction) ((Action)content).getAction();
+                 if(action instanceof PlayAccompaniementAction)
+                 {
+                     getTimeLeft = (long) ((PlayAccompaniementAction) action).getTimeLeft();
+                     System.out.println("The time left is: "+getTimeLeft);
+                     Score s = new Score("s",tempos);
+                     Phrase p = new Phrase("p");
+                     double pitches[] = {C4,F4,G4,A4,D5,C5,B5,E5,F5,A8,C6};
+
+                     for(int i =0; i<24; i++)
+                     {
+                         int  x = (int)(Math.random()*10);
+                         p.add(new Note(pitches[x],QUARTER_NOTE));
+                     }
+                     Part par = new Part("part",PIANO);
+                     par.add(p);
+                     s.addPart(par);
+                     doWait(getTimeLeft);
+                     System.out.println("Playing the accompaniement");
+                     Play.midi(s,false,false,1,1);
+                 }
+
+             }catch (Exception e) {
+                 e.printStackTrace();
+             }
+
+
+         }
     }
 
     private class IntroResponder extends ContractNetResponder
@@ -385,16 +428,17 @@ public class Musician extends Agent implements Leader,SongStructure,Acompaniment
             modeScore.setNumerator(timeSignatureNumerator);
 
             modeScore.setDenominator(timeSignatureDenominator);
-            Part inst = new Part("Bass", SYNTH_BASS, 0);
+            Part inst = new Part("SAX", SAXOPHONE);
             Phrase phr = new Phrase();
 
             int pitch = C3; // variable to store the calculated pitch (initialized with a start pitch value)
             int numberOfNotes = measures * timeSignatureNumerator;
             System.out.println("numberOfNotes: "+numberOfNotes);
+            double pitches[] = {E5,G5,C6,F5};
             for (int i = 0; i < numberOfNotes; i++)
             {
-                pitch++;
-                phr.add(new Note(pitch,QUARTER_NOTE));
+                int  x = (int)(Math.random()*4);
+                phr.add(new Note(pitches[x],QUARTER_NOTE));
             }
 
             // add the phrase to an instrument and that to a score

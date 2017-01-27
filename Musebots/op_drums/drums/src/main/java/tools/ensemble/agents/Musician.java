@@ -1,7 +1,7 @@
 package tools.ensemble.agents;
 
 /**
- * Created by OscarAlfonso on 1/16/2017.
+ * Created by OscarAlfonso on 1/15/2017.
  */
 import jade.content.AgentAction;
 import jade.content.Concept;
@@ -11,7 +11,6 @@ import jade.content.lang.sl.SLCodec;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
-import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.*;
 import java.util.*;
@@ -20,7 +19,9 @@ import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.*;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
+import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jade.lang.acl.UnreadableException;
 import jade.proto.ContractNetResponder;
 import jm.JMC;
 import jm.music.data.Note;
@@ -30,22 +31,21 @@ import jm.music.data.Score;
 import jm.util.Play;
 import jm.util.View;
 import jm.util.Write;
-import sun.swing.plaf.synth.SynthIcon;
 import tools.ensemble.interfaces.Accompaniment;
 import tools.ensemble.interfaces.Leader;
 import tools.ensemble.interfaces.SongStructure;
-import jade.lang.acl.ACLMessage;
 import tools.ensemble.ontologies.musicelements.MusicElementsOntology;
+import tools.ensemble.ontologies.musicelements.PruebaOnto;
 import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ScoreElements;
 import tools.ensemble.ontologies.musicians.MusicianOntology;
+import tools.ensemble.ontologies.musicians.vocabulary.actions.PlayAccompaniementAction;
 import tools.ensemble.ontologies.musicians.vocabulary.actions.PlayIntroAction;
 
-
 public class Musician extends Agent implements Leader,SongStructure,Accompaniment, JMC {
-
     boolean leader = false;
     boolean acompaniement = true;
     Map<String, String> songStructure = new HashMap<String, String>();
+
     private Codec codec = new SLCodec();
     private Ontology ontology = MusicElementsOntology.getInstance();
     private Ontology musicianOnto = MusicianOntology.getInstance();
@@ -55,17 +55,13 @@ public class Musician extends Agent implements Leader,SongStructure,Accompanimen
     public  int tempos;
     public  int timeSignatureNumerator;
     public  int timeSignatureDenominator;
-    public  String tuneForm;
+    public static String tuneForm;
     public  int measures;
 
     protected void setup()
     {
-        Play.midi(new Score(),false,false,1,0);
-        MessageTemplate template = MessageTemplate.and(
-                MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET),
-                MessageTemplate.MatchPerformative(ACLMessage.CFP)
-        );
 
+        Play.midi(new Score(),false,false,1,0);
         //REgister the language and ontology
         getContentManager().registerLanguage(codec);
         getContentManager().registerOntology(musicianOnto);
@@ -87,14 +83,19 @@ public class Musician extends Agent implements Leader,SongStructure,Accompanimen
             fe.printStackTrace();
         }
 
-       /* addBehaviour(new SimpleBehaviour() {
+        MessageTemplate template = MessageTemplate.and(
+                MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET),
+                MessageTemplate.MatchPerformative(ACLMessage.CFP)
+        );
+
+
+        /*addBehaviour(new SimpleBehaviour() {
             @Override
             public void action() {
                 ACLMessage msg = receive();
                 if (msg != null) {
-                    System.out.println("I recieve a message from "+msg.getSender());
+                    System.out.println("I recieve a message from SAX");
                     System.out.println("the message say "+msg.getContent());
-                    System.out.println("The ontology is " +msg.getOntology());
                 }
             }
 
@@ -104,8 +105,12 @@ public class Musician extends Agent implements Leader,SongStructure,Accompanimen
             }
         });*/
 
+        //addBehaviour(new ReceiveMessage(this));
         addBehaviour(new ReceiveSongStructure(this));
         addBehaviour(new IntroResponder(this,template));
+        addBehaviour(new HandleRequestAccompaniement());
+
+
     }
 
     @Override
@@ -119,6 +124,86 @@ public class Musician extends Agent implements Leader,SongStructure,Accompanimen
             fe.printStackTrace();
         }
 
+    }
+
+    class ReceiveMessage extends CyclicBehaviour
+    {
+        public ReceiveMessage(Agent a)
+        {
+            super(a);
+        }
+
+        public void action()
+        {
+            ACLMessage msg = receive();
+            if(msg == null){block(); return;}
+            try
+            {
+               System.out.println("extract the conten");
+                ContentElement content = getContentManager().extractContent(msg);
+                Concept action = ((Action)content).getAction();
+                System.out.println(action);
+                System.out.println("performative " +msg.getPerformative());
+                switch (msg.getPerformative())
+                {
+                    case(16):
+                        if(action instanceof ScoreElements)
+                        {
+                            System.out.println("Enter to the if");
+                            addBehaviour(new HandleOperation(myAgent,msg));
+                        }
+
+                }
+                /*Object content = msg.getContentObject();
+                switch (msg.getPerformative())
+                {
+                    case(ACLMessage.REQUEST):
+                        if(content instanceof PruebaOnto)
+                            addBehaviour(new HandleOperation(myAgent,msg));
+                }*/
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    class HandleOperation extends OneShotBehaviour
+    {
+        private ACLMessage r;
+        public HandleOperation(Agent a,ACLMessage request)
+        {
+            super(a);
+            this.r = request;
+
+        }
+        public void action()
+        {
+            try {
+                System.out.println("handle operation run");
+                ContentElement content = getContentManager().extractContent(r);
+                ScoreElements se = (ScoreElements)((Action)content).getAction();
+                int tempo = se.getTempo();
+                int numerator = se.getNumerator();
+                int denominaor = se.getDenominator();
+                String form  = se.getForm();
+                 tempos = tempo;
+                 timeSignatureNumerator = numerator;
+                 timeSignatureDenominator = denominaor;
+                 tuneForm = form;
+                System.out.println("This is the tempo: "+tempo);
+                System.out.println("This is the time signature numeraor: "+numerator);
+                System.out.println("This is the time signature denominator: "+denominaor);
+                System.out.println("This is the Form : "+form);
+
+                /*System.out.println("This is the object");
+                PruebaOnto element = (PruebaOnto) r.getContentObject();
+                String name = element.getName();
+                int age = element.getAge();
+                System.out.println(name+" tiene "+age);*/
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private class ReceiveSongStructure extends CyclicBehaviour
@@ -147,9 +232,9 @@ public class Musician extends Agent implements Leader,SongStructure,Accompanimen
                     timeSignatureNumerator = numerator;
                     timeSignatureDenominator = denominaor;
                     tuneForm = form;
-                    System.out.println("this is the Form "+tempos);
-                    System.out.println("this is the tempo "+timeSignatureNumerator);
-                    System.out.println("this is the time signature: " + timeSignatureDenominator);
+                    System.out.println("this is the tempo "+tempos);
+                    System.out.println("this is the timesignature "+timeSignatureNumerator);
+                    System.out.println("this is the denominator " + timeSignatureDenominator);
                     ACLMessage msgConfirm = msg.createReply();
                     msgConfirm.setPerformative(ACLMessage.CONFIRM);
                     msgConfirm.setContent("I got the elements of the score");
@@ -162,33 +247,96 @@ public class Musician extends Agent implements Leader,SongStructure,Accompanimen
             }
         }
     }
-    // if the musician is leading set the song structure.
-    public void setSongStructure()
+
+    private class HandleRequestAccompaniement extends CyclicBehaviour
     {
-        if(isLeader())
-        {
-            songStructure.put("form",form);
-            songStructure.put("tempo",tempo);
-            songStructure.put("numerator",numerator);
-            songStructure.put("denominator",denominator);
-        }
+        private long getTimeLeft;
+        public void action()
+         {
+             MessageTemplate mt = MessageTemplate.and(MessageTemplate.MatchConversationId("request-accompaniement"),MessageTemplate.MatchPerformative(ACLMessage.CFP));
+             ACLMessage msg = receive(mt);
+             if(msg == null){block(); return;}
+             try
+             {
+                 ContentElement content = getContentManager().extractContent(msg);
+                 AgentAction action = (AgentAction) ((Action)content).getAction();
+                 if(action instanceof PlayAccompaniementAction)
+                 {
+                     getTimeLeft = (long) ((PlayAccompaniementAction) action).getTimeLeft();
+                     System.out.println("The time left is: "+getTimeLeft);
 
+                     Score s = new Score("s",tempos);
+                     Phrase p = new Phrase("p");
+                     int x;
+                     double[] pattern = new double[5];
+                     double[] pattern0 = {1.0, 0.5, 0.5, 1.5, 0.5};
+                     double[] pattern1 = {0.5, 0.5, 1.5, 0.5, 1.0};
+                     double[] pattern2 = {2.0, 0.5, 0.5, 0.5, 0.5};
+                     double[] pattern3 = {1.5, 0.5, 1.0, 0.5, 0.5};
+                     for(int i=0;i<8;i++){
+                         // choose one of the patterns at random
+                         x = (int)(Math.random()*4);
+                         System.out.println("x = " + x);
+
+                         switch (x) {
+
+                             case 0:
+                                 pattern = pattern0;
+                                 break;
+                             case 1:
+                                 pattern = pattern1;
+                                 break;
+                             case 2:
+                                 pattern = pattern2;
+                                 break;
+                             case 3:
+                                 pattern = pattern3;
+                                 break;
+                             default:
+                                 System.out.println("Random number out of range");
+                                 System.exit(0); // end the program now
+                         }
+                         // create notes for the chosen pattern to the phrase
+                         for (short j=0; j<pattern.length; j++) {
+                             Note note = new Note(38, pattern[j]);
+                             p.addNote(note);
+                         }
+                     }
+                     // finish with a crash cymbal
+                     Note note = new Note(49, 4.0);
+                     p.addNote(note);
+                     /*int pitch = F4;
+                     for(int i =0; i<10; i++)
+                     {
+                         pitch++;
+                         p.add(new Note(pitch,QUARTER_NOTE));
+                     }*/
+                     Part par = new Part("Snare", 0, 9);
+                     par.add(p);
+                     s.addPart(par);
+                     doWait(getTimeLeft);
+                     System.out.println("Playing the accompaniement");
+                     Play.midi(s,false,false,1,1);
+                 }
+
+             }catch (Exception e) {
+                 e.printStackTrace();
+             }
+
+
+         }
     }
 
-    //Find out if the musician is leading the ensemble
-    public boolean isLeader() {
-
-        return leader;
-    }
     private class IntroResponder extends ContractNetResponder
     {
         private int lenght;
         private boolean now;
         private float duration;
         private PlayIntroAction pia;
+        private Agent agent;
         public IntroResponder(Agent a, MessageTemplate mt)
         {
-            super(a,mt);
+            super(a,mt); this.agent = a;
         }
 
         protected ACLMessage handleCfp (ACLMessage cfp) throws NotUnderstoodException, RefuseException
@@ -216,8 +364,7 @@ public class Musician extends Agent implements Leader,SongStructure,Accompanimen
             System.out.println("duration: "+duration);
             int proposal = evaluateAction();
             if(proposal > 2)
-            {   //we provide a proposal
-                double t = tempos;
+            {   double t = tempos;
                 double ts = timeSignatureNumerator;
                 double meas = measures;
                 pia = new PlayIntroAction();
@@ -255,8 +402,8 @@ public class Musician extends Agent implements Leader,SongStructure,Accompanimen
             System.out.println("Agent "+getLocalName()+": Proposal accepted");
             if(performAction())
             {
-                myAgent.addBehaviour(new PlaySomething());
 
+                agent.addBehaviour(new PlaySomething());
                 System.out.println("Agent "+getLocalName()+": Action successfully performed");
                 ACLMessage inform = accept.createReply();
                 inform.setPerformative(ACLMessage.INFORM);
@@ -272,15 +419,6 @@ public class Musician extends Agent implements Leader,SongStructure,Accompanimen
             System.out.println("Agent "+getLocalName()+": Proposal rejected");
         }
     }
-    private int evaluateAction() {
-        // Simulate an evaluation by generating a random number
-        return (int) (Math.random() * 10);
-    }
-
-    private boolean performAction() {
-        // Simulate action execution by generating a random number
-        return (Math.random() * 5) > 2;
-    }
     public float calculateDuration()
     {
         //((beatPerMeasure*measures/tempo)*60*1000);
@@ -288,27 +426,57 @@ public class Musician extends Agent implements Leader,SongStructure,Accompanimen
         System.out.println("duration: "+duration);
         return (float) 8000;
     }
+    // if the musician is leading set the song structure.
+    public void setSongStructure()
+    {
+        if(isLeader())
+        {
+            songStructure.put("form",form);
+            songStructure.put("tempo",tempo);
+            songStructure.put("numerator",numerator);
+            songStructure.put("denominator",denominator);
+        }
+
+    }
+
+    //Find out if the musician is leading the ensemble
+    public boolean isLeader() {
+
+        return leader;
+    }
+
+    private int evaluateAction() {
+        // Simulate an evaluation by generating a random number
+        return (int) (Math.random() * 10);
+    }
+
+    private boolean performAction() {
+        // Simulate action execution by generating a random number
+
+        return (Math.random() * 5) > 2;
+    }
+
     private class PlaySomething extends OneShotBehaviour
     {
         public void action()
         {
+
             //doWait(500);
             Score modeScore = new Score("Drunk walk demo",tempos);
             modeScore.setNumerator(timeSignatureNumerator);
+
             modeScore.setDenominator(timeSignatureDenominator);
-
-            //Play.midi(modeScore,false,false,1,1);
-
-            Part inst = new Part("Bass", SYNTH_BASS, 0);
+            Part inst = new Part("Piano", PIANO);
             Phrase phr = new Phrase();
 
-            int pitch = C3;
-            int numberOfNotes =measures*timeSignatureNumerator;
-            System.out.println(numberOfNotes);
-            for (int i = 0; i <numberOfNotes; i++)
+            int pitch = C3; // variable to store the calculated pitch (initialized with a start pitch value)
+            int numberOfNotes = measures * timeSignatureNumerator;
+            System.out.println("numberOfNotes: "+numberOfNotes);
+            double pitches[] = {E5,G5,C6,F5};
+            for (int i = 0; i < numberOfNotes; i++)
             {
-                pitch++;
-                phr.add(new Note(pitch,QUARTER_NOTE));
+                int  x = (int)(Math.random()*4);
+                phr.add(new Note(pitches[x],QUARTER_NOTE));
             }
 
             // add the phrase to an instrument and that to a score
@@ -316,12 +484,10 @@ public class Musician extends Agent implements Leader,SongStructure,Accompanimen
             modeScore.addPart(inst);
 
             // create a MIDI file of the score
-            //View.print(modeScore);
-            //View.notate(modeScore);
-            //View.show(modeScore);
+             //View.notate(modeScore);
             Play.midi(modeScore,false,false,1,1);
             //Write.midi(modeScore,"prueba.mid");
-            //Play.midi(modeScore);
+            //Play.midi(phr);
             /*double endtime = modeScore.getEndTime();
             int numerator = modeScore.getNumerator();
             double temp = modeScore.getTempo();
@@ -329,7 +495,7 @@ public class Musician extends Agent implements Leader,SongStructure,Accompanimen
             double t = (numerator*numMeasure/temp)*60*1000;
             double getPhraseendtime = phr.getEndTime();
             System.out.println("phrase end time: "+getPhraseendtime);
-            System.out.println("time signature: "+modeScore.getTimeSignature());
+             System.out.println("time signature: "+modeScore.getTimeSignature());
             System.out.println("end time: "+endtime+ " numerator: "+numerator+" temp: "+temp+" numMeasure: "+numMeasure);
             System.out.println("espere " + (int)t );*/
         }
@@ -345,5 +511,4 @@ public class Musician extends Agent implements Leader,SongStructure,Accompanimen
     public boolean isAcompaniement() {
         return acompaniement;
     }
-
 }
