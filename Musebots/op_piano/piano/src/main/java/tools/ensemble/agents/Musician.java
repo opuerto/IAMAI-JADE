@@ -11,6 +11,7 @@ import jade.content.lang.sl.SLCodec;
 import jade.content.onto.Ontology;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.*;
 import java.util.*;
@@ -23,6 +24,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 import jade.proto.ContractNetResponder;
+import jade.wrapper.ControllerException;
 import jm.JMC;
 import jm.music.data.Note;
 import jm.music.data.Part;
@@ -45,6 +47,7 @@ public class Musician extends Agent implements Leader,SongStructure,Acompaniment
     boolean leader = false;
     boolean acompaniement = true;
     Map<String, String> songStructure = new HashMap<String, String>();
+    private AID internalTimeManager = new AID();
 
     private Codec codec = new SLCodec();
     private Ontology ontology = MusicElementsOntology.getInstance();
@@ -88,6 +91,28 @@ public class Musician extends Agent implements Leader,SongStructure,Acompaniment
                 MessageTemplate.MatchPerformative(ACLMessage.CFP)
         );
 
+        //Find the internal TIMEManager
+        DFAgentDescription templateService = new DFAgentDescription();
+        ServiceDescription sd2 = new ServiceDescription();
+        sd2.setType("InternalTimeManager");
+        try {
+            sd2.setOwnership(getContainerController().getContainerName());
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        templateService.addServices(sd2);
+        try
+        {
+            DFAgentDescription[] resultTimeManager = DFService.search(this,templateService);
+            for(int i =  0; i<resultTimeManager.length; i++)
+            {
+                internalTimeManager = resultTimeManager[i].getName();
+                System.out.println("internal TimeManager: "+internalTimeManager);
+            }
+        }catch (FIPAException fe)
+        {
+            fe.printStackTrace();
+        }
 
         /*addBehaviour(new SimpleBehaviour() {
             @Override
