@@ -14,16 +14,25 @@ import jm.music.data.Score;
 import jm.util.Play;
 import tools.ensemble.behaviours.timeManagerBehaviours.FindInternalMusician;
 import tools.ensemble.behaviours.timeManagerBehaviours.GetEveryTimeManager;
+import tools.ensemble.interfaces.DataStoreTimeManager;
 import tools.ensemble.ontologies.timemanager.TimeHandler;
+import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Chorus;
+import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Intro;
+import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Song;
 
 
 /**
  * Created by OscarAlfonso on 1/29/2017.
  */
-public class TimeManager extends Agent {
+public class TimeManager extends Agent implements DataStoreTimeManager {
 
     private Codec codec = new SLCodec();
     private Ontology timeHandlerOntology = TimeHandler.getInstance();
+
+    //Get instances of the concepts
+    private Chorus dataChorus = new Chorus();
+    private Intro dataIntro = new Intro();
+    private Song dataSong = new Song();
 
     protected void setup()
     {
@@ -58,6 +67,10 @@ public class TimeManager extends Agent {
     {
         //Create instance of the parallel behaviour
         ParallelBehaviour pb = new ParallelBehaviour(this,ParallelBehaviour.WHEN_ALL);
+        //Set the concepts in the data store of the parallel behaviour
+        pb.getDataStore().put(CHORUS_INSTANCE,dataChorus);
+        pb.getDataStore().put(INTRO_INSTANCE,dataIntro);
+        pb.getDataStore().put(SONG_INSTANCE,dataSong);
         //Create instance of the getTimerList
         GetEveryTimeManager getTimerList = new GetEveryTimeManager(this);
         //Share the data store

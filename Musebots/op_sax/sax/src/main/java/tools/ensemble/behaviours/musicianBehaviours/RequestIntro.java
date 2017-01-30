@@ -30,6 +30,8 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
     private Codec codec;
     //Get the Ontology of the ACLMessage
     private Ontology ontology;
+    //get the timeHandler ontology
+    private Ontology timeHandlerOntology;
     //manage the exit of the state
     private int transition;
     //get the number of measure that will determines the lenght of the intro
@@ -58,12 +60,13 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
     private long introTimestamp;
 
 
-    public RequestIntro(Agent a, Codec codec, Ontology ontology)
+    public RequestIntro(Agent a, Codec codec, Ontology ontology, Ontology timeHandler)
     {
         super(a);
         this.agent = a;
         this.codec = codec;
         this.ontology = ontology;
+        this.timeHandlerOntology = timeHandler;
 
     }
 
