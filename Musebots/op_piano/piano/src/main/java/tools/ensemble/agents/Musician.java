@@ -77,7 +77,16 @@ public class Musician extends Agent implements Leader,SongStructure,Acompaniment
         ServiceDescription sd = new ServiceDescription();
         sd.setType("Musician");
         sd.setName(getLocalName()+"-musician");
+        ServiceDescription sd3 = new ServiceDescription();
+        sd3.setType("interact-internal-time-manager");
+        sd3.setName(getName());
+        try {
+            sd3.setOwnership(getContainerController().getContainerName());
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
         dfd.addServices(sd);
+        dfd.addServices(sd3);
         try {
             DFService.register(this,dfd);
         }
