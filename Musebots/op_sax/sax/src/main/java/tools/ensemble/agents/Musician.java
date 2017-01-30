@@ -6,6 +6,7 @@ package tools.ensemble.agents;
 import jade.content.lang.Codec;
 import jade.content.lang.sl.SLCodec;
 import jade.content.onto.Ontology;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.*;
 import java.util.*;
@@ -19,17 +20,20 @@ import tools.ensemble.interfaces.SongStructure;
 import tools.ensemble.ontologies.musicelements.MusicElementsOntology;
 import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ScoreElements;
 import tools.ensemble.ontologies.musicians.MusicianOntology;
+import tools.ensemble.ontologies.timemanager.TimeHandler;
 
 public class Musician extends Agent implements MusicianStates,DataStorteMusicians {
 
     private boolean leader = true;
     private boolean acompaniement = false;
+    private AID myMusician = new AID();
     //Map<String, String> songStructure = new HashMap<String, String>();
     //Map<String, AID> musiciansList = new HashMap<String, AID>();
     private Vector Musicians = new Vector();
     private Codec codec = new SLCodec();
     private Ontology ontology = MusicElementsOntology.getInstance();
     private Ontology musicianOntology = MusicianOntology.getInstance();
+    private Ontology timeHandlerOntology = TimeHandler.getInstance();
 
     //Elements of the Score
     public static int tempo;
@@ -41,12 +45,9 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
 
     protected void setup()
     {
-        //Register language and ontology
-        getContentManager().registerLanguage(codec);
-        getContentManager().registerOntology(musicianOntology);
-        getContentManager().registerOntology(ontology);
 
-
+        //register Languages and Ontologies
+        registerLanguagesAndOntologies();
 
         //Create the final state machine instance
         FSMBehaviour fsm = new FSMBehaviour(this);
@@ -208,6 +209,17 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         });*/
 
 
+
+    }
+
+    //Register Languages and Ontologies
+    private void registerLanguagesAndOntologies()
+    {
+        //Register language and ontology
+        getContentManager().registerLanguage(codec);
+        getContentManager().registerOntology(musicianOntology);
+        getContentManager().registerOntology(ontology);
+        getContentManager().registerOntology(timeHandlerOntology);
 
     }
 
