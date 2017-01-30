@@ -16,6 +16,7 @@ public class TimeManager extends Agent {
 
     protected void setup()
     {
+
         //Register the services.
         RegisterTheServices();
 

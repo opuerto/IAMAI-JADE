@@ -1,25 +1,40 @@
 package tools.ensemble.agents;
 
 import jade.core.Agent;
+import jade.core.behaviours.ParallelBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.wrapper.ControllerException;
+import jm.music.data.Score;
+import jm.util.Play;
+import tools.ensemble.behaviours.timeManagerBehaviours.GetEveryTimeManager;
+
 
 /**
  * Created by OscarAlfonso on 1/29/2017.
  */
 public class TimeManager extends Agent {
 
-
+    //TODO Get the musician in the container
 
     protected void setup()
     {
+        Play.midi(new Score(),false,false,1,0);
         //Register the services.
         RegisterTheServices();
+        ParallelBehaviour pb = new ParallelBehaviour(this,ParallelBehaviour.WHEN_ALL);
+        pb.addSubBehaviour(new GetEveryTimeManager(this));
+        addBehaviour(pb);
+    }
+
+    protected void takeDown()
+    {
+        System.out.println("Bye ");
 
     }
+
 
 
     /**

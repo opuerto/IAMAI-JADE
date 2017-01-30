@@ -6,6 +6,7 @@ import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
+import jade.wrapper.ControllerException;
 
 /**
  * Created by OscarAlfonso on 1/18/2017.
@@ -23,13 +24,26 @@ public class RegisterMusician extends OneShotBehaviour {
 
     public void action()
     {
-        //Register the agent to the yellow pages.
-        DFAgentDescription dfd = new DFAgentDescription();
-        dfd.setName(agent.getAID());
+        //Register Service for the rest of the musician in the platform
         ServiceDescription sd = new ServiceDescription();
         sd.setType("Musician");
         sd.setName(agent.getLocalName()+"-musician");
+
+        //Register Service for the Internal Time Manager
+        ServiceDescription sd_2 = new ServiceDescription();
+        sd_2.setType("interact-internal-time-manager");
+        sd_2.setName(agent.getName());
+        try {
+            sd_2.setOwnership(agent.getContainerController().getContainerName());
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+
+        //Register the agent to the yellow pages.
+        DFAgentDescription dfd = new DFAgentDescription();
+        dfd.setName(agent.getAID());
         dfd.addServices(sd);
+        dfd.addServices(sd_2);
         try {
             DFService.register(agent,dfd);
         }
