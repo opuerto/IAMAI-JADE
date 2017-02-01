@@ -171,7 +171,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
         //Set the protocol that we gonna use
         msg.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
         //We indicate the deadline of the reply
-        msg.setReplyByDate(new Date(System.currentTimeMillis() + 30000));
+        msg.setReplyByDate(new Date(System.currentTimeMillis() + 3000));
 
 
     }
@@ -208,7 +208,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
         }
 
         protected void handlePropose(ACLMessage propose, Vector v) {
-            System.out.println("Agent "+propose.getSender().getName()+" proposed ");
+            System.out.println("Agent "+propose.getSender().getName()+" proposed " +propose.getContent());
         }
 
         protected void handleRefuse(ACLMessage refuse) {

@@ -3,546 +3,350 @@ package tools.ensemble.agents;
 /**
  * Created by OscarAlfonso on 1/15/2017.
  */
-import jade.content.AgentAction;
-import jade.content.Concept;
-import jade.content.ContentElement;
 import jade.content.lang.Codec;
 import jade.content.lang.sl.SLCodec;
 import jade.content.onto.Ontology;
-import jade.content.onto.OntologyException;
-import jade.content.onto.basic.Action;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.*;
 import java.util.*;
 
-import jade.domain.DFService;
-import jade.domain.FIPAAgentManagement.*;
-import jade.domain.FIPAException;
-import jade.domain.FIPANames;
-import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
-import jade.lang.acl.UnreadableException;
-import jade.proto.ContractNetResponder;
-import jade.wrapper.ControllerException;
-import jm.JMC;
-import jm.music.data.Note;
-import jm.music.data.Part;
-import jm.music.data.Phrase;
-import jm.music.data.Score;
-import jm.util.Play;
-import jm.util.View;
-import jm.util.Write;
-import tools.ensemble.interfaces.Accompaniment;
-import tools.ensemble.interfaces.Leader;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import tools.ensemble.behaviours.musicianBehaviours.*;
+import tools.ensemble.interfaces.DataStorteMusicians;
+import tools.ensemble.interfaces.MusicianStates;
 import tools.ensemble.interfaces.SongStructure;
 import tools.ensemble.ontologies.musicelements.MusicElementsOntology;
-import tools.ensemble.ontologies.musicelements.PruebaOnto;
 import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ScoreElements;
 import tools.ensemble.ontologies.musicians.MusicianOntology;
-import tools.ensemble.ontologies.musicians.vocabulary.actions.PlayAccompaniementAction;
-import tools.ensemble.ontologies.musicians.vocabulary.actions.PlayIntroAction;
+import tools.ensemble.ontologies.timemanager.TimeHandler;
 
-public class Musician extends Agent implements Leader,SongStructure,Accompaniment, JMC {
-    boolean leader = false;
-    boolean acompaniement = true;
-    Map<String, String> songStructure = new HashMap<String, String>();
+public class Musician extends Agent implements MusicianStates,DataStorteMusicians {
 
+    private boolean leader = false;
+    private boolean acompaniement = true;
+    private AID myMusician = new AID();
+    //Map<String, String> songStructure = new HashMap<String, String>();
+    //Map<String, AID> musiciansList = new HashMap<String, AID>();
+    private Vector Musicians = new Vector();
     private Codec codec = new SLCodec();
     private Ontology ontology = MusicElementsOntology.getInstance();
-    private Ontology musicianOnto = MusicianOntology.getInstance();
+    private Ontology musicianOntology = MusicianOntology.getInstance();
+    private Ontology timeHandlerOntology = TimeHandler.getInstance();
 
-    private AID internalTimeManager = new AID();
     //Elements of the Score
-    public  int tempos;
-    public  int timeSignatureNumerator;
-    public  int timeSignatureDenominator;
+    public static int tempo;
+    public static int timeSignatureNumerator;
+    public static int timeSignatureDenominator;
     public static String tuneForm;
-    public  int measures;
+
+
 
     protected void setup()
     {
 
-        Play.midi(new Score(),false,false,1,0);
-        //REgister the language and ontology
-        getContentManager().registerLanguage(codec);
-        getContentManager().registerOntology(musicianOnto);
-        getContentManager().registerOntology(ontology);
+        //register Languages and Ontologies
+        registerLanguagesAndOntologies();
 
-        System.out.println(getAID().getLocalName());
-        //Register the musician acompaniment service
-        DFAgentDescription dfd = new DFAgentDescription();
-        dfd.setName(getAID());
-        ServiceDescription sd = new ServiceDescription();
-        sd.setType("Musician");
-        sd.setName(getLocalName()+"-musician");
-        ServiceDescription sd3 = new ServiceDescription();
-        sd3.setType("interact-internal-time-manager");
-        sd3.setName(getName());
-        try {
-            sd3.setOwnership(getContainerController().getContainerName());
-        } catch (ControllerException e) {
-            e.printStackTrace();
-        }
-        dfd.addServices(sd);
-        dfd.addServices(sd3);
+        //Create the final state machine instance
+        FSMBehaviour fsm = new FSMBehaviour(this);
 
-        try {
-            DFService.register(this,dfd);
-        }
-        catch (FIPAException fe)
-        {
-            fe.printStackTrace();
-        }
+        // Register state A (first state)
+        fsm.registerFirstState(new StartBehaviour(this), STATE_START);
+        fsm.registerState(new RegisterMusician(this),STATE_REGISTER);
+        //Create an instance of the GetMembers class behaviour so we are allowed to use the Data Store
+        Behaviour getMembers = new GetMembers(this,leader,acompaniement);
+        //We share the Final State Machine Data Store with the Behaviour GetMembers
+        getMembers.setDataStore(fsm.getDataStore());
+        //Add register the state Get_Members and pass the instance of the class as the first parameter.
+        fsm.registerState(getMembers,STATE_GET_MEMBERS);
+        //Create an instance of the leaderBehaviour
+        Behaviour leaderBehaviour = new LeaderSoloist(this);
+        //Share the DataStore from the fsm with the leaderBehaviour, so they can share data
+        leaderBehaviour.setDataStore(fsm.getDataStore());
+        //Register the state with its corresponding leaderBehaviour
+        fsm.registerState(leaderBehaviour,STATE_LEADER);
+        //Create an instance of the GetSongStructure class
+        Behaviour getSongStructure = new GetSongStructure();
+        //Share the DataStore from the fsm with the getSongStructureBehaviour, so they can share data
+        getSongStructure.setDataStore(fsm.getDataStore());
+        //Register the state get song structure
+        fsm.registerState(getSongStructure,STATE_LEADER_GET_SONG_STRUCTURE);
+        //Create an instance of the ShareSongStructure Behaviour class
+        Behaviour shareStructure = new ShareSongStructure(this,codec,ontology);
+        //Share the DataStore from the fsm with the ShareSongStructure, so they can share data
+        shareStructure.setDataStore(fsm.getDataStore());
+        //Register the state with its corresponding ShareSongStructure class behaviour
+        fsm.registerState(shareStructure,STATE_SHARE_STRUCTURE);
+        //Create an instance of the ShareSongStructure Behaviour class
+        RequestIntro requestIntro = new RequestIntro(this, codec,musicianOntology,timeHandlerOntology);
+        //Set the DataStore from fsm with the Request Intro behaviour
+        requestIntro.setDataStore(fsm.getDataStore());
+        //Register the state RequestINTRO To the FSM
+        fsm.registerState(requestIntro,STATE_REQUEST_INTRO);
+        fsm.registerLastState(new TemporaryBehaviour(),STATE_SILENT);
 
-        MessageTemplate template = MessageTemplate.and(
-                MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET),
-                MessageTemplate.MatchPerformative(ACLMessage.CFP)
-        );
+        //Register Accompaniest state
+        fsm.registerState(new TemporaryBehaviour(),STATE_ACCOMPANIST);
+        //Get the instance of the get structure of the song behaviour
+        AccompanientGetStructure accompanientGetStructure = new AccompanientGetStructure(this);
+        //Share the DataStore with the behaviour
+        accompanientGetStructure.setDataStore(fsm.getDataStore());
+        //Register the behaviour of the state get structure
+        fsm.registerState(accompanientGetStructure,STATE_GET_STRUCTURE);
+        //Get the instance of the Play intro
+        AccompanientPlayIntro accompanientPlayIntro = new AccompanientPlayIntro(this,codec,musicianOntology,timeHandlerOntology);
+        //Share the data store
+        accompanientPlayIntro.setDataStore(fsm.getDataStore());
+        //Register the behaviour in the state intro
+        fsm.registerState(accompanientPlayIntro,STATE_INTRO);
+        fsm.registerLastState(new TemporaryBehaviour(),STATE_ACCEPT_ACCOMPANIMENT);
+       /* fsm.registerState(new TemporaryBehaviour(),STATE_LEADER);
+        fsm.registerState(new TemporaryBehaviour(),STATE_REQUEST_SOLO);
+        fsm.registerState(new TemporaryBehaviour(),STATE_PASS_LEAD);
+        fsm.registerState(new TemporaryBehaviour(),STATE_SHARE_STRUCTURE);
+        fsm.registerState(new TemporaryBehaviour(),STATE_REQUEST_INTRO);
+        fsm.registerState(new TemporaryBehaviour(),STATE_REQUEST_END);
+        fsm.registerLastState(new TemporaryBehaviour(),STATE_END);
+        fsm.registerState(new TemporaryBehaviour(),STATE_SILENT);
+        fsm.registerState(new TemporaryBehaviour(),STATE_ACCOMPANIST);
+        fsm.registerState(new TemporaryBehaviour(),STATE_GET_STRUCTURE);
+        fsm.registerState(new TemporaryBehaviour(),STATE_INTRO);
+        fsm.registerState(new TemporaryBehaviour(),STATE_ACCEPT_INTRO);
+        fsm.registerState(new TemporaryBehaviour(),STATE_REFUSE_INTRO);
+        fsm.registerState(new TemporaryBehaviour(),STATE_ACCEPT_ACCOMPANIMENT);
+        fsm.registerState(new TemporaryBehaviour(),STATE_REQUEST_ACCOMPANIMENT);
+        fsm.registerState(new TemporaryBehaviour(),STATE_WAITING_LEADERSHIP);
+        fsm.registerState(new TemporaryBehaviour(),STATE_ACCOMPANIENT_SILENT);
+        fsm.registerState(new TemporaryBehaviour(),STATE_ACCEPT_ENDING);*/
 
-        //Find the internal TIMEManager
-        DFAgentDescription templateService = new DFAgentDescription();
-        ServiceDescription sd2 = new ServiceDescription();
-        sd2.setType("InternalTimeManager");
-        try {
-            sd2.setOwnership(getContainerController().getContainerName());
-        } catch (ControllerException e) {
-            e.printStackTrace();
-        }
-        templateService.addServices(sd2);
-        try
-        {
-            DFAgentDescription[] resultTimeManager = DFService.search(this,templateService);
-            for(int i =  0; i<resultTimeManager.length; i++)
-            {
-                internalTimeManager = resultTimeManager[i].getName();
-                System.out.println("internal TimeManager: "+internalTimeManager);
-            }
-        }catch (FIPAException fe)
-        {
-            fe.printStackTrace();
-        }
+       // fsm.registerState(new LeadingBehaviour(),STATE_LEADING);
+       // fsm.registerState(new AccompanimentBehaviour(),STATE_ACCOMPANIMENT);
+       // fsm.registerState(new GetMusicianList(),STATE_GETMUSICIANSLIST);
+       // fsm.registerLastState(new ShareSongStructure(),STATE_SHARESONGSTRUCTURE);
 
-        /*addBehaviour(new SimpleBehaviour() {
+        //Register transitions
+        fsm.registerDefaultTransition(STATE_START,STATE_REGISTER);
+        fsm.registerDefaultTransition(STATE_REGISTER,STATE_GET_MEMBERS);
+        fsm.registerTransition(STATE_GET_MEMBERS,STATE_GET_MEMBERS,0);
+        fsm.registerTransition(STATE_GET_MEMBERS,STATE_LEADER,1);
+        fsm.registerTransition(STATE_GET_MEMBERS,STATE_ACCOMPANIST,2);
+        fsm.registerTransition(STATE_LEADER,STATE_LEADER_GET_SONG_STRUCTURE,3);
+        fsm.registerTransition(STATE_LEADER,STATE_SILENT,15);
+        fsm.registerDefaultTransition(STATE_LEADER_GET_SONG_STRUCTURE,STATE_SHARE_STRUCTURE);
+        fsm.registerTransition(STATE_SHARE_STRUCTURE,STATE_REQUEST_INTRO,4);
+        fsm.registerTransition(STATE_SHARE_STRUCTURE,STATE_SHARE_STRUCTURE,28);
+        fsm.registerTransition(STATE_REQUEST_INTRO,STATE_REQUEST_INTRO,29);
+        fsm.registerTransition(STATE_REQUEST_INTRO,STATE_LEADER,17);
+
+        //Register Accompaniest transitions
+        fsm.registerDefaultTransition(STATE_ACCOMPANIST,STATE_GET_STRUCTURE);
+        fsm.registerTransition(STATE_GET_STRUCTURE,STATE_GET_STRUCTURE,32);
+        fsm.registerTransition(STATE_GET_STRUCTURE,STATE_INTRO,6);
+        fsm.registerTransition(STATE_INTRO,STATE_INTRO,8);
+        fsm.registerTransition(STATE_INTRO,STATE_ACCEPT_ACCOMPANIMENT,7);
+
+
+        /*fsm.registerTransition(STATE_SHARE_STRUCTURE,STATE_REQUEST_INTRO,4);
+        fsm.registerTransition(STATE_REFUSE_INTRO,STATE_LEADER,17);
+        fsm.registerTransition(STATE_LEADER,STATE_REQUEST_SOLO,11);
+        fsm.registerTransition(STATE_REQUEST_SOLO,STATE_LEADER,10);
+        fsm.registerTransition(STATE_REQUEST_SOLO,STATE_PASS_LEAD,12);
+        fsm.registerTransition(STATE_PASS_LEAD,STATE_WAITING_LEADERSHIP,13);
+        fsm.registerTransition(STATE_LEADER,STATE_REQUEST_END,19);
+        fsm.registerTransition(STATE_REQUEST_END,STATE_END,21);
+        fsm.registerTransition(STATE_LEADER,STATE_SILENT,15);
+        fsm.registerTransition(STATE_SILENT,STATE_LEADER,16);
+        fsm.registerTransition(STATE_ACCOMPANIST,STATE_GET_STRUCTURE,5);
+        fsm.registerTransition(STATE_GET_STRUCTURE,STATE_INTRO,6);
+        fsm.registerTransition(STATE_INTRO,STATE_ACCEPT_INTRO,7);
+        fsm.registerTransition(STATE_INTRO,STATE_REFUSE_INTRO,18);
+        fsm.registerTransition(STATE_ACCEPT_INTRO,STATE_ACCEPT_ACCOMPANIMENT,8);
+        fsm.registerDefaultTransition(STATE_REFUSE_INTRO,STATE_ACCEPT_ACCOMPANIMENT);
+        fsm.registerTransition(STATE_ACCEPT_ACCOMPANIMENT,STATE_REQUEST_ACCOMPANIMENT,9);
+        fsm.registerTransition(STATE_REQUEST_ACCOMPANIMENT,STATE_WAITING_LEADERSHIP,20);
+        fsm.registerTransition(STATE_WAITING_LEADERSHIP,STATE_REQUEST_ACCOMPANIMENT,26);
+        fsm.registerTransition(STATE_REQUEST_ACCOMPANIMENT,STATE_ACCOMPANIENT_SILENT,22);
+        fsm.registerTransition(STATE_ACCOMPANIENT_SILENT,STATE_REQUEST_ACCOMPANIMENT,23);
+        fsm.registerTransition(STATE_WAITING_LEADERSHIP,STATE_LEADER,14);
+        fsm.registerTransition(STATE_WAITING_LEADERSHIP,STATE_ACCEPT_ENDING,27);
+        fsm.registerTransition(STATE_ACCEPT_ENDING,STATE_END,25);
+      //  fsm.registerTransition(STATE_START,STATE_LEADING,0);*/
+      //  fsm.registerTransition(STATE_START,STATE_ACCOMPANIMENT,1);
+      //  fsm.registerDefaultTransition(STATE_LEADING,STATE_GETMUSICIANSLIST);
+      //  fsm.registerTransition(STATE_GETMUSICIANSLIST,STATE_GETMUSICIANSLIST,3);
+      //  fsm.registerTransition(STATE_GETMUSICIANSLIST,STATE_SHARESONGSTRUCTURE,2);
+
+        //Add the Behaviour
+        addBehaviour(fsm);
+
+
+
+        /*addBehaviour(new TickerBehaviour(this,6000) {
             @Override
-            public void action() {
-                ACLMessage msg = receive();
-                if (msg != null) {
-                    System.out.println("I recieve a message from SAX");
-                    System.out.println("the message say "+msg.getContent());
+            protected void onTick() {
+               // System.out.println("Hello");
+                DFAgentDescription template = new DFAgentDescription();
+                ServiceDescription sd = new ServiceDescription();
+                sd.setType("Accompaniment");
+                template.addServices(sd);
+                try {
+                    DFAgentDescription[] result = DFService.search(myAgent,template);
+                    Musicians.clear();
+                    for (int i=0; i<result.length; i++)
+                    {
+                      Musicians.add(result[i].getName());
+                    }
+
                 }
-            }
-
-            @Override
-            public boolean done() {
-                return false;
+                catch (FIPAException fe)
+                {
+                    fe.printStackTrace();
+                }
             }
         });*/
 
-        //addBehaviour(new ReceiveMessage(this));
-        addBehaviour(new ReceiveSongStructure(this));
-        addBehaviour(new IntroResponder(this,template));
-        addBehaviour(new HandleRequestAccompaniement());
+        /*addBehaviour(new TickerBehaviour(this,2000) {
+            @Override
+            protected void onTick() {
+                Iterator it = Musicians.iterator();
+                if(!Musicians.isEmpty())
+                {
+
+                   for(int i=0; i < Musicians.size(); i++)
+                    {
+                        System.out.println(Musicians.elementAt(i));
+
+
+                    }
+                }
+            }
+        });*/
+
 
 
     }
 
-    @Override
-    protected void takeDown() {
-        //Deregister from the yellow pages
-        try {
-            DFService.deregister(this);
-        }
-        catch (FIPAException fe)
-        {
-            fe.printStackTrace();
-        }
-
-    }
-
-    class ReceiveMessage extends CyclicBehaviour
+    //Register Languages and Ontologies
+    private void registerLanguagesAndOntologies()
     {
-        public ReceiveMessage(Agent a)
-        {
-            super(a);
-        }
+        //Register language and ontology
+        getContentManager().registerLanguage(codec);
+        getContentManager().registerOntology(musicianOntology);
+        getContentManager().registerOntology(ontology);
+        getContentManager().registerOntology(timeHandlerOntology);
 
+    }
+
+    //This class will get the elements of the score and will storage this elements in the corresponding static fields of the agent class.
+    //TODO Generate this elements, and also get them from the conductor.
+    private class GetSongStructure extends OneShotBehaviour implements SongStructure
+    {
         public void action()
         {
-            ACLMessage msg = receive();
-            if(msg == null){block(); return;}
-            try
+            //Since I got into this state remove FIRST_LEADER from the data store.
+            getDataStore().remove(FIRST_LEADER);
+            tempo = TEMPO;
+            timeSignatureNumerator = NUMERATOR;
+            timeSignatureDenominator = DENOMINATOR;
+            tuneForm = FORM;
+            //create instance of the object ScoreElements and set the object in the DataStore of the behaviour
+            ScoreElements se = new ScoreElements();
+            se.setTempo(tempo);
+            se.setNumerator(timeSignatureNumerator);
+            se.setDenominator(timeSignatureDenominator);
+            se.setForm(tuneForm);
+            getDataStore().put(SCORE_ELEMENTS,se);
+
+        }
+    }
+
+    //Check if the agent is leading the ensemble or not.
+    private class TemporaryBehaviour extends OneShotBehaviour {
+       /* int transitionValue;
+        public void action() {
+            if(leader)
             {
-               System.out.println("extract the conten");
-                ContentElement content = getContentManager().extractContent(msg);
-                Concept action = ((Action)content).getAction();
-                System.out.println(action);
-                System.out.println("performative " +msg.getPerformative());
-                switch (msg.getPerformative())
-                {
-                    case(16):
-                        if(action instanceof ScoreElements)
-                        {
-                            System.out.println("Enter to the if");
-                            addBehaviour(new HandleOperation(myAgent,msg));
-                        }
-
-                }
-                /*Object content = msg.getContentObject();
-                switch (msg.getPerformative())
-                {
-                    case(ACLMessage.REQUEST):
-                        if(content instanceof PruebaOnto)
-                            addBehaviour(new HandleOperation(myAgent,msg));
-                }*/
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    class HandleOperation extends OneShotBehaviour
-    {
-        private ACLMessage r;
-        public HandleOperation(Agent a,ACLMessage request)
-        {
-            super(a);
-            this.r = request;
-
-        }
-        public void action()
-        {
-            try {
-                System.out.println("handle operation run");
-                ContentElement content = getContentManager().extractContent(r);
-                ScoreElements se = (ScoreElements)((Action)content).getAction();
-                int tempo = se.getTempo();
-                int numerator = se.getNumerator();
-                int denominaor = se.getDenominator();
-                String form  = se.getForm();
-                 tempos = tempo;
-                 timeSignatureNumerator = numerator;
-                 timeSignatureDenominator = denominaor;
-                 tuneForm = form;
-                System.out.println("This is the tempo: "+tempo);
-                System.out.println("This is the time signature numeraor: "+numerator);
-                System.out.println("This is the time signature denominator: "+denominaor);
-                System.out.println("This is the Form : "+form);
-
-                /*System.out.println("This is the object");
-                PruebaOnto element = (PruebaOnto) r.getContentObject();
-                String name = element.getName();
-                int age = element.getAge();
-                System.out.println(name+" tiene "+age);*/
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private class ReceiveSongStructure extends CyclicBehaviour
-    {
-        public ReceiveSongStructure(Agent a)
-        {
-            super(a);
-
-        }
-        public void action()
-        {
-            MessageTemplate mt = MessageTemplate.and(MessageTemplate.MatchConversationId("score-elements"),MessageTemplate.MatchPerformative(ACLMessage.INFORM));
-            ACLMessage msg = receive(mt);
-            if(msg == null){block(); return;}
-            try
-            {
-                ContentElement content = getContentManager().extractContent(msg);
-                Concept concept = ((Action)content).getAction();
-                if(concept instanceof ScoreElements)
-                {
-                    int tempo = ((ScoreElements) concept).getTempo();
-                    int numerator = ((ScoreElements) concept).getNumerator();
-                    int denominaor = ((ScoreElements) concept).getDenominator();
-                    String form  = ((ScoreElements) concept).getForm();
-                    tempos = tempo;
-                    timeSignatureNumerator = numerator;
-                    timeSignatureDenominator = denominaor;
-                    tuneForm = form;
-                    System.out.println("this is the tempo "+tempos);
-                    System.out.println("this is the timesignature "+timeSignatureNumerator);
-                    System.out.println("this is the denominator " + timeSignatureDenominator);
-                    ACLMessage msgConfirm = msg.createReply();
-                    msgConfirm.setPerformative(ACLMessage.CONFIRM);
-                    msgConfirm.setContent("I got the elements of the score");
-                    send(msgConfirm);
-
-                }
-
-            }catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private class HandleRequestAccompaniement extends CyclicBehaviour
-    {
-        private long getTimeLeft;
-        public void action()
-         {
-             MessageTemplate mt = MessageTemplate.and(MessageTemplate.MatchConversationId("request-accompaniement"),MessageTemplate.MatchPerformative(ACLMessage.CFP));
-             ACLMessage msg = receive(mt);
-             if(msg == null){block(); return;}
-             try
-             {
-                 ContentElement content = getContentManager().extractContent(msg);
-                 AgentAction action = (AgentAction) ((Action)content).getAction();
-                 if(action instanceof PlayAccompaniementAction)
-                 {
-                     getTimeLeft = (long) ((PlayAccompaniementAction) action).getTimeLeft();
-                     System.out.println("The time left is: "+getTimeLeft);
-
-                     Score s = new Score("s",tempos);
-                     Phrase p = new Phrase("p");
-                     int x;
-                     double[] pattern = new double[5];
-                     double[] pattern0 = {1.0, 0.5, 0.5, 1.5, 0.5};
-                     double[] pattern1 = {0.5, 0.5, 1.5, 0.5, 1.0};
-                     double[] pattern2 = {2.0, 0.5, 0.5, 0.5, 0.5};
-                     double[] pattern3 = {1.5, 0.5, 1.0, 0.5, 0.5};
-                     for(int i=0;i<8;i++){
-                         // choose one of the patterns at random
-                         x = (int)(Math.random()*4);
-                         System.out.println("x = " + x);
-
-                         switch (x) {
-
-                             case 0:
-                                 pattern = pattern0;
-                                 break;
-                             case 1:
-                                 pattern = pattern1;
-                                 break;
-                             case 2:
-                                 pattern = pattern2;
-                                 break;
-                             case 3:
-                                 pattern = pattern3;
-                                 break;
-                             default:
-                                 System.out.println("Random number out of range");
-                                 System.exit(0); // end the program now
-                         }
-                         // create notes for the chosen pattern to the phrase
-                         for (short j=0; j<pattern.length; j++) {
-                             Note note = new Note(38, pattern[j]);
-                             p.addNote(note);
-                         }
-                     }
-                     // finish with a crash cymbal
-                     Note note = new Note(49, 4.0);
-                     p.addNote(note);
-                     /*int pitch = F4;
-                     for(int i =0; i<10; i++)
-                     {
-                         pitch++;
-                         p.add(new Note(pitch,QUARTER_NOTE));
-                     }*/
-                     Part par = new Part("Snare", 0, 9);
-                     par.add(p);
-                     s.addPart(par);
-                     doWait(getTimeLeft);
-                     System.out.println("Playing the accompaniement");
-                     Play.midi(s,false,false,1,1);
-                 }
-
-             }catch (Exception e) {
-                 e.printStackTrace();
-             }
-
-
-         }
-    }
-
-    private class IntroResponder extends ContractNetResponder
-    {
-        private int lenght;
-        private boolean now;
-        private float duration;
-        private PlayIntroAction pia;
-        private Agent agent;
-        public IntroResponder(Agent a, MessageTemplate mt)
-        {
-            super(a,mt); this.agent = a;
-        }
-
-        protected ACLMessage handleCfp (ACLMessage cfp) throws NotUnderstoodException, RefuseException
-        {
-
-
-            try {
-                ContentElement content = getContentManager().extractContent(cfp);
-                AgentAction action = (AgentAction) ((Action)content).getAction();
-                if(action instanceof PlayIntroAction)
-                {
-                    lenght = ((PlayIntroAction) action).getLenght();
-                    now = ((PlayIntroAction) action).getNow();
-                    duration = ((PlayIntroAction) action).getDuration();
-                }
-            } catch (Codec.CodecException e) {
-                e.printStackTrace();
-            } catch (OntologyException e) {
-                e.printStackTrace();
-            }
-            System.out.println("Agent "+getLocalName()+": CFP received from "+cfp.getSender().getName()+". Action is "+cfp.getContent());
-            System.out.println("lenght: "+lenght);
-            measures = lenght;
-            System.out.println("now: "+now);
-            System.out.println("duration: "+duration);
-            int proposal = evaluateAction();
-            if(proposal > 2)
-            {   double t = tempos;
-                double ts = timeSignatureNumerator;
-                double meas = measures;
-                pia = new PlayIntroAction();
-                pia.setLenght(lenght);
-                pia.setDuration(0);
-                double s = (double) (((ts*meas)/t)*60*1000);
-                System.out.println("S: "+s);
-                pia.setDuration((float)s);
-                pia.setNow(true);
-                System.out.println(pia.getDuration()+" "+pia.getLenght());
-                System.out.println("Agent "+getLocalName()+": Proposing "+proposal);
-                ACLMessage propose = cfp.createReply();
-                propose.setLanguage(codec.getName());
-                propose.setOntology(musicianOnto.getName());
-                try {
-                    getContentManager().fillContent(propose,new Action(cfp.getSender(),pia));
-                } catch (Codec.CodecException e) {
-                    e.printStackTrace();
-                } catch (OntologyException e) {
-                    e.printStackTrace();
-                }
-                propose.setPerformative(ACLMessage.PROPOSE);
-
-                return propose;
-            }else {
-                // We refuse to provide a proposal
-                System.out.println("Agent "+getLocalName()+": Refuse");
-                throw new RefuseException("evaluation-failed");
-            }
-
-        }
-
-        protected ACLMessage handleAcceptProposal(ACLMessage cfp, ACLMessage propose,ACLMessage accept) throws FailureException
-        {
-            System.out.println("Agent "+getLocalName()+": Proposal accepted");
-            if(performAction())
-            {
-
-                agent.addBehaviour(new PlaySomething());
-                System.out.println("Agent "+getLocalName()+": Action successfully performed");
-                ACLMessage inform = accept.createReply();
-                inform.setPerformative(ACLMessage.INFORM);
-                return inform;
+                transitionValue = 0;
             }
             else
             {
-                System.out.println("Agent "+getLocalName()+": Action execution failed");
-                throw new FailureException("unexpected-error");
+                transitionValue = 1;
             }
+        }*/
+        public void action(){
+            System.out.println(getBehaviourName());
+            //System.out.println(getDataStore().get("musicianList"));
+
         }
-        protected void handleRejectProposal(ACLMessage cfp, ACLMessage propose, ACLMessage reject) {
-            System.out.println("Agent "+getLocalName()+": Proposal rejected");
-        }
+
+
     }
-    public float calculateDuration()
-    {
-        //((beatPerMeasure*measures/tempo)*60*1000);
-        float duration = ((timeSignatureNumerator*measures/tempos))*60*1000;
-        System.out.println("duration: "+duration);
-        return (float) 8000;
-    }
-    // if the musician is leading set the song structure.
-    public void setSongStructure()
-    {
-        if(isLeader())
-        {
-            songStructure.put("form",form);
-            songStructure.put("tempo",tempo);
-            songStructure.put("numerator",numerator);
-            songStructure.put("denominator",denominator);
+
+    //Confirm that Im leading the ensemble with a message
+    private class LeadingBehaviour extends OneShotBehaviour {
+
+        public void action() {
+            System.out.println("Executing behaviour "+getBehaviourName()+" Im Leading the ensemble");
         }
 
     }
 
-    //Find out if the musician is leading the ensemble
-    public boolean isLeader() {
-
-        return leader;
-    }
-
-    private int evaluateAction() {
-        // Simulate an evaluation by generating a random number
-        return (int) (Math.random() * 10);
-    }
-
-    private boolean performAction() {
-        // Simulate action execution by generating a random number
-
-        return (Math.random() * 5) > 2;
-    }
-
-    private class PlaySomething extends OneShotBehaviour
+    //Confirm that you obey the leader with a message
+    private class AccompanimentBehaviour extends OneShotBehaviour
     {
         public void action()
         {
-
-            //doWait(500);
-            Score modeScore = new Score("Drunk walk demo",tempos);
-            modeScore.setNumerator(timeSignatureNumerator);
-
-            modeScore.setDenominator(timeSignatureDenominator);
-            Part inst = new Part("Piano", PIANO);
-            Phrase phr = new Phrase();
-
-            int pitch = C3; // variable to store the calculated pitch (initialized with a start pitch value)
-            int numberOfNotes = measures * timeSignatureNumerator;
-            System.out.println("numberOfNotes: "+numberOfNotes);
-            double pitches[] = {E5,G5,C6,F5};
-            for (int i = 0; i < numberOfNotes; i++)
-            {
-                int  x = (int)(Math.random()*4);
-                phr.add(new Note(pitches[x],QUARTER_NOTE));
-            }
-
-            // add the phrase to an instrument and that to a score
-            inst.addPhrase(phr);
-            modeScore.addPart(inst);
-
-            // create a MIDI file of the score
-             //View.notate(modeScore);
-            Play.midi(modeScore,false,false,1,1);
-            //Write.midi(modeScore,"prueba.mid");
-            //Play.midi(phr);
-            /*double endtime = modeScore.getEndTime();
-            int numerator = modeScore.getNumerator();
-            double temp = modeScore.getTempo();
-            double numMeasure = endtime/numerator;
-            double t = (numerator*numMeasure/temp)*60*1000;
-            double getPhraseendtime = phr.getEndTime();
-            System.out.println("phrase end time: "+getPhraseendtime);
-             System.out.println("time signature: "+modeScore.getTimeSignature());
-            System.out.println("end time: "+endtime+ " numerator: "+numerator+" temp: "+temp+" numMeasure: "+numMeasure);
-            System.out.println("espere " + (int)t );*/
+            System.out.println("Executing behaviour "+getBehaviourName()+" I Obey the leader of the ensemble");
         }
     }
-    public void setLeader(boolean leader) {
-        this.leader = leader;
+
+    //Get the list of musicians that will be serving as accompaniment
+    private class GetMusicianList extends OneShotBehaviour
+    {
+        int transitionValue;
+        public void action()
+        {
+            // Find the musicians that provide accompaniment service
+            DFAgentDescription template = new DFAgentDescription();
+            ServiceDescription sd = new ServiceDescription();
+            sd.setType("Accompaniment");
+            template.addServices(sd);
+          /*  try {
+                DFAgentDescription[] result = DFService.search(myAgent,template);
+                Musicians.clear();
+                for (int i=0; i<result.length; i++)
+                {
+                    //Store the list in the vector
+                    Musicians.addElement(result[i].getName());
+                }
+
+            }
+            catch (FIPAException fe)
+            {
+                fe.printStackTrace();
+            }*/
+
+            //At least 3 musicians playing with the leader in the ensemble
+            if(Musicians.isEmpty() || Musicians.size() < 3)
+            {
+                //If there not at least 3 then return to this state
+                transitionValue = 3;
+            }
+            else {transitionValue = 2;} //Go to the next state
+        }
+        public int onEnd() {
+            return transitionValue;
+        } //Exit with the transition value to the corresponding state.
     }
 
-    public void setAcompaniment(boolean acompaniment) {
-        this.acompaniement = acompaniment;
-    }
+    // Share the structure of the song with the rest of the ensemble
+   /* private class ShareSongStructure extends OneShotBehaviour
+    {
 
-    public boolean isAcompaniement() {
-        return acompaniement;
-    }
+    }*/
+
+
+
 }

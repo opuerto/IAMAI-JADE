@@ -14,6 +14,8 @@ import jm.music.data.Score;
 import jm.util.Play;
 import tools.ensemble.behaviours.timeManagerBehaviours.FindInternalMusician;
 import tools.ensemble.behaviours.timeManagerBehaviours.GetEveryTimeManager;
+import tools.ensemble.behaviours.timeManagerBehaviours.GetInfoIntro;
+import tools.ensemble.behaviours.timeManagerBehaviours.Prueba;
 import tools.ensemble.interfaces.DataStoreTimeManager;
 import tools.ensemble.ontologies.timemanager.TimeHandler;
 import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Chorus;
@@ -83,6 +85,14 @@ public class TimeManager extends Agent implements DataStoreTimeManager {
         findMymusician.setDataStore(pb.getDataStore());
         //Add subbehaviour to the parallel behaviour
         pb.addSubBehaviour(findMymusician);
+        //Create instance of the get Info Intro behaviour
+        GetInfoIntro getInfoIntro = new GetInfoIntro();
+        //Share the data store
+        getInfoIntro.setDataStore(pb.getDataStore());
+        //Add the subBehaviour
+        pb.addSubBehaviour(getInfoIntro);
+
+
         addBehaviour(pb);
 
     }

@@ -4,8 +4,9 @@ package tools.ensemble.interfaces;
  * Created by OscarAlfonso on 1/15/2017.
  */
 public interface SongStructure {
-    String form = "AABA";
-    String tempo = "120";
-    String numerator = "4";
-    String denominator = "4";
+
+    public static final String FORM = "AABA";
+    public static final int TEMPO = 180;
+    public static final int NUMERATOR = 4;
+    public static final int DENOMINATOR = 4;
 }

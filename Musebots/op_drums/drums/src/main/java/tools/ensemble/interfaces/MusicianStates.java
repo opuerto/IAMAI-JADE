@@ -9,8 +9,10 @@ public interface MusicianStates {
     public final static String STATE_REGISTER = "Register";
     public final static String STATE_GET_MEMBERS = "Get_members";
     public final static String STATE_LEADER = "Leader";
+    public final static String STATE_LEADER_GET_SONG_STRUCTURE = "LeaderGetSongStructure";
     public final static String STATE_SHARE_STRUCTURE = "ShareStructure";
     public final static String STATE_REQUEST_INTRO = "RequestIntro";
+    public final static String STATE_LEADER_REQUEST_ACCOMPANIEMENT = "LeaderRequestAccompaniement";
     public final static String STATE_REQUEST_SOLO = "RequestSolo";
     public final static String STATE_PASS_LEAD = "PassLead";
     public final static String STATE_SILENT = "Silent";

@@ -1,0 +1,188 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 32744 bytes for ChunkPool::allocate
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   In 32 bit mode, the process size limit was hit
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Use 64 bit Java on a 64 bit OS
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (allocation.cpp:273), pid=8416, tid=0x00000000000006f0
+#
+# JRE version: Java(TM) SE Runtime Environment (8.0_101-b13) (build 1.8.0_101-b13)
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (25.101-b13 mixed mode windows-amd64 compressed oops)
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000000016fca000):  JavaThread "C1 CompilerThread2" daemon [_thread_in_native, id=1776, stack(0x00000000187d0000,0x00000000188d0000)]
+
+Stack: [0x00000000187d0000,0x00000000188d0000]
+[error occurred during error reporting (printing stack bounds), id 0xc0000005]
+
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+
+
+Current CompileTask:
+C1:    923   58  s!   3       sun.misc.URLClassPath::getLoader (197 bytes)
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x0000000018993000 JavaThread "Monitor Ctrl-Break" daemon [_thread_in_native, id=9876, stack(0x0000000018ed0000,0x0000000018fd0000)]
+  0x00000000188d1800 JavaThread "Service Thread" daemon [_thread_blocked, id=15456, stack(0x0000000018cd0000,0x0000000018dd0000)]
+=>0x0000000016fca000 JavaThread "C1 CompilerThread2" daemon [_thread_in_native, id=1776, stack(0x00000000187d0000,0x00000000188d0000)]
+  0x0000000016fc7800 JavaThread "C2 CompilerThread1" daemon [_thread_blocked, id=1368, stack(0x00000000186d0000,0x00000000187d0000)]
+  0x0000000016f6d800 JavaThread "C2 CompilerThread0" daemon [_thread_blocked, id=1072, stack(0x00000000185d0000,0x00000000186d0000)]
+  0x0000000016f6c000 JavaThread "Attach Listener" daemon [_thread_blocked, id=12884, stack(0x00000000184d0000,0x00000000185d0000)]
+  0x0000000016f6b000 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=15164, stack(0x00000000183d0000,0x00000000184d0000)]
+  0x0000000016f5a800 JavaThread "Finalizer" daemon [_thread_blocked, id=3232, stack(0x00000000181e0000,0x00000000182e0000)]
+  0x00000000023e0800 JavaThread "Reference Handler" daemon [_thread_blocked, id=12116, stack(0x00000000180e0000,0x00000000181e0000)]
+  0x00000000022f2800 JavaThread "main" [_thread_in_native, id=10304, stack(0x00000000021f0000,0x00000000022f0000)]
+
+Other Threads:
+  0x0000000016f38000 VMThread [stack: 0x0000000017fe0000,0x00000000180e0000] [id=11432]
+  0x00000000188d5800 WatcherThread [stack: 0x0000000018dd0000,0x0000000018ed0000] [id=14156]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap:
+ PSYoungGen      total 38400K, used 2670K [0x00000000d5b80000, 0x00000000d8600000, 0x0000000100000000)
+  eden space 33280K, 8% used [0x00000000d5b80000,0x00000000d5e1b9d0,0x00000000d7c00000)
+  from space 5120K, 0% used [0x00000000d8100000,0x00000000d8100000,0x00000000d8600000)
+  to   space 5120K, 0% used [0x00000000d7c00000,0x00000000d7c00000,0x00000000d8100000)
+ ParOldGen       total 87552K, used 0K [0x0000000081200000, 0x0000000086780000, 0x00000000d5b80000)
+  object space 87552K, 0% used [0x0000000081200000,0x0000000081200000,0x0000000086780000)
+ Metaspace       used 3490K, capacity 4664K, committed 4864K, reserved 1056768K
+  class space    used 393K, capacity 424K, committed 512K, reserved 1048576K
+
+Card table byte_map: [0x00000000117b0000,0x0000000011bb0000] byte_map_base: 0x00000000113a7000
+
+Marking Bits: (ParMarkBitMap*) 0x000000006e09a6d0
+ Begin Bits: [0x0000000012260000, 0x0000000014218000)
+ End Bits:   [0x0000000014218000, 0x00000000161d0000)
+
+Polling page: 0x0000000000830000
+
+CodeCache: size=245760Kb used=1154Kb max_used=1166Kb free=244605Kb
+ bounds [0x00000000023f0000, 0x0000000002660000, 0x00000000113f0000]
+ total_blobs=304 nmethods=58 adapters=159
+ compilation: enabled
+
+Compilation events (10 events):
+Event: 0.877 Thread 0x0000000016fca000 nmethod 52 0x000000000250bd10 code [0x000000000250bea0, 0x000000000250c3a8]
+Event: 0.877 Thread 0x0000000016fca000   54       3       java.lang.StringBuilder::append (8 bytes)
+Event: 0.877 Thread 0x0000000016fca000 nmethod 54 0x000000000250c590 code [0x000000000250c700, 0x000000000250c888]
+Event: 0.877 Thread 0x0000000016fca000   55       1       java.lang.String::length (6 bytes)
+Event: 0.877 Thread 0x0000000016fca000 nmethod 55 0x000000000250c910 code [0x000000000250ca60, 0x000000000250cb70]
+Event: 0.877 Thread 0x0000000016fca000   53       3       java.util.BitSet::get (69 bytes)
+Event: 0.878 Thread 0x0000000016fca000 nmethod 53 0x000000000250cc10 code [0x000000000250ce00, 0x000000000250d788]
+Event: 0.878 Thread 0x0000000016fca000   56       3       sun.nio.cs.UTF_8$Encoder::encode (359 bytes)
+Event: 0.880 Thread 0x0000000016fca000 nmethod 56 0x000000000250dc10 code [0x000000000250de00, 0x000000000250e918]
+Event: 0.880 Thread 0x0000000016fca000   58  s!   3       sun.misc.URLClassPath::getLoader (197 bytes)
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Internal exceptions (2 events):
+Event: 0.426 Thread 0x00000000022f2800 Exception <a 'java/lang/NoSuchMethodError': Method sun.misc.Unsafe.defineClass(Ljava/lang/String;[BII)Ljava/lang/Class; name or signature does not match> (0x00000000d5b87cc0) thrown at [C:\re\workspace\8-2-build-windows-amd64-cygwin\jdk8u101\7261\hotspot\sZEÁF€?
+Event: 0.426 Thread 0x00000000022f2800 Exception <a 'java/lang/NoSuchMethodError': Method sun.misc.Unsafe.prefetchRead(Ljava/lang/Object;J)V name or signature does not match> (0x00000000d5b87fa8) thrown at [C:\re\workspace\8-2-build-windows-amd64-cygwin\jdk8u101\7261\hotspot\src\share\vm\prims\
+
+Events (10 events):
+Event: 0.876 loading class jade/util/leap/Serializable
+Event: 0.876 loading class jade/util/leap/Serializable done
+Event: 0.877 loading class jade/util/ExtendedProperties
+Event: 0.877 loading class jade/util/ExtendedProperties done
+Event: 0.878 loading class jade/core/ProfileException
+Event: 0.878 loading class jade/core/ProfileException done
+Event: 0.880 loading class jade/util/WrapperException
+Event: 0.880 loading class jade/util/WrapperException done
+Event: 0.880 loading class jade/core/Profile
+Event: 0.880 loading class jade/core/Profile done
+
+
+Dynamic libraries:
+0x00007ff6e79c0000 - 0x00007ff6e79f7000 	C:\Program Files\Java\jdk1.8.0_101\bin\java.exe
+0x00007ffca4940000 - 0x00007ffca4b11000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ffca25d0000 - 0x00007ffca267b000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x00007ffc7fbc0000 - 0x00007ffc7fc14000 	C:\Program Files (x86)\AVG\Av\avghooka.dll
+0x00007ffca1690000 - 0x00007ffca18ad000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x00007ffca28f0000 - 0x00007ffca2992000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x00007ffca2230000 - 0x00007ffca22ce000 	C:\WINDOWS\System32\msvcrt.dll
+0x00007ffca4670000 - 0x00007ffca46c9000 	C:\WINDOWS\System32\sechost.dll
+0x00007ffca27c0000 - 0x00007ffca28e1000 	C:\WINDOWS\System32\RPCRT4.dll
+0x00007ffca4420000 - 0x00007ffca4585000 	C:\WINDOWS\System32\USER32.dll
+0x00007ffca18b0000 - 0x00007ffca18ce000 	C:\WINDOWS\System32\win32u.dll
+0x00007ffca2dd0000 - 0x00007ffca2e04000 	C:\WINDOWS\System32\GDI32.dll
+0x00007ffca19d0000 - 0x00007ffca1b52000 	C:\WINDOWS\System32\gdi32full.dll
+0x00007ffc99290000 - 0x00007ffc99509000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.14393.447_none_42191651c6827bb3\COMCTL32.dll
+0x00007ffca22d0000 - 0x00007ffca2598000 	C:\WINDOWS\System32\combase.dll
+0x00007ffca1d30000 - 0x00007ffca1e25000 	C:\WINDOWS\System32\ucrtbase.dll
+0x00007ffca0e30000 - 0x00007ffca0e9a000 	C:\WINDOWS\System32\bcryptPrimitives.dll
+0x00007ffca25a0000 - 0x00007ffca25ce000 	C:\WINDOWS\System32\IMM32.DLL
+0x000000006d310000 - 0x000000006d3e2000 	C:\Program Files\Java\jdk1.8.0_101\jre\bin\msvcr100.dll
+0x000000006d880000 - 0x000000006e11a000 	C:\Program Files\Java\jdk1.8.0_101\jre\bin\server\jvm.dll
+0x00007ffca4660000 - 0x00007ffca4668000 	C:\WINDOWS\System32\PSAPI.DLL
+0x00007ffc98ef0000 - 0x00007ffc98ef9000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+0x00007ffca4590000 - 0x00007ffca45fa000 	C:\WINDOWS\System32\WS2_32.dll
+0x00007ffc9ee30000 - 0x00007ffc9ee53000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ffc9b150000 - 0x00007ffc9b15a000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x00007ffc9ed70000 - 0x00007ffc9ed9b000 	C:\WINDOWS\SYSTEM32\WINMMBASE.dll
+0x00007ffca18d0000 - 0x00007ffca1912000 	C:\WINDOWS\System32\cfgmgr32.dll
+0x000000006d790000 - 0x000000006d79f000 	C:\Program Files\Java\jdk1.8.0_101\jre\bin\verify.dll
+0x000000006d760000 - 0x000000006d789000 	C:\Program Files\Java\jdk1.8.0_101\jre\bin\java.dll
+0x000000006d740000 - 0x000000006d756000 	C:\Program Files\Java\jdk1.8.0_101\jre\bin\zip.dll
+0x00007ffca2f10000 - 0x00007ffca4419000 	C:\WINDOWS\System32\SHELL32.dll
+0x00007ffca0fb0000 - 0x00007ffca168a000 	C:\WINDOWS\System32\windows.storage.dll
+0x00007ffca0dc0000 - 0x00007ffca0e0c000 	C:\WINDOWS\System32\powrprof.dll
+0x00007ffca4740000 - 0x00007ffca4792000 	C:\WINDOWS\System32\shlwapi.dll
+0x00007ffca0e10000 - 0x00007ffca0e1f000 	C:\WINDOWS\System32\kernel.appcore.dll
+0x00007ffca0ea0000 - 0x00007ffca0f49000 	C:\WINDOWS\System32\shcore.dll
+0x00007ffca0da0000 - 0x00007ffca0db4000 	C:\WINDOWS\System32\profapi.dll
+0x00007ffc99520000 - 0x00007ffc99530000 	C:\Program Files (x86)\JetBrains\IntelliJ IDEA 2016.1.1\bin\breakgen64.dll
+0x000000006d720000 - 0x000000006d73a000 	C:\Program Files\Java\jdk1.8.0_101\jre\bin\net.dll
+0x00007ffca0670000 - 0x00007ffca06cc000 	C:\WINDOWS\system32\mswsock.dll
+
+VM Arguments:
+jvm_args: -Didea.launcher.port=7534 -Didea.launcher.bin.path=C:\Program Files (x86)\JetBrains\IntelliJ IDEA 2016.1.1\bin -Dfile.encoding=UTF-8 
+java_command: com.intellij.rt.execution.application.AppMain jade.Boot -container -host IAMAI -agents PIANO:tools.musebot.MusebotAssitant;play_piano:tools.ensemble.agents.Musician;PianoITM:tools.ensemble.agents.TimeManager
+java_class_path (initial): C:\Program Files\Java\jdk1.8.0_101\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\deploy.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\access-bridge-64.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\cldrdata.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\dnsns.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\jaccess.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\jfxrt.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\localedata.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\nashorn.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\sunec.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\sunjce_provider.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\sunmscapi.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\sunpkcs11.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\zipfs.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\javaws.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\jfxswt.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\management-agent.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\plugin.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\rt.jar;C:\Users\OscarAlfonso\Documents\Projects\JADEIAMAI\jade_musebot\Musebots\op_piano\piano\build\classes\main;C:\Users\OscarAlfonso\Documents\Projects\JADEIAMAI\jade_musebot\Musebots\op_piano\piano\lib\jade.jar;C:\Users\OscarAlfonso\Documents\Projects\JADEIAMAI\jade_musebot\Musebots\op_piano\piano\lib\jMusic1.6.4.jar;C:\Users\OscarAlfonso\Documents\Projects\JADEIAMAI\jade_musebot\Musebots\op_piano\piano\lib\NetUtil.jar;C:\Program Files (x86)\JetBrains\IntelliJ IDEA 2016.1.1\lib\idea_rt.jar
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jdk1.8.0_101
+PATH=C:\ProgramData\Oracle\Java\javapath;C:\Python27;C:\Program Files\Python36\Scripts\;C:\Program Files\Python36\;C:\Program Files (x86)\Lenovo\FusionEngine;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files (x86)\Common Files\lenovo\easyplussdk\bin;C:\xampp\php;C:\ProgramData\ComposerSetup\bin;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Program Files (x86)\Windows Live\Shared;C:\WINDOWS;C:\WINDOWS\system32;C:\Program Files\Java\jdk1.8.0_101\bin;C:\gradle-2.10\bin;C:\Program Files (x86)\SMLNJ\bin\;C:\Program Files (x86)\GtkSharp\2.12\bin;C:\Users\OscarAlfonso\AppData\Local\Microsoft\WindowsApps;
+USERNAME=OscarAlfonso
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 69 Stepping 1, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 10.0 , 64 bit Build 14393 (10.0.14393.0)
+
+CPU:total 4 (2 cores per cpu, 2 threads per core) family 6 model 69 stepping 1, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, lzcnt, ht, tsc, tscinvbit, bmi1, bmi2
+
+Memory: 4k page, physical 8310040k(1673420k free), swap 33475864k(35928k free)
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (25.101-b13) for windows-amd64 JRE (1.8.0_101-b13), built on Jun 22 2016 01:21:29 by "java_re" with MS VC++ 10.0 (VS2010)
+
+time: Wed Feb 01 15:47:01 2017
+elapsed time: 0 seconds (0d 0h 0m 0s)
+

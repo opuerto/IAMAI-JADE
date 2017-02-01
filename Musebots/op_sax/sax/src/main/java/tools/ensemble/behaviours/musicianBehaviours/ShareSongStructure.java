@@ -97,6 +97,7 @@ public class ShareSongStructure extends OneShotBehaviour implements SongStructur
                     {
                        //we add to the counter
                         repliesCnt++;
+                        System.out.println(reply.getContent());
                     }
 
                     if(repliesCnt >= musiciansReceivers.size())

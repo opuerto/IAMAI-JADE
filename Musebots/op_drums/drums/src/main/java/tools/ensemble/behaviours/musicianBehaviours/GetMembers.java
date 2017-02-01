@@ -77,7 +77,6 @@ public class GetMembers extends OneShotBehaviour implements DataStorteMusicians 
             for (int i=0; i<resultSearchTimeManager.length; i++)
             {
                 internalTimeManager = resultSearchTimeManager[i].getName();
-                System.out.println("internal time manager: "+internalTimeManager);
             }
             getDataStore().put(INTERNAL_TIME_MANAGER,internalTimeManager);
 
