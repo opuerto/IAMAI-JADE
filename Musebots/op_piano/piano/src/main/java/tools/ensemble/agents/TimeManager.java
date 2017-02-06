@@ -9,13 +9,13 @@ import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
+import jade.domain.FIPANames;
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import jade.wrapper.ControllerException;
 import jm.music.data.Score;
 import jm.util.Play;
-import tools.ensemble.behaviours.timeManagerBehaviours.FindInternalMusician;
-import tools.ensemble.behaviours.timeManagerBehaviours.GetEveryTimeManager;
-import tools.ensemble.behaviours.timeManagerBehaviours.GetInfoIntro;
-import tools.ensemble.behaviours.timeManagerBehaviours.Prueba;
+import tools.ensemble.behaviours.timeManagerBehaviours.*;
 import tools.ensemble.interfaces.DataStoreTimeManager;
 import tools.ensemble.ontologies.timemanager.TimeHandler;
 import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Chorus;
@@ -92,7 +92,28 @@ public class TimeManager extends Agent implements DataStoreTimeManager {
         //Add the subBehaviour
         pb.addSubBehaviour(getInfoIntro);
 
+        //Create Message template for the protocol CheckInfoIntroResponder
+        MessageTemplate mt = MessageTemplate.and(MessageTemplate.MatchConversationId("check-intro-info-interaction"),
+                MessageTemplate.MatchPerformative(ACLMessage.QUERY_IF));
+        MessageTemplate mtAndmt = MessageTemplate.and(mt,
+                MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_QUERY));
+        //Create instance of the get Info Intro behaviour
+        CheckInfoIntroResponder checkInfoProtocol = new CheckInfoIntroResponder(this,mtAndmt,codec,timeHandlerOntology);
+        //Share the data store
+        checkInfoProtocol.setDataStore(pb.getDataStore());
+        //Add the subBehaviour
+        pb.addSubBehaviour(checkInfoProtocol);
 
+        //Create Message template for protocol RequestIntroDataResponder
+        MessageTemplate mt1 = MessageTemplate.MatchConversationId("Need-Info-Intro");
+        MessageTemplate mt2 = MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_QUERY);
+        MessageTemplate mt1andmt2 = MessageTemplate.and(mt1,mt2);
+        MessageTemplate mt3 = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
+        MessageTemplate mt1andmt2andmt3 = MessageTemplate.and(mt1andmt2,mt3);
+        RequestIntroDataResponder provideIntroData = new RequestIntroDataResponder(this,mt1andmt2andmt3,timeHandlerOntology,codec);
+        provideIntroData.setDataStore(pb.getDataStore());
+        pb.addSubBehaviour(provideIntroData);
+        //Add the Behaviour
         addBehaviour(pb);
 
     }

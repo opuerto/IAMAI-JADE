@@ -13,6 +13,8 @@ import java.util.*;
 
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jm.music.data.Score;
+import jm.util.Play;
 import tools.ensemble.behaviours.musicianBehaviours.*;
 import tools.ensemble.interfaces.DataStorteMusicians;
 import tools.ensemble.interfaces.MusicianStates;
@@ -45,7 +47,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
 
     protected void setup()
     {
-
+        Play.midi(new Score(),false,false,7,7);
         //register Languages and Ontologies
         registerLanguagesAndOntologies();
 
@@ -101,6 +103,13 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         accompanientPlayIntro.setDataStore(fsm.getDataStore());
         //Register the behaviour in the state intro
         fsm.registerState(accompanientPlayIntro,STATE_INTRO);
+        //Create instance of the play Head behaviour
+        AccompanientPlayHead playHead = new AccompanientPlayHead(this, codec,musicianOntology,timeHandlerOntology);
+        //Share the data Store
+        playHead.setDataStore(fsm.getDataStore());
+        //Register the state
+        fsm.registerState(playHead,STATE_PLAY_HEAD);
+
         fsm.registerLastState(new TemporaryBehaviour(),STATE_ACCEPT_ACCOMPANIMENT);
        /* fsm.registerState(new TemporaryBehaviour(),STATE_LEADER);
         fsm.registerState(new TemporaryBehaviour(),STATE_REQUEST_SOLO);
@@ -145,7 +154,9 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         fsm.registerTransition(STATE_GET_STRUCTURE,STATE_GET_STRUCTURE,32);
         fsm.registerTransition(STATE_GET_STRUCTURE,STATE_INTRO,6);
         fsm.registerTransition(STATE_INTRO,STATE_INTRO,8);
-        fsm.registerTransition(STATE_INTRO,STATE_ACCEPT_ACCOMPANIMENT,7);
+        fsm.registerTransition(STATE_INTRO,STATE_PLAY_HEAD,7);
+        fsm.registerTransition(STATE_PLAY_HEAD,STATE_PLAY_HEAD,32);
+        fsm.registerTransition(STATE_PLAY_HEAD,STATE_ACCEPT_ACCOMPANIMENT,9);
 
 
         /*fsm.registerTransition(STATE_SHARE_STRUCTURE,STATE_REQUEST_INTRO,4);

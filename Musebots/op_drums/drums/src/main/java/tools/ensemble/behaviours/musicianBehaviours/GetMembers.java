@@ -105,6 +105,7 @@ public class GetMembers extends OneShotBehaviour implements DataStorteMusicians 
         }
         else if(accompanient)
         {
+            System.out.println("Soy accompanient");
             transition = 2;
         }
 

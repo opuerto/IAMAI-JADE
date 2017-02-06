@@ -13,6 +13,7 @@ import jade.core.behaviours.*;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
+import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.ContractNetResponder;
@@ -69,7 +70,10 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
     //we kept here the value for the transition to the next state
     int transition;
     //We keept the message template
-    MessageTemplate mt;
+    MessageTemplate mt = MessageTemplate.and(
+            MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET),
+            MessageTemplate.MatchPerformative(ACLMessage.CFP)
+    );
     //We kept the language
     Codec codec;
     //We kept the musician ontology
@@ -85,7 +89,7 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
     //check if the music is playing
     private boolean agentPlaying = false;
     //kept the moment when the intro started to play
-    private long startedIntroAt = -1;
+    private Date startedIntroAt = null;
     //kept the duration of the intro
     private float duration;
     //length of the intro
@@ -424,7 +428,8 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
         }
 
         public void onStart() {
-            long elapsedTime =  startedIntroAt - System.currentTimeMillis();
+
+            long elapsedTime =  startedIntroAt.getTime() - System.currentTimeMillis();
             long leftTime = (long)duration - elapsedTime;
             wakeupTime = System.currentTimeMillis() + leftTime;
         }
@@ -553,8 +558,10 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
         public void action()
         {
             System.out.println("play back");
-            startedIntroAt = System.currentTimeMillis();
-            Play.midi(theScore,false,false,1,1);
+            Play.midi(theScore,false,false,2,0);
+            startedIntroAt = new Date();
+            System.out.println("Started at playback "+startedIntroAt);
+            System.out.println("Started at playback on Milliseconds "+startedIntroAt.getTime());
             agentPlaying = true;
 
         }
