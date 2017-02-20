@@ -56,7 +56,7 @@ public class RequestIntroDataInitiator extends AchieveREInitiator implements Dat
 
                     if(getDataStore().containsKey(INTRO_INSTANCE))
                     {
-                        System.out.println("I got the intro instance");
+
                         Intro intro = (Intro) getDataStore().get(INTRO_INSTANCE);
                         intro.setIntroLenght(((Intro) concept).getIntroLenght());
                         intro.setIntroStartedAt(((Intro) concept).getIntroStartedAt());

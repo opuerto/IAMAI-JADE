@@ -497,25 +497,25 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
         {
             super(a,msg);
             this.agent = a;
-            System.out.println("Get Info initiator started");
+            //System.out.println("Get Info initiator started");
         }
 
         protected void handleAgree(ACLMessage agree) {
-            System.out.println("The agent "+agree.getSender().getName() +" agree on get info initiator");
+            //System.out.println("The agent "+agree.getSender().getName() +" agree on get info initiator");
         }
 
         protected void handleRefuse(ACLMessage refuse) {
-            System.out.println("The agent "+refuse.getSender().getName() +" refuse on get info initiator");
+            //System.out.println("The agent "+refuse.getSender().getName() +" refuse on get info initiator");
             stateGetInfo = 2;
         }
 
         protected void handleNotUnderstood(ACLMessage notUnderstood) {
-            System.out.println("The agent "+notUnderstood.getSender().getName() +"not Understood on get info initiator");
+            //System.out.println("The agent "+notUnderstood.getSender().getName() +"not Understood on get info initiator");
             stateGetInfo = 2;
         }
 
         protected void handleInform(ACLMessage inform) {
-            System.out.println("The agent "+inform.getSender().getName() +" inform on get info initiator");
+            //System.out.println("The agent "+inform.getSender().getName() +" inform on get info initiator");
             try
             {
                 ContentElement content = agent.getContentManager().extractContent(inform);
@@ -533,13 +533,13 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
             catch (Exception e) {
                 e.printStackTrace();
             }
-            System.out.println("Duration :"+duration);
-            System.out.println("intro started at :"+introStartedAt);
+            //System.out.println("Duration :"+duration);
+            //System.out.println("intro started at :"+introStartedAt);
             stateGetInfo = 1;
         }
 
         protected void handleFailure(ACLMessage fail) {
-            System.out.println(myAgent.getLocalName()+" : "+" Something went wrong on get info initiator");
+            //System.out.println(myAgent.getLocalName()+" : "+" Something went wrong on get info initiator");
             stateGetInfo = 2;
         }
 
@@ -620,7 +620,7 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
             System.out.println("play back");
 
 
-            Play.midi(score,false,false,7,7);
+            Play.midi(score,false,false,2,0);
             Write.midi(score,"prueba.mid");
             stateComposeHead = 1;
 

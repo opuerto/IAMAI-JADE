@@ -58,7 +58,6 @@ public class GetInfoIntro extends Behaviour implements DataStoreTimeManager {
                     if(introInstance != null)
                     {
                         getDataStore().remove(INTRO_INSTANCE);
-                        System.out.println("time happening this is "+ new Date(System.currentTimeMillis()));
                         getDataStore().put(INTRO_INSTANCE,introInstance);
                     }
                     System.out.println("intro instance: "+getDataStore().get(INTRO_INSTANCE));

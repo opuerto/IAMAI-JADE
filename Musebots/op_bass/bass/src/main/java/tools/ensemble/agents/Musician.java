@@ -47,7 +47,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
 
     protected void setup()
     {
-        Play.midi(new Score(),false,false,5,5);
+        Play.midi(new Score(),false,false,4,0);
         //register Languages and Ontologies
         registerLanguagesAndOntologies();
 

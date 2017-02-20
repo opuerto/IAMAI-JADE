@@ -47,7 +47,7 @@ public class FindInternalMusician extends Behaviour {
         {
             fe.printStackTrace();
         }
-        System.out.println("my musician: "+myMusician);
+
 
 
     }

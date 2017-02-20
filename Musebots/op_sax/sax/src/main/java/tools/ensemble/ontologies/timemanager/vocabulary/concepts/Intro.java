@@ -2,13 +2,15 @@ package tools.ensemble.ontologies.timemanager.vocabulary.concepts;
 
 import jade.content.Concept;
 
+import java.util.Date;
+
 /**
  * Created by OscarAlfonso on 1/30/2017.
  */
 public class Intro implements Concept {
 
     private float introLenght;
-    private float introStartedAt;
+    private Date introStartedAt;
 
     public void setIntroLenght (float introLenght)
     {
@@ -20,12 +22,12 @@ public class Intro implements Concept {
         return introLenght;
     }
 
-    public void setIntroStartedAt(float introStartedAt)
+    public void setIntroStartedAt(Date introStartedAt)
     {
         this.introStartedAt = introStartedAt;
     }
 
-    public float getIntroStartedAt()
+    public Date getIntroStartedAt()
     {
         return introStartedAt;
     }

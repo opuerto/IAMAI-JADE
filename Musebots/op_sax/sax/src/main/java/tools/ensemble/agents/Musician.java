@@ -13,6 +13,8 @@ import java.util.*;
 
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jm.music.data.Score;
+import jm.util.Play;
 import tools.ensemble.behaviours.musicianBehaviours.*;
 import tools.ensemble.interfaces.DataStorteMusicians;
 import tools.ensemble.interfaces.MusicianStates;
@@ -45,7 +47,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
 
     protected void setup()
     {
-
+        Play.midi(new Score(),false,false,1,0);
         //register Languages and Ontologies
         registerLanguagesAndOntologies();
 

@@ -558,7 +558,7 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
         public void action()
         {
             System.out.println("play back");
-            Play.midi(theScore,false,false,1,0);
+            Play.midi(theScore,false,false,4,0);
             startedIntroAt = new Date();
             System.out.println("Started at playback "+startedIntroAt);
             System.out.println("Started at playback on Milliseconds "+startedIntroAt.getTime());

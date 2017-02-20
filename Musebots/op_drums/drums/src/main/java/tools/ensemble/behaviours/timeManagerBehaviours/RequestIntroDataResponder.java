@@ -37,18 +37,14 @@ public class RequestIntroDataResponder extends AchieveREResponder implements Dat
             throws NotUnderstoodException, RefuseException
     {
         introInstance = (getDataStore().containsKey(INTRO_INSTANCE))? (Intro) getDataStore().get(INTRO_INSTANCE) : null;
-        System.out.println("this is the intro instance: "+introInstance+ " in "+getBehaviourName());
-        System.out.println("duration "+introInstance.getIntroLenght());
-        System.out.println("start at "+introInstance.getIntroStartedAt());
-        //System.out.println("start at in millis from "+getBehaviourName()+" "+introInstance.getIntroStartedAt().getTime());
+              //System.out.println("start at in millis from "+getBehaviourName()+" "+introInstance.getIntroStartedAt().getTime());
         if(introInstance != null)
         {
             introLength = introInstance.getIntroLenght();
             introStartedAt = introInstance.getIntroStartedAt();
-            System.out.println("duration second "+introInstance.getIntroLenght());
-            System.out.println("start at second "+introInstance.getIntroStartedAt());
+
            // System.out.println("start at second in millis "+introInstance.getIntroStartedAt().getTime());
-            System.out.println("time happening this is "+ new Date(System.currentTimeMillis()));
+
 
             if(introLength > 0 && introStartedAt.getTime() > 0)
             {
