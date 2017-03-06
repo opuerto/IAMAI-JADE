@@ -11,6 +11,7 @@ public interface DataStorteMusicians {
     public static final String INTRO_TIMESTAMP ="introTimestamp";
     public static final String INTERNAL_TIME_MANAGER ="internalTimeManager";
     public static final String EXTERNAL_TIMEMANAGER_LIST ="ExternalTimeManagerList";
+    public static final String INTERNAL_COMPOSER ="internalComposer";
 
 
 }

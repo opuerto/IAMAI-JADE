@@ -19,6 +19,7 @@ import tools.ensemble.behaviours.musicianBehaviours.*;
 import tools.ensemble.interfaces.DataStorteMusicians;
 import tools.ensemble.interfaces.MusicianStates;
 import tools.ensemble.interfaces.SongStructure;
+import tools.ensemble.ontologies.composer.ComposerOntology;
 import tools.ensemble.ontologies.musicelements.MusicElementsOntology;
 import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ScoreElements;
 import tools.ensemble.ontologies.musicians.MusicianOntology;
@@ -36,7 +37,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
     private Ontology ontology = MusicElementsOntology.getInstance();
     private Ontology musicianOntology = MusicianOntology.getInstance();
     private Ontology timeHandlerOntology = TimeHandler.getInstance();
-
+    private Ontology composerOntology = ComposerOntology.getInstance();
     //Elements of the Score
     public static int tempo;
     public static int timeSignatureNumerator;
@@ -47,7 +48,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
 
     protected void setup()
     {
-        Play.midi(new Score(),false,false,3,0);
+        //Play.midi(new Score(),false,false,3,0);
         //register Languages and Ontologies
         registerLanguagesAndOntologies();
 
@@ -98,7 +99,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         //Register the behaviour of the state get structure
         fsm.registerState(accompanientGetStructure,STATE_GET_STRUCTURE);
         //Get the instance of the Play intro
-        AccompanientPlayIntro accompanientPlayIntro = new AccompanientPlayIntro(this,codec,musicianOntology,timeHandlerOntology);
+        AccompanientPlayIntro accompanientPlayIntro = new AccompanientPlayIntro(this,codec,musicianOntology,timeHandlerOntology,composerOntology);
         //Share the data store
         accompanientPlayIntro.setDataStore(fsm.getDataStore());
         //Register the behaviour in the state intro
@@ -247,6 +248,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         getContentManager().registerOntology(musicianOntology);
         getContentManager().registerOntology(ontology);
         getContentManager().registerOntology(timeHandlerOntology);
+        getContentManager().registerOntology(composerOntology);
 
     }
 

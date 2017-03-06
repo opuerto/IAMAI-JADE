@@ -19,6 +19,7 @@ import tools.ensemble.behaviours.musicianBehaviours.*;
 import tools.ensemble.interfaces.DataStorteMusicians;
 import tools.ensemble.interfaces.MusicianStates;
 import tools.ensemble.interfaces.SongStructure;
+import tools.ensemble.ontologies.composer.ComposerOntology;
 import tools.ensemble.ontologies.musicelements.MusicElementsOntology;
 import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ScoreElements;
 import tools.ensemble.ontologies.musicians.MusicianOntology;
@@ -36,6 +37,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
     private Ontology ontology = MusicElementsOntology.getInstance();
     private Ontology musicianOntology = MusicianOntology.getInstance();
     private Ontology timeHandlerOntology = TimeHandler.getInstance();
+    private Ontology composerOntology = ComposerOntology.getInstance();
 
     //Elements of the Score
     public static int tempo;
@@ -215,6 +217,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         getContentManager().registerOntology(musicianOntology);
         getContentManager().registerOntology(ontology);
         getContentManager().registerOntology(timeHandlerOntology);
+        getContentManager().registerOntology(composerOntology);
 
     }
 

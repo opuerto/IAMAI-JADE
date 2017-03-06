@@ -24,6 +24,8 @@ public class GetMembers extends OneShotBehaviour implements DataStorteMusicians 
     private boolean accompanient;
     // The Internal Time Manager
     private AID internalTimeManager = new AID();
+    //The Internal Composer
+    private AID internalComposer = new AID();
     //public static final String MUSICIAN_LIST = "musicianList";
     //public static final String FIRST_LEADER = "firstLeader";
 
@@ -55,6 +57,20 @@ public class GetMembers extends OneShotBehaviour implements DataStorteMusicians 
         }
         template_2.addServices(sd_2);
 
+        //Find the internal Composer
+        DFAgentDescription template_3 = new DFAgentDescription();
+        ServiceDescription sd_3 = new ServiceDescription();
+        sd_3.setType("InternalComposer");
+
+        try{
+          sd_3.setOwnership(agent.getContainerController().getContainerName());
+        }
+        catch(ControllerException e)
+        {
+            e.printStackTrace();
+        }
+        template_3.addServices(sd_3);
+
         try
         {
             DFAgentDescription[] result = DFService.search(myAgent,template);
@@ -79,6 +95,14 @@ public class GetMembers extends OneShotBehaviour implements DataStorteMusicians 
                 internalTimeManager = resultSearchTimeManager[i].getName();
             }
             getDataStore().put(INTERNAL_TIME_MANAGER,internalTimeManager);
+
+            //Now get the internal Composer
+            DFAgentDescription[] resultSearchComposer = DFService.search(myAgent,template_3);
+            for (int i=0; i<resultSearchComposer.length; i++)
+            {
+                internalComposer = resultSearchComposer[i].getName();
+            }
+            getDataStore().put(INTERNAL_COMPOSER,internalComposer);
 
 
 

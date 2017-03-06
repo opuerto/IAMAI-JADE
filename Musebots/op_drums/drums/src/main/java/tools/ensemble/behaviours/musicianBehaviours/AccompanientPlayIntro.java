@@ -16,21 +16,28 @@ import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jade.proto.ContractNetInitiator;
 import jade.proto.ContractNetResponder;
+import jade.tools.sniffer.Message;
 import jm.JMC;
 import jm.music.data.Note;
 import jm.music.data.Part;
 import jm.music.data.Phrase;
 import jm.music.data.Score;
 import jm.util.Play;
+import sun.rmi.server.Activation$ActivationSystemImpl_Stub;
 import sun.swing.plaf.synth.SynthIcon;
 import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStoreTimeManager;
 import tools.ensemble.interfaces.DataStorteMusicians;
+import tools.ensemble.ontologies.composer.vocabulary.concepts.IntroConcepts;
 import tools.ensemble.ontologies.musicians.vocabulary.actions.PlayIntroAction;
 import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Intro;
 
+import java.security.acl.Acl;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.Vector;
 
 /**
  * Created by OscarAlfonso on 1/31/2017.
@@ -61,8 +68,6 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
     private final static String STATE_END = "stateEnd";
     //Behaviours
     IntroNegotiationResponder introNegotiationResponder;
-    SimulateComposeConversation compose;
-    playBack play;
     IntroInteractionTimeManager passInfo;
 
     //we save myagent
@@ -80,6 +85,8 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
     Ontology musicianOntology;
     //We kept the timehandler ontology
     Ontology timeHandlerOntology;
+    //We kept the Composer ontology
+    Ontology composerOntology;
     //we kept the counter that will check if this is the first time in the behaviour
     int again = 0;
     //we kept the handler of the switch in the action method
@@ -104,13 +111,14 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
 
 
 
-    public AccompanientPlayIntro (Agent a,Codec codec,Ontology onto,Ontology timeHandler)
+    public AccompanientPlayIntro (Agent a,Codec codec,Ontology onto,Ontology timeHandler,Ontology composerOntology)
     {
         super(a);
         this.agent = a;
         this.codec = codec;
         this.musicianOntology = onto;
         this.timeHandlerOntology = timeHandler;
+        this.composerOntology = composerOntology;
     }
 
     public void action()
@@ -185,34 +193,34 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
         public void action ()
         {
 
-           if(counter < 1)
-           {
-               introNegotiationResponder = new IntroNegotiationResponder(myAgent,mt);
-               introNegotiationResponder.setDataStore(getDataStore());
-               myAgent.addBehaviour(introNegotiationResponder);
-               System.out.println("start State");
-           }
-           switch (stateStart)
-           {
-               case 0:
-                   exit = 0;
-                   break;
-               case 1:
+            if(counter < 1)
+            {
+                introNegotiationResponder = new IntroNegotiationResponder(myAgent,mt);
+                introNegotiationResponder.setDataStore(getDataStore());
+                myAgent.addBehaviour(introNegotiationResponder);
+                System.out.println("start State");
+            }
+            switch (stateStart)
+            {
+                case 0:
+                    exit = 0;
+                    break;
+                case 1:
 
-                   exit = 1;
+                    exit = 1;
 
-                   break;
-               case 2 :
-                   stateRejectedIntro = true;
-                   exit = 7;
-                   break;
-           }
+                    break;
+                case 2 :
+                    stateRejectedIntro = true;
+                    exit = 7;
+                    break;
+            }
 
         }
 
         public int onEnd()
         {
-           counter++;
+            counter++;
             return  exit;
         }
     }
@@ -283,12 +291,9 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
         //int counter=0;
         public void action()
         {
-                System.out.println("extend intro");
-                compose = new SimulateComposeConversation(lenght);
-                myAgent.addBehaviour(compose);
-                play = new playBack();
-                myAgent.addBehaviour(play);
-                exit = 6;
+            System.out.println("extend intro");
+
+            exit = 6;
 
         }
 
@@ -308,12 +313,6 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
         public void action()
         {
 
-            //myAgent.removeBehaviour(introNegotiationResponder);
-            //introNegotiationResponder = null;
-             //agent.removeBehaviour(compose);
-            //compose = null;
-             //agent.removeBehaviour(play);
-            //play = null;
             if (!stateRejectedIntro)
             {
                 agent.removeBehaviour(passInfo);
@@ -336,13 +335,37 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
     {
 
         private boolean now;
-       private Agent agentHandleIntro;
+        private Agent agentHandleIntro;
         private PlayIntroAction playIntroActionObject;
+        private AID agentComposer;
         public IntroNegotiationResponder(Agent agent, MessageTemplate mt)
 
         {
             super(agent,mt);
             this.agentHandleIntro = agent;
+        }
+
+        private ACLMessage messageToComposer()
+        {
+            agentComposer = (AID) getDataStore().get(INTERNAL_COMPOSER);
+            IntroConcepts introData = new IntroConcepts();
+            introData.setIntroTempo(Musician.tempo);
+            introData.setIntroNumerator(Musician.timeSignatureNumerator);
+            introData.setIntroDenominator(Musician.timeSignatureDenominator);
+            introData.setIntroLength(lenght);
+            ACLMessage msg = new ACLMessage(ACLMessage.CFP);
+            msg.setLanguage(codec.getName());
+            msg.setOntology(composerOntology.getName());
+            msg.setConversationId("introInteraction-musician-composer-CFP");
+            msg.setReplyWith(agentComposer.getLocalName().toString()+System.currentTimeMillis());
+            try
+            {
+                //fill the content using the Ontology concept
+                myAgent.getContentManager().fillContent(msg,new Action(agentComposer,introData));
+            }catch (Exception ex) { ex.printStackTrace(); }
+            msg.addReceiver(agentComposer);
+
+            return msg;
         }
 
         protected ACLMessage handleCfp (ACLMessage cfp) throws NotUnderstoodException, RefuseException
@@ -391,14 +414,17 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
         {
             System.out.println("Agent "+agentHandleIntro.getLocalName()+": Proposal accepted");
 
-            myAgent.addBehaviour(new SimulateComposeConversation(lenght));
-            myAgent.addBehaviour(new playBack());
-
-              System.out.println("Agent "+agentHandleIntro.getLocalName()+": Action successfully performed");
-                ACLMessage inform = accept.createReply();
-                inform.setPerformative(ACLMessage.INFORM);
-                stateStart = 1;
-                return inform;
+            ACLMessage informMusicianLater = accept.createReply();
+            informMusicianLater.setPerformative(ACLMessage.INFORM);
+            ACLMessage messageComposer = messageToComposer();
+            RequestIntroFSM requestIntroFSM = new RequestIntroFSM(informMusicianLater,messageComposer);
+            requestIntroFSM.setDataStore(getDataStore());
+            myAgent.addBehaviour(requestIntroFSM);
+            System.out.println("Agent "+agentHandleIntro.getLocalName()+": Action successfully performed");
+            ACLMessage inform = accept.createReply();
+            //This is a hack we set PROPAGATE then we are able to send the INFORM message later.
+            inform.setPerformative(ACLMessage.PROPAGATE);
+            return inform;
 
 
         }
@@ -437,80 +463,80 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
         public void action()
         {
 
-                long dt = wakeupTime - System.currentTimeMillis();
+            long dt = wakeupTime - System.currentTimeMillis();
 
-                if (dt >= 0)
-                {
+            if (dt >= 0)
+            {
 
 
-                    switch (step) {
-                        case 0:
-                            myAgent.removeBehaviour(introNegotiationResponder);
-                            introNegotiationResponder = null;
+                switch (step) {
+                    case 0:
+                        myAgent.removeBehaviour(introNegotiationResponder);
+                        introNegotiationResponder = null;
 
-                            if (getDataStore().containsKey(INTERNAL_TIME_MANAGER)) {
-                                receiver = (AID) getDataStore().get(INTERNAL_TIME_MANAGER);
+                        if (getDataStore().containsKey(INTERNAL_TIME_MANAGER)) {
+                            receiver = (AID) getDataStore().get(INTERNAL_TIME_MANAGER);
+
+                        }
+
+                        if (receiver != null) {
+
+                            ACLMessage sendInfoMSG = new ACLMessage(ACLMessage.INFORM);
+                            //set the receiver of the message
+                            sendInfoMSG.setLanguage(codec.getName());
+                            sendInfoMSG.setOntology(timeHandlerOntology.getName());
+                            //Set the data on the Intro Object
+                            Intro intro = new Intro();
+                            intro.setIntroLenght(length);
+                            intro.setIntroStartedAt(startedIntroAt);
+
+                            try {
+                                myAgent.getContentManager().fillContent(sendInfoMSG, new Action(receiver, intro));
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                            sendInfoMSG.addReceiver(receiver);
+                            sendInfoMSG.setConversationId("intro-interaction-ITM-1");
+                            sendInfoMSG.setReplyWith("IntroInfo" + System.currentTimeMillis());
+                            sendInfoMSG.setReplyByDate(new Date(System.currentTimeMillis() + dt));
+                            myAgent.send(sendInfoMSG);
+                            //prepare the template to get the confirmation
+
+                            getProposalTemplate = MessageTemplate.and(
+                                    MessageTemplate.MatchConversationId("intro-interaction-ITM-1"),
+                                    MessageTemplate.MatchInReplyTo(sendInfoMSG.getReplyWith())
+                            );
+                            step = 1;
+                        }
+                        break;
+                    case 1:
+
+                        ACLMessage reply = myAgent.receive(getProposalTemplate);
+                        if (reply != null) {
+                            if (reply.getPerformative() == ACLMessage.CONFIRM) {
+                                //Let the contractNet that we passed the information.
+                                timeManagerGotInfo = true;
+                                //finish this behaviour.
+
+
+                                exit = true;
 
                             }
+                        } else {
 
-                            if (receiver != null) {
+                            block();
 
-                                ACLMessage sendInfoMSG = new ACLMessage(ACLMessage.INFORM);
-                                //set the receiver of the message
-                                sendInfoMSG.setLanguage(codec.getName());
-                                sendInfoMSG.setOntology(timeHandlerOntology.getName());
-                                //Set the data on the Intro Object
-                                Intro intro = new Intro();
-                                intro.setIntroLenght(length);
-                                intro.setIntroStartedAt(startedIntroAt);
+                        }
 
-                                try {
-                                    myAgent.getContentManager().fillContent(sendInfoMSG, new Action(receiver, intro));
-                                } catch (Exception ex) {
-                                    ex.printStackTrace();
-                                }
-                                sendInfoMSG.addReceiver(receiver);
-                                sendInfoMSG.setConversationId("intro-interaction-ITM-1");
-                                sendInfoMSG.setReplyWith("IntroInfo" + System.currentTimeMillis());
-                                sendInfoMSG.setReplyByDate(new Date(System.currentTimeMillis() + dt));
-                                myAgent.send(sendInfoMSG);
-                                //prepare the template to get the confirmation
+                        break;
 
-                                getProposalTemplate = MessageTemplate.and(
-                                        MessageTemplate.MatchConversationId("intro-interaction-ITM-1"),
-                                        MessageTemplate.MatchInReplyTo(sendInfoMSG.getReplyWith())
-                                );
-                                step = 1;
-                            }
-                            break;
-                        case 1:
-
-                            ACLMessage reply = myAgent.receive(getProposalTemplate);
-                            if (reply != null) {
-                                if (reply.getPerformative() == ACLMessage.CONFIRM) {
-                                    //Let the contractNet that we passed the information.
-                                    timeManagerGotInfo = true;
-                                    //finish this behaviour.
-
-
-                                    exit = true;
-
-                                }
-                            } else {
-
-                                block();
-
-                            }
-
-                            break;
-
-                    }
                 }
-                else
-                {
+            }
+            else
+            {
 
-                    statePassInfo = 2;
-                }
+                statePassInfo = 2;
+            }
 
 
 
@@ -528,46 +554,266 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
     }
 
 
-   private class SimulateComposeConversation extends OneShotBehaviour
-   {
-       private int measures;
-       public SimulateComposeConversation (int measures)
-       {this.measures = measures;}
-       public void action()
-       {
-           System.out.println("simulate composer");
-           theScore.setTempo(Musician.tempo);
-           theScore.setNumerator(Musician.timeSignatureNumerator);
-           theScore.setDenominator(Musician.timeSignatureDenominator);
-           int pitch = C3; // variable to store the calculated pitch (initialized with a start pitch value)
-           int numberOfNotes = measures * Musician.timeSignatureNumerator;
-           System.out.println("numberOfNotes: "+numberOfNotes);
-           double pitches[] = {E5,G5,C6,F5};
-           for (int i = 0; i < numberOfNotes; i++)
-           {
-               int  x = (int)(Math.random()*4);
-               thePhrase.add(new Note(pitches[x],QUARTER_NOTE));
-           }
-           thePart.add(thePhrase);
-           theScore.addPart(thePart);
-       }
-   }
-
-    private class playBack extends OneShotBehaviour
+    private class RequestIntroFSM extends SimpleBehaviour
     {
+        private boolean goOut = false;
+        private ACLMessage informMusician;
+        private ACLMessage message;
+        private ACLMessage replyPropose = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
+        private ACLMessage replyAgree = new ACLMessage(ACLMessage.CONFIRM);
+        private ACLMessage getMessageInform = new ACLMessage(ACLMessage.INFORM);
+
+        //States
+        private static final String CALL_FOR_PROPOSAL = "callForProposal";
+        private static final String ACCEPT_PROPOSAL = "acceptProposal";
+        private static final String CONFIRM = "confirm";
+        private static final String  HANDLE_INFORM = "handleInform";
+        private static final String  END_CONVERSATION_WITH_COMPOSER = "endConversationWithComposer";
+        private int count = 0;
+
+
+        public RequestIntroFSM(ACLMessage informMusicianLeader,ACLMessage message)
+        {
+            super(agent);
+            this.informMusician = informMusicianLeader;
+            this.message = message;
+        }
+
         public void action()
         {
-            System.out.println("play back");
-            Play.midi(theScore,false,false,2,0);
-            startedIntroAt = new Date();
-            System.out.println("Started at playback "+startedIntroAt);
-            System.out.println("Started at playback on Milliseconds "+startedIntroAt.getTime());
-            agentPlaying = true;
+            if(count < 1) {
+                System.out.println("Run the simple behaviour " + count);
+                FSMBehaviour RIFSM = new FSMBehaviour(myAgent);
+                //Register the estates
+                CFP cfpB = new CFP();
+                cfpB.setDataStore(RIFSM.getDataStore());
+                RIFSM.registerFirstState(cfpB, CALL_FOR_PROPOSAL);
+
+                AcceptProposalBehaviour acceptProposalBehaviour = new AcceptProposalBehaviour();
+                acceptProposalBehaviour.setDataStore(RIFSM.getDataStore());
+                RIFSM.registerState(acceptProposalBehaviour, ACCEPT_PROPOSAL);
+
+                ConfirmBehaviour confirmBehaviour = new ConfirmBehaviour();
+                confirmBehaviour.setDataStore(RIFSM.getDataStore());
+                RIFSM.registerState(confirmBehaviour, CONFIRM);
+
+                HandleInformBehaviour handleInformBehaviour = new HandleInformBehaviour();
+                handleInformBehaviour.setDataStore(RIFSM.getDataStore());
+                RIFSM.registerState(handleInformBehaviour, HANDLE_INFORM);
+
+                RIFSM.registerLastState(new EndConversationWithComposer(), END_CONVERSATION_WITH_COMPOSER);
+
+                //register transitions
+                RIFSM.registerTransition(CALL_FOR_PROPOSAL, CALL_FOR_PROPOSAL, 0);
+                RIFSM.registerTransition(CALL_FOR_PROPOSAL, ACCEPT_PROPOSAL, 1);
+                RIFSM.registerTransition(ACCEPT_PROPOSAL, ACCEPT_PROPOSAL, 2);
+                RIFSM.registerTransition(ACCEPT_PROPOSAL, CONFIRM, 3);
+                RIFSM.registerTransition(CONFIRM, CONFIRM, 4);
+                RIFSM.registerTransition(CONFIRM, HANDLE_INFORM, 5);
+                RIFSM.registerTransition(HANDLE_INFORM, HANDLE_INFORM, 6);
+                RIFSM.registerTransition(HANDLE_INFORM, END_CONVERSATION_WITH_COMPOSER, 7);
+                RIFSM.registerTransition(CALL_FOR_PROPOSAL, CONFIRM, 10);
+
+                agent.addBehaviour(RIFSM);
+
+
+            }
 
         }
+
+        public boolean done() {
+
+            count++;
+            if (goOut)
+            {
+                return true;
+            }
+
+            return true;
+        }
+
+
+
+        private class CFP extends OneShotBehaviour
+        {
+
+
+            public CFP ()
+            {
+                super(agent);
+
+            }
+            public void action()
+            {
+                //Just send call for proposal message
+                agent.send(message);
+            }
+            public int onEnd()
+            {
+
+                return 1;
+            }
+
+        }
+
+        private class AcceptProposalBehaviour extends OneShotBehaviour
+        {
+
+            private int transition = 2 ;
+            private int firstTime = 0;
+            private MessageTemplate mt1;
+            private MessageTemplate mt1andmt2;
+            public AcceptProposalBehaviour()
+            {
+                super(agent);
+
+            }
+
+            public void action()
+            {
+                if(firstTime < 1)
+                {
+                    mt1 =  MessageTemplate.and(
+                            MessageTemplate.MatchConversationId("introInteraction-musician-composer-PROPOSE"),
+                            MessageTemplate.MatchInReplyTo(message.getReplyWith()));
+                    mt1andmt2 = MessageTemplate.and(mt1,
+                            MessageTemplate.MatchPerformative(ACLMessage.PROPOSE));
+                }
+
+                replyPropose = agent.receive(mt1andmt2);
+                if (replyPropose != null)
+                {
+                    System.out.println("Agent "+replyPropose.getSender().getName()+" proposed ");
+                     ACLMessage replayProposeToComposer = replyPropose.createReply();
+                    replayProposeToComposer.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+                    replayProposeToComposer.setReplyWith(replyPropose.getSender().getLocalName()+System.currentTimeMillis());
+                    replayProposeToComposer.setConversationId("introInteraction-musician-composer-ACCEPTPROPOSAL");
+                    agent.send(replayProposeToComposer);
+                    transition = 3;
+
+                }else{block();}
+
+            }
+
+            public int onEnd()
+           {
+                firstTime++;
+                return transition;
+            }
+        }
+
+        private class ConfirmBehaviour extends OneShotBehaviour
+        {
+
+           private int confirmTransition = 4;
+           private int firstTimeHere =0;
+            private MessageTemplate mt1;
+            private MessageTemplate mt1andmt2;
+            public ConfirmBehaviour()
+            {
+                super(agent);
+            }
+            public void action()
+            {
+                if(firstTimeHere < 0)
+                {
+                    mt1 =  MessageTemplate.and(
+                            MessageTemplate.MatchConversationId("introInteraction-musician-composer-AGREE"),
+                            MessageTemplate.MatchInReplyTo(replyPropose.getReplyWith()));
+                    mt1andmt2 = MessageTemplate.and(mt1,
+                            MessageTemplate.MatchPerformative(ACLMessage.AGREE));
+                }
+                replyAgree = agent.receive(mt1andmt2);
+                if(replyAgree != null)
+                {
+                    System.out.println("Agent "+replyAgree.getSender().getName()+" Agreed ");
+                    ACLMessage replayAgreeToComposer = replyAgree.createReply();
+                    replayAgreeToComposer.setPerformative(ACLMessage.CONFIRM);
+                    replayAgreeToComposer.setConversationId("introInteraction-musician-composer-CONFIRM");
+                    replayAgreeToComposer.setReplyWith(replyAgree.getSender().getLocalName()+System.currentTimeMillis());
+                    agent.send(replayAgreeToComposer);
+                    confirmTransition = 5;
+
+                }else{block();}
+
+            }
+            public int onEnd()
+            {
+                firstTimeHere++;
+                return confirmTransition;
+            }
+
+        }
+
+        private class HandleInformBehaviour extends OneShotBehaviour
+        {
+
+            private int transition = 6;
+            private int firstTimeHere = 0;
+            private MessageTemplate mt1;
+            private MessageTemplate mt1andmt2;
+            public HandleInformBehaviour()
+            {
+                super(agent);
+            }
+            public void action()
+            {
+                 if(firstTimeHere < 0)
+                 {
+                     mt1 =  MessageTemplate.and(
+                             MessageTemplate.MatchConversationId("introInteraction-musician-composer-INFORM"),
+                             MessageTemplate.MatchInReplyTo(replyAgree.getReplyWith()));
+
+                     mt1andmt2 = MessageTemplate.and(mt1,
+                             MessageTemplate.MatchPerformative(ACLMessage.INFORM));
+                 }
+                getMessageInform = agent.receive(mt1andmt2);
+                if (getMessageInform != null)
+                {
+                    System.out.println("Agent "+getMessageInform.getSender().getName()+" Informed ");
+                    //The intro is playing then send the inform message to the musician leader
+                    agent.send(informMusician);
+                    try
+                    {
+                        ContentElement content = agent.getContentManager().extractContent(getMessageInform);
+                        Concept action = ((Action)content).getAction();
+                        //Get the duration from the responder and save it into the variable
+                        if (action instanceof IntroConcepts){
+                            startedIntroAt = ((IntroConcepts) action).getIntroStartedAt();
+                        }
+
+                    }catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    //set this to 1 so will direct the transition to the pass intro data state.
+                    stateStart = 1;
+                    transition = 7;
+                }
+                else {block();}
+
+
+
+            }
+            public int onEnd()
+            {
+                return transition;
+            }
+        }
+
+        private class EndConversationWithComposer extends OneShotBehaviour
+        {
+            public EndConversationWithComposer()
+            {
+                super(agent);
+            }
+
+            public void action()
+            {
+                goOut = true;
+            }
+        }
+
     }
-
-
 
 
 }

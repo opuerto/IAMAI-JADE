@@ -340,7 +340,7 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
                 System.out.println("intro started at accompanient "+introStartedAt.getTime());
                 long timeLeft = calculateTimeLeft();
                 Score modeScore = new Score("Drunk walk demo",180);
-                Part inst = new Part("SAX", SAXOPHONE);
+                Part inst = new Part("Piano", SAXOPHONE,2);
                 Phrase phr = new Phrase();
                 int pitch = C3; // variable to store the calculated pitch (initialized with a start pitch value)
                 int numberOfNotes = 10 * 4;
