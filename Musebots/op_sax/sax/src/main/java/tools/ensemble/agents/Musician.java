@@ -13,6 +13,7 @@ import java.util.*;
 
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jm.JMC;
 import jm.music.data.Score;
 import jm.util.Play;
 import tools.ensemble.behaviours.musicianBehaviours.*;
@@ -24,8 +25,11 @@ import tools.ensemble.ontologies.musicelements.MusicElementsOntology;
 import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ScoreElements;
 import tools.ensemble.ontologies.musicians.MusicianOntology;
 import tools.ensemble.ontologies.timemanager.TimeHandler;
+import jade.util.leap.List;
+import jade.util.leap.ArrayList;
 
-public class Musician extends Agent implements MusicianStates,DataStorteMusicians {
+
+public class Musician extends Agent implements MusicianStates,DataStorteMusicians, JMC {
 
     private boolean leader = true;
     private boolean acompaniement = false;
@@ -44,6 +48,10 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
     public static int timeSignatureNumerator;
     public static int timeSignatureDenominator;
     public static String tuneForm;
+
+    public static List sectionAchords;
+    public static List sectionBchords;
+    public static List sectionCchords;
 
 
 
@@ -233,12 +241,38 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
             timeSignatureNumerator = NUMERATOR;
             timeSignatureDenominator = DENOMINATOR;
             tuneForm = FORM;
+
+            //set the chords for section A
+            sectionAchords = new ArrayList();
+            sectionAchords.add(C4);
+            sectionAchords.add(C4);
+            sectionAchords.add(F4);
+            sectionAchords.add(F4);
+
+            //set the chords for section B
+            sectionBchords = new ArrayList();
+            sectionBchords.add(D4);
+            sectionBchords.add(D4);
+            sectionBchords.add(A4);
+            sectionBchords.add(A4);
+
+            //set the chords for section C
+
+            sectionCchords = new ArrayList();
+            sectionCchords.add(B4);
+            sectionCchords.add(B4);
+            sectionCchords.add(G4);
+            sectionCchords.add(G4);
+
             //create instance of the object ScoreElements and set the object in the DataStore of the behaviour
             ScoreElements se = new ScoreElements();
             se.setTempo(tempo);
             se.setNumerator(timeSignatureNumerator);
             se.setDenominator(timeSignatureDenominator);
             se.setForm(tuneForm);
+            se.setSectionAchords(sectionAchords);
+            se.setSectionBchords(sectionBchords);
+            se.setSectionCchords(sectionCchords);
             getDataStore().put(SCORE_ELEMENTS,se);
 
         }

@@ -1,6 +1,5 @@
 package tools.ensemble.behaviours.musicianBehaviours;
 
-import jade.content.AgentAction;
 import jade.content.Concept;
 import jade.content.ContentElement;
 import jade.content.lang.Codec;
@@ -10,8 +9,10 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.FSMBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
+import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import jade.proto.AchieveREInitiator;
 import jm.JMC;
 import jm.music.data.Note;
@@ -22,17 +23,15 @@ import jm.util.Play;
 import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStoreTimeManager;
 import tools.ensemble.interfaces.DataStorteMusicians;
-import tools.ensemble.ontologies.musicians.vocabulary.actions.PlayIntroAction;
 import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Intro;
 
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.Vector;
 
 /**
  * Created by OscarAlfonso on 2/2/2017.
  */
-public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreTimeManager,DataStorteMusicians, JMC {
+public class AccompanientPlaySections extends OneShotBehaviour implements DataStoreTimeManager,DataStorteMusicians, JMC {
 
     //Create a Finite state machine for handle the task that this state will perform.
     FSMBehaviour fsmPlayHead;
@@ -51,9 +50,9 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
     private static final String STATE_CLEAR_RETRY = "stateClearRetry";
     //handle the option to which transition it should take
     int stateClearRetry = 0;
-    private static final String STATE_COMPOSE_HEAD = "stateComposeHead";
+    private static final String STATE_COMPOSE_SECTION = "stateComposeSection";
     //handle the option to which transition it should take
-    int stateComposeHead = 0;
+    int stateComposeSections = 0;
     //End State
     private static final String STATE_END = "stateEnd";
     //save my agent
@@ -80,11 +79,11 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
     private long alive = System.currentTimeMillis();
 
     //Only for now will help us to use the composer conversation simulation
-    Score theScore = new Score("The Score");
+    Score theScore = new Score("Drunk walk demo",Musician.tempo);
     Phrase thePhrase = new Phrase("the phrase");
-    Part thePart = new Part("the part");
+    Part thePart = new Part("SAX", SAXOPHONE);
 
-    public AccompanientPlayHead (Agent a, Codec language, Ontology musicianOntology, Ontology TimeHandler)
+    public AccompanientPlaySections(Agent a, Codec language, Ontology musicianOntology, Ontology TimeHandler)
     {
         super(a);
         this.agent = a;
@@ -109,7 +108,7 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
             //create instance of the behaviour Compose
             StateCompose stateCompose = new StateCompose();
             stateCompose.setDataStore(getDataStore());
-            fsmPlayHead.registerState(stateCompose,STATE_COMPOSE_HEAD);
+            fsmPlayHead.registerState(stateCompose, STATE_COMPOSE_SECTION);
             //create instance of the behaviour get intro data
             StateGetInfoLater getInfo = new StateGetInfoLater();
             getInfo.setDataStore(getDataStore());
@@ -125,14 +124,14 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
             //Register Transitions
             fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA,STATE_CHECK_INTRO_DATA,0);
             fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA,STATE_GET_INFO,1);
-            fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA,STATE_COMPOSE_HEAD,2);
+            fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA, STATE_COMPOSE_SECTION,2);
             fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA,STATE_END,3);
             fsmPlayHead.registerTransition(STATE_GET_INFO,STATE_GET_INFO,4);
-            fsmPlayHead.registerTransition(STATE_GET_INFO,STATE_COMPOSE_HEAD,5);
+            fsmPlayHead.registerTransition(STATE_GET_INFO, STATE_COMPOSE_SECTION,5);
             fsmPlayHead.registerTransition(STATE_GET_INFO,STATE_CLEAR_RETRY,8);
             fsmPlayHead.registerTransition(STATE_CLEAR_RETRY,STATE_GET_INFO,9);
-            fsmPlayHead.registerTransition(STATE_COMPOSE_HEAD,STATE_COMPOSE_HEAD,6);
-            fsmPlayHead.registerTransition(STATE_COMPOSE_HEAD,STATE_END,7);
+            fsmPlayHead.registerTransition(STATE_COMPOSE_SECTION, STATE_COMPOSE_SECTION,6);
+            fsmPlayHead.registerTransition(STATE_COMPOSE_SECTION,STATE_END,7);
 
             agent.addBehaviour(fsmPlayHead);
             System.out.println("Create FSM Play Head");
@@ -335,58 +334,23 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
 
         public void action()
         {
-            Score s = new Score("score", 180);
-            Part p = new Part(BASS);
-            Phrase phrase = new Phrase();
-            for(int i =0; i<30; i++)
+            if (counter < 1)
             {
-                phrase.add(new Note(C1,QUARTER_NOTE));
-            }
-            p.add(phrase);
-            s.addPart(p);
-            long timeLeft = calculateTimeLeft();
-            System.out.println("time left "+ timeLeft);
-            if (timeLeft > 0)
-            {
-
-                agent.doWait(timeLeft);
-                Play.midi(s,false,false,4,0);
-
-            }
-            else {
-                System.out.println("the time has expired you cant play the head");
+                RequestAccompaniementFSM RAFSM = new RequestAccompaniementFSM();
+                RAFSM.setDataStore(getDataStore());
+                agent.addBehaviour(RAFSM);
             }
 
-            /*Score s = new Score("score", Musician.tempo);
-            Part p = new Part(VIOLIN_CELLO);
-            Phrase phrase = new Phrase();
-            for(int i =0; i<20; i++)
-            {
-                phrase.add(new Note(D4,QUARTER_NOTE));
-            }
-            p.add(phrase);
-            s.addPart(p);
-            long timeLeft = calculateTimeLeft();
-            System.out.println("time left "+ timeLeft);
-            if (timeLeft > 0)
-            {
-
-                agent.doWait(timeLeft);
-                Play.midi(s,false,false,3,0);
-
-            }
-            else {
-                System.out.println("the time has expired you cant play the head");
-            }*/
 
 
-            switch (stateComposeHead)
+
+            switch (stateComposeSections)
             {
                 case 0:
-                    transition = 7;
+                    transition = 6;
                     break;
                 case 1:
-                    transition = 6;
+                    transition = 7;
                     break;
             }
         }
@@ -520,7 +484,7 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
         }
 
         protected void handleInform(ACLMessage inform) {
-            //System.out.println("The agent "+inform.getSender().getName() +" inform on get info initiator");
+           // System.out.println("The agent "+inform.getSender().getName() +" inform on get info initiator");
             try
             {
                 ContentElement content = agent.getContentManager().extractContent(inform);
@@ -550,7 +514,7 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
 
         protected void handleAllResponses(Vector responses, Vector acceptances)
         {
-            System.out.println(responses.size());
+            //System.out.println(responses.size());
             if (responses.size() < 1) {
                 // Some responder didn't reply within the specified timeout
                 System.out.println("Timeout expired: missing responses");
@@ -563,6 +527,201 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
 
     }
 
+    private class RequestAccompaniementFSM extends SimpleBehaviour
+    {
+
+        private boolean goOut = false;
+        private ACLMessage requestMessage = new ACLMessage(ACLMessage.REQUEST);
+        private ACLMessage replyAgree = new ACLMessage(ACLMessage.CONFIRM);
+
+        private AID internalComposer = null;
+        private int c = 0;
+
+        //States
+        private static final String REQUEST_PLAY = "requestPlay";
+        private static final String HANDLE_AGREE = "handleAgree";
+        private static final String HANDLE_CONFIRM = "handleConfirm";
+
+
+        public RequestAccompaniementFSM()
+        {
+            super(agent);
+        }
+
+
+        public void action()
+        {
+            if (c < 1)
+            {
+                if(getDataStore().containsKey(INTERNAL_COMPOSER))
+                {
+                    internalComposer = (AID) getDataStore().get(INTERNAL_COMPOSER);
+                }
+                FSMBehaviour requestAccompaniment = new FSMBehaviour(agent);
+
+                //Register requestPlayBehaviour
+                RequestPlayBehaviour RPB = new RequestPlayBehaviour();
+                RPB.setDataStore(getDataStore());
+                requestAccompaniment.registerFirstState(RPB,REQUEST_PLAY);
+
+                handleAgreeBehaviour agreeBehaviour = new handleAgreeBehaviour();
+                agreeBehaviour.setDataStore(getDataStore());
+                requestAccompaniment.registerState(agreeBehaviour,HANDLE_AGREE);
+
+                requestHandleConfirm handleConfirmBehavior = new requestHandleConfirm();
+                handleConfirmBehavior.setDataStore(getDataStore());
+                requestAccompaniment.registerLastState(handleConfirmBehavior,HANDLE_CONFIRM);
+
+                //Transition
+
+                requestAccompaniment.registerTransition(REQUEST_PLAY,HANDLE_AGREE,0);
+                requestAccompaniment.registerTransition(HANDLE_AGREE,HANDLE_AGREE,2);
+                requestAccompaniment.registerTransition(HANDLE_AGREE,HANDLE_CONFIRM,3);
+
+                agent.addBehaviour(requestAccompaniment);
+
+            }
+
+
+
+
+        }
+
+        public boolean done() {
+            c++;
+            if(goOut)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private class RequestPlayBehaviour extends OneShotBehaviour
+        {
+            int transition = 0;
+            public RequestPlayBehaviour()
+            {
+                super(agent);
+
+            }
+
+            private long calculateTimeLeft()
+            {
+                long currentTimes = System.currentTimeMillis();
+                System.out.println("current Time "+currentTimes);
+                long transcurrentTime =  currentTimes - introStartedAt.getTime();
+                System.out.println("transcurrent time :"+transcurrentTime);
+
+                long timeLeft = duration - transcurrentTime;
+                System.out.println("time left: "+timeLeft);
+                return timeLeft;
+            }
+
+
+            public void action()
+            {
+                requestMessage.setConversationId("request-accompaniment-conversation-REQUEST");
+                requestMessage.setReplyWith(internalComposer.getLocalName()+System.currentTimeMillis());
+                requestMessage.addReceiver(internalComposer);
+                requestMessage.setContent(String.valueOf(calculateTimeLeft()));
+
+                agent.send(requestMessage);
+
+            }
+
+            public int onEnd()
+            {
+                return transition;
+            }
+        }
+
+        private class handleAgreeBehaviour extends OneShotBehaviour
+        {
+            private int transition = 2;
+            private int firstTimeHere=0;
+            private MessageTemplate mt1 = MessageTemplate.and(
+              MessageTemplate.MatchConversationId("request-accompaniment-conversation-AGREE"),
+              MessageTemplate.MatchPerformative(ACLMessage.AGREE)
+            );
+            private MessageTemplate mt2andmt1;
+            public handleAgreeBehaviour()
+            {
+                super(agent);
+            }
+
+            public void action()
+            {
+                if(firstTimeHere < 1)
+                {
+                    mt2andmt1 = MessageTemplate.and(mt1,MessageTemplate.MatchInReplyTo(requestMessage.getReplyWith()));
+                }
+                replyAgree = agent.receive(mt2andmt1);
+                if(replyAgree != null)
+                {
+                    ACLMessage replyAgreeToComposer = replyAgree.createReply();
+                    replyAgreeToComposer.setConversationId("request-accompaniment-conversation-CONFIRM");
+                    replyAgreeToComposer.setPerformative(ACLMessage.CONFIRM);
+                    replyAgreeToComposer.setReplyWith(replyAgree.getSender().getLocalName()+System.currentTimeMillis());
+                    replyAgree.setReplyWith(replyAgreeToComposer.getReplyWith());
+                    agent.send(replyAgreeToComposer);
+                    transition = 3;
+                }else{block();}
+            }
+
+            public int onEnd()
+            {
+                firstTimeHere++;
+                return transition;
+            }
+        }
+
+        private class requestHandleConfirm extends OneShotBehaviour
+        {
+
+            private MessageTemplate mt1 = MessageTemplate.and(MessageTemplate.MatchConversationId("request-accompaniment-conversation-INFORM"),
+                    MessageTemplate.MatchPerformative(ACLMessage.INFORM)
+                    );
+            private MessageTemplate mt1Andmt2;
+            public requestHandleConfirm()
+            {
+                super(agent);
+            }
+
+            public void action()
+            {
+                mt1Andmt2 = MessageTemplate.and(mt1,MessageTemplate.MatchInReplyTo(replyAgree.getReplyWith()));
+                ACLMessage inform = agent.receive(mt1Andmt2);
+                if(inform != null)
+                {
+                    System.out.println("The agent informed it will play");
+                    //Send the state compose of the FSM inside the accompanimentPlaySection to the end state.
+                    stateComposeSections = 1;
+                    //Stop the simple behaviour that is the parent of this fsm
+                    goOut = true;
+                }else{block();}
+
+
+
+            }
+
+
+        }
+        private class temporalBehaviour extends OneShotBehaviour
+        {
+            public temporalBehaviour()
+            {
+                super(agent);
+            }
+
+            public void action(){
+                System.out.println("I'm in behaviour "+getBehaviourName());
+            }
+        }
+
+    }
+
+
+
     private class SimulateComposeConversation extends OneShotBehaviour
     {
         private int measures;
@@ -571,9 +730,6 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
         public void action()
         {
             System.out.println("simulate composer");
-            theScore.setTempo(Musician.tempo);
-            theScore.setNumerator(Musician.timeSignatureNumerator);
-            theScore.setDenominator(Musician.timeSignatureDenominator);
             int pitch = C3; // variable to store the calculated pitch (initialized with a start pitch value)
             int numberOfNotes = measures * Musician.timeSignatureNumerator;
             System.out.println("numberOfNotes: "+numberOfNotes);
@@ -594,8 +750,10 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
         {
             System.out.println("play back");
 
-           // Play.midi(theScore,false,false,1,1);
-            stateComposeHead = 1;
+            //Play.midi(theScore,false,false,1,1);
+            Play.midi(theScore,false,false,3,0);
+
+            //stateComposeSections = 1;
 
         }
     }

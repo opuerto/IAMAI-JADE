@@ -1,6 +1,5 @@
 package tools.ensemble.behaviours.musicianBehaviours;
 
-import jade.content.AgentAction;
 import jade.content.Concept;
 import jade.content.ContentElement;
 import jade.content.lang.Codec;
@@ -19,22 +18,18 @@ import jm.music.data.Part;
 import jm.music.data.Phrase;
 import jm.music.data.Score;
 import jm.util.Play;
-import jm.util.View;
 import jm.util.Write;
-import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStoreTimeManager;
 import tools.ensemble.interfaces.DataStorteMusicians;
-import tools.ensemble.ontologies.musicians.vocabulary.actions.PlayIntroAction;
 import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Intro;
 
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.Vector;
 
 /**
  * Created by OscarAlfonso on 2/2/2017.
  */
-public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreTimeManager,DataStorteMusicians, JMC {
+public class AccompanientPlaySections extends OneShotBehaviour implements DataStoreTimeManager,DataStorteMusicians, JMC {
 
     //Create a Finite state machine for handle the task that this state will perform.
     FSMBehaviour fsmPlayHead;
@@ -53,7 +48,7 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
     private static final String STATE_CLEAR_RETRY = "stateClearRetry";
     //handle the option to which transition it should take
     int stateClearRetry = 0;
-    private static final String STATE_COMPOSE_HEAD = "stateComposeHead";
+    private static final String STATE_COMPOSE_SECTION = "stateComposeSection";
     //handle the option to which transition it should take
     int stateComposeHead = 0;
     //End State
@@ -86,7 +81,7 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
     Part inst = new Part("Snare", 0, 9);
     Phrase phr = new Phrase(0.0);
 
-    public AccompanientPlayHead (Agent a, Codec language, Ontology musicianOntology, Ontology TimeHandler)
+    public AccompanientPlaySections(Agent a, Codec language, Ontology musicianOntology, Ontology TimeHandler)
     {
         super(a);
         this.agent = a;
@@ -111,7 +106,7 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
             //create instance of the behaviour Compose
             StateCompose stateCompose = new StateCompose();
             stateCompose.setDataStore(getDataStore());
-            fsmPlayHead.registerState(stateCompose,STATE_COMPOSE_HEAD);
+            fsmPlayHead.registerState(stateCompose, STATE_COMPOSE_SECTION);
             //create instance of the behaviour get intro data
             StateGetInfoLater getInfo = new StateGetInfoLater();
             getInfo.setDataStore(getDataStore());
@@ -127,14 +122,14 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
             //Register Transitions
             fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA,STATE_CHECK_INTRO_DATA,0);
             fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA,STATE_GET_INFO,1);
-            fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA,STATE_COMPOSE_HEAD,2);
+            fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA, STATE_COMPOSE_SECTION,2);
             fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA,STATE_END,3);
             fsmPlayHead.registerTransition(STATE_GET_INFO,STATE_GET_INFO,4);
-            fsmPlayHead.registerTransition(STATE_GET_INFO,STATE_COMPOSE_HEAD,5);
+            fsmPlayHead.registerTransition(STATE_GET_INFO, STATE_COMPOSE_SECTION,5);
             fsmPlayHead.registerTransition(STATE_GET_INFO,STATE_CLEAR_RETRY,8);
             fsmPlayHead.registerTransition(STATE_CLEAR_RETRY,STATE_GET_INFO,9);
-            fsmPlayHead.registerTransition(STATE_COMPOSE_HEAD,STATE_COMPOSE_HEAD,6);
-            fsmPlayHead.registerTransition(STATE_COMPOSE_HEAD,STATE_END,7);
+            fsmPlayHead.registerTransition(STATE_COMPOSE_SECTION, STATE_COMPOSE_SECTION,6);
+            fsmPlayHead.registerTransition(STATE_COMPOSE_SECTION,STATE_END,7);
 
             agent.addBehaviour(fsmPlayHead);
             System.out.println("Create FSM Play Head");

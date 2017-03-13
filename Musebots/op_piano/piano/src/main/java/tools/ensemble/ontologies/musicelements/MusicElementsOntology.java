@@ -21,6 +21,9 @@ public class MusicElementsOntology extends Ontology  {
     public static final String SCORE_SIGNATURE_NUMERATOR = "numerator";
     public static final String SCORE_SIGNATURE_DENOMITAOR = "denominator";
     public static final String SCORE_FORM = "form";
+    public static final String SECTION_A_CHORDS = "sectionAchords";
+    public static final String SECTION_B_CHORDS = "sectionBchords";
+    public static final String SECTION_C_CHORDS = "sectionCchords";
 
 
 
@@ -49,6 +52,9 @@ public class MusicElementsOntology extends Ontology  {
             cs.add(SCORE_SIGNATURE_NUMERATOR, (PrimitiveSchema)getSchema(BasicOntology.INTEGER), ObjectSchema.OPTIONAL);
             cs.add(SCORE_SIGNATURE_DENOMITAOR, (PrimitiveSchema)getSchema(BasicOntology.INTEGER), ObjectSchema.OPTIONAL);
             cs.add(SCORE_FORM, (PrimitiveSchema)getSchema(BasicOntology.STRING), ObjectSchema.OPTIONAL);
+            cs.add(SECTION_A_CHORDS, (PrimitiveSchema)getSchema(BasicOntology.INTEGER),0, ObjectSchema.UNLIMITED);
+            cs.add(SECTION_B_CHORDS, (PrimitiveSchema)getSchema(BasicOntology.INTEGER),0, ObjectSchema.UNLIMITED);
+            cs.add(SECTION_C_CHORDS, (PrimitiveSchema)getSchema(BasicOntology.INTEGER),0, ObjectSchema.UNLIMITED);
         }
         catch(OntologyException oe) {
             oe.printStackTrace();

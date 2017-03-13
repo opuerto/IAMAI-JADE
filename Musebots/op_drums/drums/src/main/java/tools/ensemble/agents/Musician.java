@@ -13,8 +13,7 @@ import java.util.*;
 
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jm.music.data.Score;
-import jm.util.Play;
+import jm.JMC;
 import tools.ensemble.behaviours.musicianBehaviours.*;
 import tools.ensemble.interfaces.DataStorteMusicians;
 import tools.ensemble.interfaces.MusicianStates;
@@ -24,8 +23,10 @@ import tools.ensemble.ontologies.musicelements.MusicElementsOntology;
 import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ScoreElements;
 import tools.ensemble.ontologies.musicians.MusicianOntology;
 import tools.ensemble.ontologies.timemanager.TimeHandler;
+import jade.util.leap.List;
+import jade.util.leap.ArrayList;
 
-public class Musician extends Agent implements MusicianStates,DataStorteMusicians {
+public class Musician extends Agent implements MusicianStates,DataStorteMusicians, JMC {
 
     private boolean leader = false;
     private boolean acompaniement = true;
@@ -43,6 +44,10 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
     public static int timeSignatureNumerator;
     public static int timeSignatureDenominator;
     public static String tuneForm;
+
+    public static List sectionAchords;
+    public static List sectionBchords;
+    public static List sectionCchords;
 
 
 
@@ -105,11 +110,11 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         //Register the behaviour in the state intro
         fsm.registerState(accompanientPlayIntro,STATE_INTRO);
         //Create instance of the play Head behaviour
-        AccompanientPlayHead playHead = new AccompanientPlayHead(this, codec,musicianOntology,timeHandlerOntology);
+        AccompanientPlaySections playSections = new AccompanientPlaySections(this, codec,musicianOntology,timeHandlerOntology);
         //Share the data Store
-        playHead.setDataStore(fsm.getDataStore());
+        playSections.setDataStore(fsm.getDataStore());
         //Register the state
-        fsm.registerState(playHead,STATE_PLAY_HEAD);
+        fsm.registerState(playSections,STATE_PLAY_HEAD);
 
         fsm.registerLastState(new TemporaryBehaviour(),STATE_ACCEPT_ACCOMPANIMENT);
        /* fsm.registerState(new TemporaryBehaviour(),STATE_LEADER);
@@ -264,12 +269,38 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
             timeSignatureNumerator = NUMERATOR;
             timeSignatureDenominator = DENOMINATOR;
             tuneForm = FORM;
-            //create instance of the object ScoreElements and set the object in the DataStore of the behaviour
+
+            //set the chords for section A
+            sectionAchords = new ArrayList();
+            sectionAchords.add(C4);
+            sectionAchords.add(C4);
+            sectionAchords.add(F4);
+            sectionAchords.add(F4);
+
+            //set the chords for section B
+            sectionBchords = new ArrayList();
+            sectionBchords.add(D4);
+            sectionBchords.add(D4);
+            sectionBchords.add(A4);
+            sectionBchords.add(A4);
+
+            //set the chords for section C
+
+            sectionCchords = new ArrayList();
+            sectionCchords.add(B4);
+            sectionCchords.add(B4);
+            sectionCchords.add(G4);
+            sectionCchords.add(G4);
+
             ScoreElements se = new ScoreElements();
             se.setTempo(tempo);
             se.setNumerator(timeSignatureNumerator);
             se.setDenominator(timeSignatureDenominator);
             se.setForm(tuneForm);
+            se.setSectionAchords(sectionAchords);
+            se.setSectionBchords(sectionBchords);
+            se.setSectionCchords(sectionCchords);
+
             getDataStore().put(SCORE_ELEMENTS,se);
 
         }

@@ -1,6 +1,5 @@
 package tools.ensemble.behaviours.musicianBehaviours;
 
-import jade.content.AgentAction;
 import jade.content.Concept;
 import jade.content.ContentElement;
 import jade.content.lang.Codec;
@@ -22,17 +21,15 @@ import jm.util.Play;
 import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStoreTimeManager;
 import tools.ensemble.interfaces.DataStorteMusicians;
-import tools.ensemble.ontologies.musicians.vocabulary.actions.PlayIntroAction;
 import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Intro;
 
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.Vector;
 
 /**
  * Created by OscarAlfonso on 2/2/2017.
  */
-public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreTimeManager,DataStorteMusicians, JMC {
+public class AccompanientPlaySections extends OneShotBehaviour implements DataStoreTimeManager,DataStorteMusicians, JMC {
 
     //Create a Finite state machine for handle the task that this state will perform.
     FSMBehaviour fsmPlayHead;
@@ -51,7 +48,7 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
     private static final String STATE_CLEAR_RETRY = "stateClearRetry";
     //handle the option to which transition it should take
     int stateClearRetry = 0;
-    private static final String STATE_COMPOSE_HEAD = "stateComposeHead";
+    private static final String STATE_COMPOSE_SECTION = "stateComposeSection";
     //handle the option to which transition it should take
     int stateComposeHead = 0;
     //End State
@@ -80,11 +77,11 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
     private long alive = System.currentTimeMillis();
 
     //Only for now will help us to use the composer conversation simulation
-    Score theScore = new Score("Drunk walk demo",Musician.tempo);
+    Score theScore = new Score("The Score");
     Phrase thePhrase = new Phrase("the phrase");
-    Part thePart = new Part("SAX", SAXOPHONE);
+    Part thePart = new Part("the part");
 
-    public AccompanientPlayHead (Agent a, Codec language, Ontology musicianOntology, Ontology TimeHandler)
+    public AccompanientPlaySections(Agent a, Codec language, Ontology musicianOntology, Ontology TimeHandler)
     {
         super(a);
         this.agent = a;
@@ -109,7 +106,7 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
             //create instance of the behaviour Compose
             StateCompose stateCompose = new StateCompose();
             stateCompose.setDataStore(getDataStore());
-            fsmPlayHead.registerState(stateCompose,STATE_COMPOSE_HEAD);
+            fsmPlayHead.registerState(stateCompose, STATE_COMPOSE_SECTION);
             //create instance of the behaviour get intro data
             StateGetInfoLater getInfo = new StateGetInfoLater();
             getInfo.setDataStore(getDataStore());
@@ -125,14 +122,14 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
             //Register Transitions
             fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA,STATE_CHECK_INTRO_DATA,0);
             fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA,STATE_GET_INFO,1);
-            fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA,STATE_COMPOSE_HEAD,2);
+            fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA, STATE_COMPOSE_SECTION,2);
             fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA,STATE_END,3);
             fsmPlayHead.registerTransition(STATE_GET_INFO,STATE_GET_INFO,4);
-            fsmPlayHead.registerTransition(STATE_GET_INFO,STATE_COMPOSE_HEAD,5);
+            fsmPlayHead.registerTransition(STATE_GET_INFO, STATE_COMPOSE_SECTION,5);
             fsmPlayHead.registerTransition(STATE_GET_INFO,STATE_CLEAR_RETRY,8);
             fsmPlayHead.registerTransition(STATE_CLEAR_RETRY,STATE_GET_INFO,9);
-            fsmPlayHead.registerTransition(STATE_COMPOSE_HEAD,STATE_COMPOSE_HEAD,6);
-            fsmPlayHead.registerTransition(STATE_COMPOSE_HEAD,STATE_END,7);
+            fsmPlayHead.registerTransition(STATE_COMPOSE_SECTION, STATE_COMPOSE_SECTION,6);
+            fsmPlayHead.registerTransition(STATE_COMPOSE_SECTION,STATE_END,7);
 
             agent.addBehaviour(fsmPlayHead);
             System.out.println("Create FSM Play Head");
@@ -335,37 +332,26 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
 
         public void action()
         {
-            if (counter < 1)
+            Score s = new Score("score", 180);
+            Part p = new Part(BASS);
+            Phrase phrase = new Phrase();
+            for(int i =0; i<30; i++)
             {
-                System.out.println("intro started at accompanient "+introStartedAt.getTime());
-                long timeLeft = calculateTimeLeft();
-                Score modeScore = new Score("Drunk walk demo",180);
-                Part inst = new Part("Piano", SAXOPHONE,2);
-                Phrase phr = new Phrase();
-                int pitch = C3; // variable to store the calculated pitch (initialized with a start pitch value)
-                int numberOfNotes = 10 * 4;
-                System.out.println("numberOfNotes: "+numberOfNotes);
-                double pitches[] = {E5,G5,C6,F5};
-                for (int i = 0; i < numberOfNotes; i++)
-                {
-                    int  x = (int)(Math.random()*4);
-                    phr.add(new Note(pitches[x],QUARTER_NOTE));
-                }
+                phrase.add(new Note(C1,QUARTER_NOTE));
+            }
+            p.add(phrase);
+            s.addPart(p);
+            long timeLeft = calculateTimeLeft();
+            System.out.println("time left "+ timeLeft);
+            if (timeLeft > 0)
+            {
 
-                // add the phrase to an instrument and that to a score
-                inst.addPhrase(phr);
-                modeScore.addPart(inst);
-                if (timeLeft > 0)
-                {
+                agent.doWait(timeLeft);
+                Play.midi(s,false,false,4,0);
 
-                    agent.doWait(timeLeft);
-                    Play.midi(modeScore,false,false,3,0);
-
-
-                }
-                else {
-                    System.out.println("the time has expired you cant play the head");
-                }
+            }
+            else {
+                System.out.println("the time has expired you cant play the head");
             }
 
             /*Score s = new Score("score", Musician.tempo);
@@ -394,10 +380,10 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
             switch (stateComposeHead)
             {
                 case 0:
-                    transition = 6;
+                    transition = 7;
                     break;
                 case 1:
-                    transition = 7;
+                    transition = 6;
                     break;
             }
         }
@@ -531,7 +517,7 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
         }
 
         protected void handleInform(ACLMessage inform) {
-           // System.out.println("The agent "+inform.getSender().getName() +" inform on get info initiator");
+            //System.out.println("The agent "+inform.getSender().getName() +" inform on get info initiator");
             try
             {
                 ContentElement content = agent.getContentManager().extractContent(inform);
@@ -561,7 +547,7 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
 
         protected void handleAllResponses(Vector responses, Vector acceptances)
         {
-            //System.out.println(responses.size());
+            System.out.println(responses.size());
             if (responses.size() < 1) {
                 // Some responder didn't reply within the specified timeout
                 System.out.println("Timeout expired: missing responses");
@@ -582,6 +568,9 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
         public void action()
         {
             System.out.println("simulate composer");
+            theScore.setTempo(Musician.tempo);
+            theScore.setNumerator(Musician.timeSignatureNumerator);
+            theScore.setDenominator(Musician.timeSignatureDenominator);
             int pitch = C3; // variable to store the calculated pitch (initialized with a start pitch value)
             int numberOfNotes = measures * Musician.timeSignatureNumerator;
             System.out.println("numberOfNotes: "+numberOfNotes);
@@ -602,10 +591,8 @@ public class AccompanientPlayHead extends OneShotBehaviour implements DataStoreT
         {
             System.out.println("play back");
 
-            //Play.midi(theScore,false,false,1,1);
-            Play.midi(theScore,false,false,3,0);
-
-            //stateComposeHead = 1;
+           // Play.midi(theScore,false,false,1,1);
+            stateComposeHead = 1;
 
         }
     }

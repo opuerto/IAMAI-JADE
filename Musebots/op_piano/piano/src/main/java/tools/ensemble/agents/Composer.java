@@ -15,6 +15,9 @@ import jade.domain.FIPAException;
 import jade.wrapper.ControllerException;
 import jm.music.data.Score;
 import jm.util.Play;
+import tools.ensemble.behaviours.ComposerBhaviours.accompaniment.ComposeAccompanimentBehaviour;
+import tools.ensemble.behaviours.ComposerBhaviours.accompaniment.PlayAccompanimentBehaviour;
+import tools.ensemble.behaviours.ComposerBhaviours.accompaniment.ResponseAccompanimentRequest;
 import tools.ensemble.behaviours.ComposerBhaviours.intro.ComposeIntro;
 import tools.ensemble.behaviours.ComposerBhaviours.intro.ComposerEndIntro;
 import tools.ensemble.behaviours.ComposerBhaviours.intro.ComposerPlayIntro;
@@ -193,9 +196,18 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
     {
         accompaniementFSM = new FSMBehaviour(this);
         accompaniementFSM.getDataStore().put(ACCOMPANIMENT_COMPOSER_INSTANCE,accConcept);
-        accompaniementFSM.registerFirstState(new TemporaryBehaviour(),STATE_WAIT_FOR_ACCOMP_REQUEST);
-        accompaniementFSM.registerState(new TemporaryBehaviour(),STATE_COMPOSE_ACCOMP);
-        accompaniementFSM.registerState(new TemporaryBehaviour(),STATE_PLAY_ACCOMP);
+        //Instance of the Behaviour
+        ResponseAccompanimentRequest responseAccompanimentRequest = new ResponseAccompanimentRequest(this);
+        responseAccompanimentRequest.setDataStore(accompaniementFSM.getDataStore());
+        accompaniementFSM.registerFirstState(responseAccompanimentRequest,STATE_WAIT_FOR_ACCOMP_REQUEST);
+
+        //Instance of the behaviour compose accompaniment
+        ComposeAccompanimentBehaviour CAB = new ComposeAccompanimentBehaviour(this);
+        CAB.setDataStore(accompaniementFSM.getDataStore());
+        accompaniementFSM.registerState(CAB,STATE_COMPOSE_ACCOMP);
+        PlayAccompanimentBehaviour playAccompanimentBehaviour = new PlayAccompanimentBehaviour(this);
+        playAccompanimentBehaviour.setDataStore(accompaniementFSM.getDataStore());
+        accompaniementFSM.registerState(playAccompanimentBehaviour,STATE_PLAY_ACCOMP);
         accompaniementFSM.registerLastState(new TemporaryBehaviour(),STATE_END_ACCOMP);
 
         // Transitions
@@ -205,11 +217,12 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         accompaniementFSM.registerTransition(STATE_COMPOSE_ACCOMP,STATE_COMPOSE_ACCOMP,2);
         accompaniementFSM.registerTransition(STATE_COMPOSE_ACCOMP,STATE_WAIT_FOR_ACCOMP_REQUEST,3);
         accompaniementFSM.registerTransition(STATE_COMPOSE_ACCOMP,STATE_PLAY_ACCOMP,4);
-        accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_COMPOSE_ACCOMP,5);
-        accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_END_ACCOMP,5);
+        accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_PLAY_ACCOMP,5);
+        accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_COMPOSE_ACCOMP,6);
+        accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_END_ACCOMP,7);
 
         //example transition
-        accompaniementFSM.registerTransition(STATE_WAIT_FOR_ACCOMP_REQUEST,STATE_END_ACCOMP,10);
+        accompaniementFSM.registerTransition(STATE_COMPOSE_ACCOMP,STATE_END_ACCOMP,10);
 
         //Add the AccompaniementFSM to the agent behaviour
         addBehaviour(accompaniementFSM);

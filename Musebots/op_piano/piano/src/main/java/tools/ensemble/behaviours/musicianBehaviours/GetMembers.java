@@ -115,7 +115,7 @@ public class GetMembers extends OneShotBehaviour implements DataStorteMusicians 
 
 
 
-        if(Musicians.isEmpty() || Musicians.size() < 4)
+        if(Musicians.isEmpty() || Musicians.size() < 2)
         {
             transition = 0;
         }
@@ -129,7 +129,7 @@ public class GetMembers extends OneShotBehaviour implements DataStorteMusicians 
         }
         else if(accompanient)
         {
-            System.out.println("Soy accompanient");
+            //System.out.println("Soy accompanient");
             transition = 2;
         }
 
