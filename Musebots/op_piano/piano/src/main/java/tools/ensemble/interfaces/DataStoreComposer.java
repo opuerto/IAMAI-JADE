@@ -8,12 +8,26 @@ public interface DataStoreComposer {
     public static final String INTRO_COMPOSER_INSTANCE = "introComposerInstance";
     public static final String SOLO_COMPOSER_INSTANCE = "soloComposerInstance";
     public static final String ACCOMPANIMENT_COMPOSER_INSTANCE = "accompanimentComposerInstance";
+
+   //store the intro score
     public static final String INTRO_SCORE = "introScore";
+
+    //Store message send from the custom protocol
     public static final String CURRENT_MESSAGE = "currentMessage";
+
     public static final String INTRO_COMPOSITION = "introComposition";
+
+    //store the ID of the Musician agent
     public static final String COMPOSER_MY_INTERNAL_MUSICIAN = "composerMyInternalMusician";
-    public static final String INTRO_TIME_LEFT = "introTimeLeft";
+    //Store the ID of the Time Manager agent
+    public static final String COMPOSER_MY_INTERNAL_SYNCHRONIZER = "composerMyInternalSynchronizer";
+
+    //time left to play the next section
+    public static final String PLAY_TIME_LEFT = "introTimeLeft";
+
+    //Store the score send to the play accompaniement state
     public static final String ACCOMPANIMENT_SCORE = "accompanimentScore";
+
     public static final String FROM_PLAY_TO_COMPOSE = "fromPlayToCompose";
 
     //Flag to put in hold the composition process while Im in the play accompaniment state.

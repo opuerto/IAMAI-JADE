@@ -30,7 +30,7 @@ public class ResponseAccompanimentRequest extends OneShotBehaviour implements Da
             //Get the time left on the intro.
             long introTimeLeft = Long.parseLong(replyRequest.getContent());
             //Store it in the vector for share it with the next state.
-            getDataStore().put(INTRO_TIME_LEFT,introTimeLeft);
+            getDataStore().put(PLAY_TIME_LEFT,introTimeLeft);
             //Create the message for the reply to the musician.
             ACLMessage replyRequestToMusician = replyRequest.createReply();
             replyRequestToMusician.setConversationId("request-accompaniment-conversation-AGREE");

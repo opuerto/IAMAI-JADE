@@ -22,6 +22,7 @@ import tools.ensemble.interfaces.MusicianStates;
 import tools.ensemble.interfaces.SongStructure;
 import tools.ensemble.ontologies.composer.ComposerOntology;
 import tools.ensemble.ontologies.musicelements.MusicElementsOntology;
+import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ChordsAttributes;
 import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ScoreElements;
 import tools.ensemble.ontologies.musicians.MusicianOntology;
 import tools.ensemble.ontologies.timemanager.TimeHandler;
@@ -244,25 +245,52 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
 
             //set the chords for section A
             sectionAchords = new ArrayList();
-            sectionAchords.add(C4);
-            sectionAchords.add(C4);
-            sectionAchords.add(F4);
-            sectionAchords.add(F4);
+            //Create the individual chords.
+            ChordsAttributes Em7 = new ChordsAttributes();
+            Em7.setRootPitch(E4);
+            Em7.setMajorOrMinor("m");
+            Em7.setExtension(7);
+            //Add them to the list of section A
+            sectionAchords.add(Em7);
+
+            //create the next chord
+            ChordsAttributes A7 = new ChordsAttributes();
+            A7.setRootPitch(A4);
+            A7.setMajorOrMinor("D");
+            A7.setExtension(7);
+            //Add them to the list of section A
+            sectionAchords.add(A7);
+
+            //create the next chord
+            ChordsAttributes Dm7 = new ChordsAttributes();
+            Dm7.setRootPitch(D4);
+            Dm7.setMajorOrMinor("m");
+            Dm7.setExtension(7);
+            //Add them to the list of section A
+            sectionAchords.add(Dm7);
+
+            //create the next chord
+            ChordsAttributes G7 = new ChordsAttributes();
+            G7.setRootPitch(G4);
+            G7.setMajorOrMinor("D");
+            G7.setExtension(7);
+            //Add them to the list of section A
+            sectionAchords.add(G7);
 
             //set the chords for section B
             sectionBchords = new ArrayList();
-            sectionBchords.add(D4);
-            sectionBchords.add(D4);
-            sectionBchords.add(A4);
-            sectionBchords.add(A4);
+            //Create the individual chords for section B.
+            ChordsAttributes CM7 = new ChordsAttributes();
+            CM7.setRootPitch(C4);
+            CM7.setMajorOrMinor("M");
+            CM7.setExtension(7);
+            sectionBchords.add(CM7);
+            sectionBchords.add(CM7);
 
             //set the chords for section C
-
             sectionCchords = new ArrayList();
-            sectionCchords.add(B4);
-            sectionCchords.add(B4);
-            sectionCchords.add(G4);
-            sectionCchords.add(G4);
+            //Create the individual chords for section C.
+            sectionCchords.add(CM7);
 
             //create instance of the object ScoreElements and set the object in the DataStore of the behaviour
             ScoreElements se = new ScoreElements();

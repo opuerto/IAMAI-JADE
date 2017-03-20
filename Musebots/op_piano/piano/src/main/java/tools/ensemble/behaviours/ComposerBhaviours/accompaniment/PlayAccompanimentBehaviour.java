@@ -5,7 +5,6 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.WakerBehaviour;
 import jm.music.data.Score;
 import jm.util.Play;
-import jm.util.View;
 import tools.ensemble.interfaces.DataStoreComposer;
 
 /**
@@ -30,7 +29,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
             if(holdPlay < 1)
             {
                 System.out.println("play after head");
-                PlayScore play = new PlayScore((Long) getDataStore().get(INTRO_TIME_LEFT), (Score) getDataStore().get(ACCOMPANIMENT_SCORE));
+                PlayScore play = new PlayScore((Long) getDataStore().get(PLAY_TIME_LEFT), (Score) getDataStore().get(ACCOMPANIMENT_SCORE));
                 play.setDataStore(getDataStore());
                 agent.addBehaviour(play);
                 holdPlay = 1;
@@ -43,10 +42,10 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
             if(firstTimeHere < 0)
             {
                 System.out.println("this is the "+getBehaviourName() +"play!!");
-                if(getDataStore().containsKey(INTRO_TIME_LEFT))
+                if(getDataStore().containsKey(PLAY_TIME_LEFT))
                 {
                     System.out.println("play after intro");
-                    PlayScore play = new PlayScore((Long) getDataStore().get(INTRO_TIME_LEFT), (Score) getDataStore().get(ACCOMPANIMENT_SCORE));
+                    PlayScore play = new PlayScore((Long) getDataStore().get(PLAY_TIME_LEFT), (Score) getDataStore().get(ACCOMPANIMENT_SCORE));
                     play.setDataStore(getDataStore());
                     agent.addBehaviour(play);
 
@@ -63,10 +62,10 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
         /*if(firstTimeHere < 1)
         {
             System.out.println("this is the "+getBehaviourName() +"play!!");
-            if(getDataStore().containsKey(INTRO_TIME_LEFT))
+            if(getDataStore().containsKey(PLAY_TIME_LEFT))
             {
                 System.out.println("play introoo");
-                PlayScore play = new PlayScore((Long) getDataStore().get(INTRO_TIME_LEFT), (Score) getDataStore().get(ACCOMPANIMENT_SCORE));
+                PlayScore play = new PlayScore((Long) getDataStore().get(PLAY_TIME_LEFT), (Score) getDataStore().get(ACCOMPANIMENT_SCORE));
                 play.setDataStore(getDataStore());
                 agent.addBehaviour(play);
 
@@ -109,16 +108,16 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
             double betPerMeasure = accompanimentScore.getNumerator();
             double numberOfMeasure = accompanimentScore.getEndTime()/betPerMeasure;
             double tempo = accompanimentScore.getTempo();
-            double lengofSection = (betPerMeasure*numberOfMeasure/tempo)*60*1000;
+            double lengthOfSection = (betPerMeasure*numberOfMeasure/tempo)*60*1000;
             long currentTimes = System.currentTimeMillis();
             System.out.println("current Time "+currentTimes);
             long transcurrentTime =  currentTimes - timeStarted;
             System.out.println("transcurrent time :"+transcurrentTime);
 
-            long timeLeft = (long) (lengofSection - transcurrentTime);
+            long timeLeft = (long) (lengthOfSection - transcurrentTime);
             System.out.println("time left: "+timeLeft);
-            getDataStore().remove(INTRO_TIME_LEFT);
-            getDataStore().put(INTRO_TIME_LEFT,timeLeft);
+            getDataStore().remove(PLAY_TIME_LEFT);
+            getDataStore().put(PLAY_TIME_LEFT,timeLeft);
             if(getDataStore().containsKey(FROM_PLAY_TO_COMPOSE))
             {
                getDataStore().remove(FROM_PLAY_TO_COMPOSE);
