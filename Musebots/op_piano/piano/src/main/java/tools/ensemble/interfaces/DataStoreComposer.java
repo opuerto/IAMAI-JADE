@@ -35,4 +35,7 @@ public interface DataStoreComposer {
 
     //Flag to put in hold the play process while Im in the composition state state.
     public static final String HOLD_PLAYBACK = "holdPlayBack";
+
+    //Section that the musician going to paly
+    public static final String NEXT_SECTION_TO_PLAY = "nextSectionToPlay";
 }

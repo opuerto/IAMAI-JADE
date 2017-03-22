@@ -13,12 +13,10 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.wrapper.ControllerException;
-import jm.music.data.Score;
-import jm.util.Play;
 import tools.ensemble.behaviours.timeManagerBehaviours.*;
 import tools.ensemble.interfaces.DataStoreTimeManager;
 import tools.ensemble.ontologies.timemanager.TimeHandler;
-import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Chorus;
+import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Section;
 import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Intro;
 import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Song;
 
@@ -32,7 +30,7 @@ public class TimeManager extends Agent implements DataStoreTimeManager {
     private Ontology timeHandlerOntology = TimeHandler.getInstance();
 
     //Get instances of the concepts
-    private Chorus dataChorus = new Chorus();
+    private Section dataSection = new Section();
     private Intro dataIntro = new Intro();
     private Song dataSong = new Song();
 
@@ -70,7 +68,7 @@ public class TimeManager extends Agent implements DataStoreTimeManager {
         //Create instance of the parallel behaviour
         ParallelBehaviour pb = new ParallelBehaviour(this,ParallelBehaviour.WHEN_ALL);
         //Set the concepts in the data store of the parallel behaviour
-        pb.getDataStore().put(CHORUS_INSTANCE,dataChorus);
+        pb.getDataStore().put(SECTION_INSTANCE, dataSection);
         pb.getDataStore().put(INTRO_INSTANCE,dataIntro);
         pb.getDataStore().put(SONG_INSTANCE,dataSong);
         //Create instance of the getTimerList
@@ -91,6 +89,13 @@ public class TimeManager extends Agent implements DataStoreTimeManager {
         getInfoIntro.setDataStore(pb.getDataStore());
         //Add the subBehaviour
         pb.addSubBehaviour(getInfoIntro);
+
+        //Create instance for get section behaviour
+        GetInfoSections getInfoSections = new GetInfoSections();
+        //share the data store
+        getInfoSections.setDataStore(pb.getDataStore());
+        //Add the subBehaviour
+        pb.addSubBehaviour(getInfoSections);
 
         //Create Message template for the protocol CheckInfoIntroResponder
         MessageTemplate mt = MessageTemplate.and(MessageTemplate.MatchConversationId("check-intro-info-interaction"),
@@ -115,6 +120,8 @@ public class TimeManager extends Agent implements DataStoreTimeManager {
         pb.addSubBehaviour(provideIntroData);
         //Add the Behaviour
         addBehaviour(pb);
+
+
 
     }
 

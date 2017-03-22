@@ -52,6 +52,8 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
 
 
 
+
+
     protected void setup()
     {
         //Play.midi(new Score(),false,false,3,0);
@@ -115,7 +117,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         //Share the data Store
         playSections.setDataStore(fsm.getDataStore());
         //Register the state
-        fsm.registerState(playSections,STATE_PLAY_HEAD);
+        fsm.registerState(playSections, STATE_PLAY_SECTIONS);
 
         fsm.registerLastState(new TemporaryBehaviour(),STATE_ACCEPT_ACCOMPANIMENT);
        /* fsm.registerState(new TemporaryBehaviour(),STATE_LEADER);
@@ -161,9 +163,9 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         fsm.registerTransition(STATE_GET_STRUCTURE,STATE_GET_STRUCTURE,32);
         fsm.registerTransition(STATE_GET_STRUCTURE,STATE_INTRO,6);
         fsm.registerTransition(STATE_INTRO,STATE_INTRO,8);
-        fsm.registerTransition(STATE_INTRO,STATE_PLAY_HEAD,7);
-        fsm.registerTransition(STATE_PLAY_HEAD,STATE_PLAY_HEAD,32);
-        fsm.registerTransition(STATE_PLAY_HEAD,STATE_ACCEPT_ACCOMPANIMENT,9);
+        fsm.registerTransition(STATE_INTRO, STATE_PLAY_SECTIONS,7);
+        fsm.registerTransition(STATE_PLAY_SECTIONS, STATE_PLAY_SECTIONS,32);
+        fsm.registerTransition(STATE_PLAY_SECTIONS,STATE_ACCEPT_ACCOMPANIMENT,9);
 
 
         /*fsm.registerTransition(STATE_SHARE_STRUCTURE,STATE_REQUEST_INTRO,4);
@@ -276,7 +278,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
             //Create the individual chords.
             ChordsAttributes Em7 = new ChordsAttributes();
             Em7.setRootPitch(E4);
-            Em7.setMajorOrMinor('m');
+            Em7.setMajorOrMinor("m");
             Em7.setExtension(7);
             //Add them to the list of section A
             sectionAchords.add(Em7);
@@ -284,7 +286,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
             //create the next chord
             ChordsAttributes A7 = new ChordsAttributes();
             A7.setRootPitch(A4);
-            A7.setMajorOrMinor('M');
+            A7.setMajorOrMinor("M");
             A7.setExtension(7);
             //Add them to the list of section A
             sectionAchords.add(A7);
@@ -292,7 +294,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
             //create the next chord
             ChordsAttributes Dm7 = new ChordsAttributes();
             Dm7.setRootPitch(D4);
-            Dm7.setMajorOrMinor('m');
+            Dm7.setMajorOrMinor("m");
             Dm7.setExtension(7);
             //Add them to the list of section A
             sectionAchords.add(Dm7);
@@ -300,7 +302,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
             //create the next chord
             ChordsAttributes G7 = new ChordsAttributes();
             G7.setRootPitch(G4);
-            G7.setMajorOrMinor('M');
+            G7.setMajorOrMinor("M");
             G7.setExtension(7);
             //Add them to the list of section A
             sectionAchords.add(G7);
@@ -310,7 +312,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
             //Create the individual chords for section B.
             ChordsAttributes Cm7 = new ChordsAttributes();
             Cm7.setRootPitch(C4);
-            Cm7.setMajorOrMinor('M');
+            Cm7.setMajorOrMinor("M");
             Cm7.setExtension(7);
             sectionBchords.add(Cm7);
 
@@ -329,6 +331,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
             se.setSectionBchords(sectionBchords);
             se.setSectionCchords(sectionCchords);
             getDataStore().put(SCORE_ELEMENTS,se);
+
 
         }
     }

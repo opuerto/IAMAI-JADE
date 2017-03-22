@@ -6,7 +6,7 @@ import jade.content.onto.OntologyException;
 import jade.content.schema.ConceptSchema;
 import jade.content.schema.ObjectSchema;
 import jade.content.schema.PrimitiveSchema;
-import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Chorus;
+import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Section;
 import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Intro;
 import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Song;
 
@@ -22,11 +22,9 @@ public class TimeHandler extends Ontology {
     // VOCABULARY
 
     //concept
-    public static final String CHORUS = "Chorus";
-    public static final String CURRENT_SECTION = "currentSection";
-    public static final String SECTION_STARTED_AT = "sectionStartedAt";
-    public static final String SECTION_LENGHT = "sectionLenght";
-    public static final String SECTION_UPDATED_TIMESTAMP = "updatedTimestamp";
+    public static final String SECTION = "SECTION";
+    public static final String CURRENT_SECTION = "accompanimentCurrentSection";
+    public static final String SECTION_TIME_LEFT = "timeLeft";
 
 
     //concept
@@ -60,18 +58,16 @@ public class TimeHandler extends Ontology {
         super(NAME, BasicOntology.getInstance());
         try {
             //add(new AgentActionSchema(PLAY_INTRO), PlayIntroAction.class);
-            add(new ConceptSchema(CHORUS), Chorus.class);
+            add(new ConceptSchema(SECTION), Section.class);
             add(new ConceptSchema(INTRO), Intro.class);
             add(new ConceptSchema(SONG), Song.class);
 
             //AgentActionSchema as = (AgentActionSchema)getSchema(PLAY_INTRO);
             //as.add(LENGHT,(PrimitiveSchema)getSchema(BasicOntology.INTEGER), ObjectSchema.MANDATORY);
 
-            ConceptSchema cs =(ConceptSchema)getSchema(CHORUS);
+            ConceptSchema cs =(ConceptSchema)getSchema(SECTION);
             cs.add(CURRENT_SECTION,(PrimitiveSchema)getSchema(BasicOntology.STRING), ObjectSchema.MANDATORY);
-            cs.add(SECTION_STARTED_AT,(PrimitiveSchema)getSchema(BasicOntology.FLOAT));
-            cs.add(SECTION_LENGHT,(PrimitiveSchema)getSchema(BasicOntology.FLOAT));
-            cs.add(SECTION_UPDATED_TIMESTAMP,(PrimitiveSchema)getSchema(BasicOntology.FLOAT));
+            cs.add(SECTION_TIME_LEFT,(PrimitiveSchema)getSchema(BasicOntology.DATE));
 
             cs = (ConceptSchema)getSchema(INTRO);
             cs.add(INTRO_LENGHT,(PrimitiveSchema)getSchema(BasicOntology.FLOAT), ObjectSchema.MANDATORY);

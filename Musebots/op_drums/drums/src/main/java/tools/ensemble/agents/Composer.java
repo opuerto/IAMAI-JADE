@@ -3,11 +3,9 @@ package tools.ensemble.agents;
 import jade.content.lang.Codec;
 import jade.content.lang.sl.SLCodec;
 import jade.content.onto.Ontology;
+import jade.core.AID;
 import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.FSMBehaviour;
-import jade.core.behaviours.OneShotBehaviour;
-import jade.core.behaviours.ParallelBehaviour;
+import jade.core.behaviours.*;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -15,6 +13,9 @@ import jade.domain.FIPAException;
 import jade.wrapper.ControllerException;
 import jm.music.data.Score;
 import jm.util.Play;
+import tools.ensemble.behaviours.ComposerBhaviours.accompaniment.ComposeAccompanimentBehaviour;
+import tools.ensemble.behaviours.ComposerBhaviours.accompaniment.PlayAccompanimentBehaviour;
+import tools.ensemble.behaviours.ComposerBhaviours.accompaniment.ResponseAccompanimentRequest;
 import tools.ensemble.behaviours.ComposerBhaviours.intro.ComposeIntro;
 import tools.ensemble.behaviours.ComposerBhaviours.intro.ComposerEndIntro;
 import tools.ensemble.behaviours.ComposerBhaviours.intro.ComposerPlayIntro;
@@ -42,6 +43,9 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
     private Ontology musicianOntology = MusicianOntology.getInstance();
     private Ontology timeHandlerOntology = TimeHandler.getInstance();
     private Ontology composerOntology = ComposerOntology.getInstance();
+    // The Internal Time Manager
+    private AID internalTimeManager = new AID();
+
 
     //Finite state machines objects declaration
     FSMBehaviour introFSM;
@@ -56,12 +60,15 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
     protected void setup()
     {
         //run the midi
-        Play.midi(new Score(),false,false,4,0);
+        Play.midi(new Score(),false,false,5,0);
 
         //
 
         //Register the ontologies.
         registerLanguagesAndOntologies();
+
+        //get the synchronizer agent
+        getMySynchronizerID();
         //Register the service to the DF.
         registerServiceToDF();
         //Set intro FSM
@@ -91,6 +98,32 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         getContentManager().registerOntology(ontology);
         getContentManager().registerOntology(timeHandlerOntology);
         getContentManager().registerOntology(composerOntology);
+
+    }
+
+    private void getMySynchronizerID()
+    {
+        //Find the internal TimeManager Agent
+        DFAgentDescription template_2 = new DFAgentDescription();
+        ServiceDescription sd_2 = new ServiceDescription();
+        sd_2.setType("InternalTimeManager");
+        try {
+            sd_2.setOwnership(getContainerController().getContainerName());
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        template_2.addServices(sd_2);
+        //Now get the internal time manager
+        DFAgentDescription[] resultSearchTimeManager = new DFAgentDescription[0];
+        try {
+            resultSearchTimeManager = DFService.search(this,template_2);
+        } catch (FIPAException e) {
+            e.printStackTrace();
+        }
+        for (int i=0; i<resultSearchTimeManager.length; i++)
+        {
+            internalTimeManager = resultSearchTimeManager[i].getName();
+        }
 
     }
 
@@ -127,6 +160,7 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
     {
         introFSM = new FSMBehaviour(this);
         introFSM.getDataStore().put(INTRO_COMPOSER_INSTANCE,introConceptsIntance);
+        introFSM.getDataStore().put(COMPOSER_MY_INTERNAL_SYNCHRONIZER,internalTimeManager);
         //Register the first state
         //Get the instance of the bahaviour
         ExpectingIntroRequest expectingIntroRequest = new ExpectingIntroRequest(this,composerOntology,codec);
@@ -165,6 +199,7 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
     {
         soloFSM = new FSMBehaviour(this);
         soloFSM.getDataStore().put(SOLO_COMPOSER_INSTANCE,soloConceptsInstance);
+        soloFSM.getDataStore().put(COMPOSER_MY_INTERNAL_SYNCHRONIZER,internalTimeManager);
         soloFSM.registerFirstState(new TemporaryBehaviour(),STATE_WAIT_FOR_SOLO_REQUEST);
         soloFSM.registerState(new TemporaryBehaviour(),STATE_COMPOSE_SOLO);
         soloFSM.registerState(new TemporaryBehaviour(),STATE_PLAY_SOLO);
@@ -193,9 +228,19 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
     {
         accompaniementFSM = new FSMBehaviour(this);
         accompaniementFSM.getDataStore().put(ACCOMPANIMENT_COMPOSER_INSTANCE,accConcept);
-        accompaniementFSM.registerFirstState(new TemporaryBehaviour(),STATE_WAIT_FOR_ACCOMP_REQUEST);
-        accompaniementFSM.registerState(new TemporaryBehaviour(),STATE_COMPOSE_ACCOMP);
-        accompaniementFSM.registerState(new TemporaryBehaviour(),STATE_PLAY_ACCOMP);
+        accompaniementFSM.getDataStore().put(COMPOSER_MY_INTERNAL_SYNCHRONIZER,internalTimeManager);
+        //Instance of the Behaviour
+        ResponseAccompanimentRequest responseAccompanimentRequest = new ResponseAccompanimentRequest(this);
+        responseAccompanimentRequest.setDataStore(accompaniementFSM.getDataStore());
+        accompaniementFSM.registerFirstState(responseAccompanimentRequest,STATE_WAIT_FOR_ACCOMP_REQUEST);
+
+        //Instance of the behaviour compose accompaniment
+        ComposeAccompanimentBehaviour CAB = new ComposeAccompanimentBehaviour(this);
+        CAB.setDataStore(accompaniementFSM.getDataStore());
+        accompaniementFSM.registerState(CAB,STATE_COMPOSE_ACCOMP);
+        PlayAccompanimentBehaviour playAccompanimentBehaviour = new PlayAccompanimentBehaviour(this,timeHandlerOntology,codec);
+        playAccompanimentBehaviour.setDataStore(accompaniementFSM.getDataStore());
+        accompaniementFSM.registerState(playAccompanimentBehaviour,STATE_PLAY_ACCOMP);
         accompaniementFSM.registerLastState(new TemporaryBehaviour(),STATE_END_ACCOMP);
 
         // Transitions
@@ -205,11 +250,12 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         accompaniementFSM.registerTransition(STATE_COMPOSE_ACCOMP,STATE_COMPOSE_ACCOMP,2);
         accompaniementFSM.registerTransition(STATE_COMPOSE_ACCOMP,STATE_WAIT_FOR_ACCOMP_REQUEST,3);
         accompaniementFSM.registerTransition(STATE_COMPOSE_ACCOMP,STATE_PLAY_ACCOMP,4);
-        accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_COMPOSE_ACCOMP,5);
-        accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_END_ACCOMP,5);
+        accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_PLAY_ACCOMP,5);
+        accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_COMPOSE_ACCOMP,6);
+        accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_END_ACCOMP,7);
 
         //example transition
-        accompaniementFSM.registerTransition(STATE_WAIT_FOR_ACCOMP_REQUEST,STATE_END_ACCOMP,10);
+        accompaniementFSM.registerTransition(STATE_COMPOSE_ACCOMP,STATE_END_ACCOMP,10);
 
         //Add the AccompaniementFSM to the agent behaviour
         addBehaviour(accompaniementFSM);

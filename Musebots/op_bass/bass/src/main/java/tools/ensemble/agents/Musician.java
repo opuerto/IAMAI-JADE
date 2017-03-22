@@ -276,7 +276,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
             //Create the individual chords.
             ChordsAttributes Em7 = new ChordsAttributes();
             Em7.setRootPitch(E4);
-            Em7.setMajorOrMinor('m');
+            Em7.setMajorOrMinor("m");
             Em7.setExtension(7);
             //Add them to the list of section A
             sectionAchords.add(Em7);
@@ -284,7 +284,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
             //create the next chord
             ChordsAttributes A7 = new ChordsAttributes();
             A7.setRootPitch(A4);
-            A7.setMajorOrMinor('M');
+            A7.setMajorOrMinor("M");
             A7.setExtension(7);
             //Add them to the list of section A
             sectionAchords.add(A7);
@@ -292,7 +292,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
             //create the next chord
             ChordsAttributes Dm7 = new ChordsAttributes();
             Dm7.setRootPitch(D4);
-            Dm7.setMajorOrMinor('m');
+            Dm7.setMajorOrMinor("m");
             Dm7.setExtension(7);
             //Add them to the list of section A
             sectionAchords.add(Dm7);
@@ -300,7 +300,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
             //create the next chord
             ChordsAttributes G7 = new ChordsAttributes();
             G7.setRootPitch(G4);
-            G7.setMajorOrMinor('M');
+            G7.setMajorOrMinor("M");
             G7.setExtension(7);
             //Add them to the list of section A
             sectionAchords.add(G7);
@@ -310,7 +310,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
             //Create the individual chords for section B.
             ChordsAttributes Cm7 = new ChordsAttributes();
             Cm7.setRootPitch(C4);
-            Cm7.setMajorOrMinor('M');
+            Cm7.setMajorOrMinor("M");
             Cm7.setExtension(7);
             sectionBchords.add(Cm7);
 

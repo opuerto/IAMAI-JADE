@@ -42,10 +42,11 @@
       <file leaf-file-name="Musician.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Musician.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
+            <state relative-caret-position="4369">
               <caret line="281" column="57" selection-start-line="281" selection-start-column="57" selection-end-line="281" selection-end-column="57" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#16772#16773#0" expanded="false" />
+                <element signature="e#16818#16819#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -54,9 +55,13 @@
       <file leaf-file-name="MusicElementsOntology.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/ontologies/musicelements/MusicElementsOntology.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="470">
+            <state relative-caret-position="1003">
               <caret line="64" column="63" selection-start-line="64" selection-start-column="63" selection-end-line="64" selection-end-column="63" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#1639#1640#0" expanded="false" />
+                <element signature="e#1673#1674#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -64,27 +69,19 @@
       <file leaf-file-name="ChordsAttributes.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/ontologies/musicelements/vocabulary/concepts/ChordsAttributes.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
+            <state relative-caret-position="272">
               <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
               <folding>
-                <element signature="e#799#800#0" expanded="true" />
-                <element signature="e#844#845#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AccompanientGetStructure.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/AccompanientGetStructure.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="782">
-              <caret line="61" column="61" selection-start-line="61" selection-start-column="61" selection-end-line="61" selection-end-column="61" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#732#733#0" expanded="false" />
-                <element signature="e#770#771#0" expanded="false" />
-                <element signature="e#802#803#0" expanded="false" />
-                <element signature="e#835#836#0" expanded="false" />
+                <element signature="e#302#303#0" expanded="false" />
+                <element signature="e#347#348#0" expanded="false" />
+                <element signature="e#391#392#0" expanded="false" />
+                <element signature="e#431#432#0" expanded="false" />
+                <element signature="e#498#499#0" expanded="false" />
+                <element signature="e#554#555#0" expanded="false" />
+                <element signature="e#604#605#0" expanded="false" />
+                <element signature="e#647#648#0" expanded="false" />
+                <element signature="e#705#706#0" expanded="false" />
+                <element signature="e#755#756#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -93,18 +90,44 @@
       <file leaf-file-name="ScoreElements.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/ontologies/musicelements/vocabulary/concepts/ScoreElements.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
+            <state relative-caret-position="204">
               <caret line="16" column="38" selection-start-line="16" selection-start-column="38" selection-end-line="16" selection-end-column="38" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#633#634#0" expanded="false" />
+                <element signature="e#665#666#0" expanded="false" />
+                <element signature="e#693#694#0" expanded="false" />
+                <element signature="e#721#722#0" expanded="false" />
+                <element signature="e#767#768#0" expanded="false" />
+                <element signature="e#807#808#0" expanded="false" />
+                <element signature="e#839#840#0" expanded="false" />
+                <element signature="e#871#872#0" expanded="false" />
+                <element signature="e#921#922#0" expanded="false" />
+                <element signature="e#965#966#0" expanded="false" />
+                <element signature="e#999#1000#0" expanded="false" />
+                <element signature="e#1033#1034#0" expanded="false" />
+                <element signature="e#1191#1192#0" expanded="false" />
+                <element signature="e#1243#1244#0" expanded="false" />
+                <element signature="e#1285#1286#0" expanded="false" />
+                <element signature="e#1327#1328#0" expanded="false" />
+                <element signature="e#1388#1389#0" expanded="false" />
+                <element signature="e#1440#1441#0" expanded="false" />
+                <element signature="e#1482#1483#0" expanded="false" />
+                <element signature="e#1524#1525#0" expanded="false" />
+                <element signature="e#1585#1586#0" expanded="false" />
+                <element signature="e#1637#1638#0" expanded="false" />
+                <element signature="e#1679#1680#0" expanded="false" />
+                <element signature="e#1721#1722#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RegisterMusician.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/RegisterMusician.java">
+      <file leaf-file-name="ShareSongStructure.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/ShareSongStructure.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
+            <state relative-caret-position="935">
+              <caret line="69" column="17" selection-start-line="69" selection-start-column="17" selection-end-line="69" selection-end-column="17" />
               <folding>
                 <element signature="imports" expanded="false" />
               </folding>
@@ -115,35 +138,9 @@
       <file leaf-file-name="GetMembers.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/GetMembers.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1411">
-              <caret line="93" column="54" selection-start-line="93" selection-start-column="54" selection-end-line="93" selection-end-column="54" />
-              <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#3466#3467#0" expanded="false" />
-                <element signature="e#3499#3500#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ShareSongStructure.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/ShareSongStructure.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="69" column="17" selection-start-line="69" selection-start-column="17" selection-end-line="69" selection-end-column="17" />
+            <state relative-caret-position="317">
+              <caret line="99" column="43" selection-start-line="99" selection-start-column="43" selection-end-line="99" selection-end-column="43" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RequestIntro.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/RequestIntro.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="37" column="36" selection-start-line="37" selection-start-column="36" selection-end-line="37" selection-end-column="36" />
-              <folding>
-                <element signature="imports" expanded="false" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -151,9 +148,47 @@
       <file leaf-file-name="SongStructure.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/interfaces/SongStructure.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" column="37" selection-start-line="10" selection-start-column="37" selection-end-line="10" selection-end-column="37" />
+            <state relative-caret-position="255">
+              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Composer.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Composer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="544">
+              <caret line="62" column="43" selection-start-line="62" selection-start-column="43" selection-end-line="62" selection-end-column="43" />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ComposerPlayIntro.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/intro/ComposerPlayIntro.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="850">
+              <caret line="62" column="54" selection-start-line="62" selection-start-column="54" selection-end-line="62" selection-end-column="54" />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#3068#3069#0" expanded="false" />
+                <element signature="e#3101#3102#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PlayAccompanimentBehaviour.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/PlayAccompanimentBehaviour.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1802">
+              <caret line="126" column="54" selection-start-line="126" selection-start-column="54" selection-end-line="126" selection-end-column="54" />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -458,7 +493,6 @@
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/AccompanientPlayHead.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/AccompanientPlayIntro.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/interfaces/ComposerStatesNames.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/GetMembers.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/RequestIntro.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/ontologies/musicelements/vocabulary/concepts/ScoreElements.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/AccompanientGetStructure.java" />
@@ -466,6 +500,10 @@
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/ontologies/musicelements/MusicElementsOntology.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/ontologies/musicelements/vocabulary/concepts/ChordsAttributes.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Musician.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Composer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/intro/ComposerPlayIntro.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/PlayAccompanimentBehaviour.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/GetMembers.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/interfaces/SongStructure.java" />
       </list>
     </option>
@@ -512,9 +550,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -668,6 +703,52 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="vocabulary" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SAX" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sax" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="org.jetbrains.plugins.gradle.projectView.GradleTreeStructureProvider$GradleSourceSetDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tools" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ensemble" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ontologies" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="timemanager" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vocabulary" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="concepts" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1054,6 +1135,52 @@
               <option name="myItemId" value="behaviours" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ComposerBhaviours" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SAX" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sax" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="org.jetbrains.plugins.gradle.projectView.GradleTreeStructureProvider$GradleSourceSetDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tools" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ensemble" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="behaviours" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ComposerBhaviours" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="accompaniment" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -1113,6 +1240,9 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1663,16 +1793,17 @@
       <workItem from="1489491971849" duration="3076000" />
       <workItem from="1489662519790" duration="1412000" />
       <workItem from="1489684271167" duration="184000" />
-      <workItem from="1490014852791" duration="14268000" />
+      <workItem from="1490014852791" duration="32457000" />
+      <workItem from="1490142371090" duration="3385000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="414220000" />
+    <option name="totallyTimeSpent" value="435794000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="0" width="1604" height="867" extended-state="1" />
-    <editor active="true" />
+    <frame x="-7" y="0" width="1604" height="867" extended-state="0" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1682,7 +1813,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27520436" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27520436" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1724,21 +1855,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/ontologies/musicelements/PruebaOnto.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/GetSongStructure.java" />
-    <entry file="file://$USER_HOME$/Downloads/JADE/examples/jade/src/examples/behaviours/FSMAgent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="913">
-          <caret line="89" column="74" selection-start-line="89" selection-start-column="12" selection-end-line="89" selection-end-column="74" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/jade.jar!/jade/content/ContentManager.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
@@ -1855,7 +1971,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/ontologies/timemanager/vocabulary/concepts/Chorus.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/ontologies/timemanager/vocabulary/concepts/Section.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="39" column="16" selection-start-line="39" selection-start-column="16" selection-end-line="39" selection-end-column="16" />
@@ -1964,31 +2080,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1122">
           <caret line="103" column="0" selection-start-line="103" selection-start-column="0" selection-end-line="103" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#7366#7367#0" expanded="false" />
-            <element signature="e#7402#7403#0" expanded="false" />
-            <element signature="e#8401#8402#0" expanded="false" />
-            <element signature="e#8437#8438#0" expanded="false" />
-            <element signature="e#8651#8652#0" expanded="false" />
-            <element signature="e#8686#8687#0" expanded="false" />
-            <element signature="e#8797#8798#0" expanded="false" />
-            <element signature="e#8833#8834#0" expanded="false" />
-            <element signature="e#9634#9635#0" expanded="false" />
-            <element signature="e#9670#9671#0" expanded="false" />
-            <element signature="e#10009#10010#0" expanded="false" />
-            <element signature="e#10045#10046#0" expanded="false" />
-            <element signature="e#24842#24843#0" expanded="false" />
-            <element signature="e#24886#24887#0" expanded="false" />
-            <element signature="e#26588#26589#0" expanded="false" />
-            <element signature="e#26632#26633#0" expanded="false" />
-            <element signature="e#28409#28410#0" expanded="false" />
-            <element signature="e#28458#28459#0" expanded="false" />
-            <element signature="e#28617#28618#0" expanded="false" />
-            <element signature="e#28661#28662#0" expanded="false" />
-            <element signature="e#28709#28710#0" expanded="false" />
-            <element signature="e#28753#28754#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2003,21 +2094,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7922">
           <caret line="511" column="8" selection-start-line="511" selection-start-column="8" selection-end-line="511" selection-end-column="8" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#6756#6757#0" expanded="false" />
-            <element signature="e#6792#6793#0" expanded="false" />
-            <element signature="e#8639#8640#0" expanded="false" />
-            <element signature="e#8675#8676#0" expanded="false" />
-            <element signature="e#10329#10330#0" expanded="false" />
-            <element signature="e#10365#10366#0" expanded="false" />
-            <element signature="e#10856#10857#0" expanded="false" />
-            <element signature="e#10892#10893#0" expanded="false" />
-            <element signature="e#13865#13866#0" expanded="false" />
-            <element signature="e#13901#13902#0" expanded="false" />
-            <element signature="e#13941#13942#0" expanded="false" />
-            <element signature="e#13973#13974#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2025,9 +2101,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2035,6 +2108,128 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
           <caret line="37" column="36" selection-start-line="37" selection-start-column="36" selection-end-line="37" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/AccompanientGetStructure.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="782">
+          <caret line="61" column="61" selection-start-line="61" selection-start-column="61" selection-end-line="61" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/ontologies/musicelements/vocabulary/concepts/ScoreElements.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="16" column="38" selection-start-line="16" selection-start-column="38" selection-end-line="16" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#633#634#0" expanded="false" />
+            <element signature="e#665#666#0" expanded="false" />
+            <element signature="e#693#694#0" expanded="false" />
+            <element signature="e#721#722#0" expanded="false" />
+            <element signature="e#767#768#0" expanded="false" />
+            <element signature="e#807#808#0" expanded="false" />
+            <element signature="e#839#840#0" expanded="false" />
+            <element signature="e#871#872#0" expanded="false" />
+            <element signature="e#921#922#0" expanded="false" />
+            <element signature="e#965#966#0" expanded="false" />
+            <element signature="e#999#1000#0" expanded="false" />
+            <element signature="e#1033#1034#0" expanded="false" />
+            <element signature="e#1191#1192#0" expanded="false" />
+            <element signature="e#1243#1244#0" expanded="false" />
+            <element signature="e#1285#1286#0" expanded="false" />
+            <element signature="e#1327#1328#0" expanded="false" />
+            <element signature="e#1388#1389#0" expanded="false" />
+            <element signature="e#1440#1441#0" expanded="false" />
+            <element signature="e#1482#1483#0" expanded="false" />
+            <element signature="e#1524#1525#0" expanded="false" />
+            <element signature="e#1585#1586#0" expanded="false" />
+            <element signature="e#1637#1638#0" expanded="false" />
+            <element signature="e#1679#1680#0" expanded="false" />
+            <element signature="e#1721#1722#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/ShareSongStructure.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="935">
+          <caret line="69" column="17" selection-start-line="69" selection-start-column="17" selection-end-line="69" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/ontologies/musicelements/MusicElementsOntology.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1003">
+          <caret line="64" column="63" selection-start-line="64" selection-start-column="63" selection-end-line="64" selection-end-column="63" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#1639#1640#0" expanded="false" />
+            <element signature="e#1673#1674#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/ontologies/musicelements/vocabulary/concepts/ChordsAttributes.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding>
+            <element signature="e#302#303#0" expanded="false" />
+            <element signature="e#347#348#0" expanded="false" />
+            <element signature="e#391#392#0" expanded="false" />
+            <element signature="e#431#432#0" expanded="false" />
+            <element signature="e#498#499#0" expanded="false" />
+            <element signature="e#554#555#0" expanded="false" />
+            <element signature="e#604#605#0" expanded="false" />
+            <element signature="e#647#648#0" expanded="false" />
+            <element signature="e#705#706#0" expanded="false" />
+            <element signature="e#755#756#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Musician.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4369">
+          <caret line="281" column="57" selection-start-line="281" selection-start-column="57" selection-end-line="281" selection-end-column="57" />
+          <folding>
+            <element signature="e#16772#16773#0" expanded="false" />
+            <element signature="e#16818#16819#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Composer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="62" column="43" selection-start-line="62" selection-start-column="43" selection-end-line="62" selection-end-column="43" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/intro/ComposerPlayIntro.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="850">
+          <caret line="62" column="54" selection-start-line="62" selection-start-column="54" selection-end-line="62" selection-end-column="54" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#3068#3069#0" expanded="false" />
+            <element signature="e#3101#3102#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/PlayAccompanimentBehaviour.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1802">
+          <caret line="126" column="54" selection-start-line="126" selection-start-column="54" selection-end-line="126" selection-end-column="54" />
           <folding>
             <element signature="imports" expanded="false" />
           </folding>
@@ -2043,79 +2238,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/GetMembers.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1411">
-          <caret line="93" column="54" selection-start-line="93" selection-start-column="54" selection-end-line="93" selection-end-column="54" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#3466#3467#0" expanded="false" />
-            <element signature="e#3499#3500#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/AccompanientGetStructure.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="782">
-          <caret line="61" column="61" selection-start-line="61" selection-start-column="61" selection-end-line="61" selection-end-column="61" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#732#733#0" expanded="false" />
-            <element signature="e#770#771#0" expanded="false" />
-            <element signature="e#802#803#0" expanded="false" />
-            <element signature="e#835#836#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/ontologies/musicelements/vocabulary/concepts/ScoreElements.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="16" column="38" selection-start-line="16" selection-start-column="38" selection-end-line="16" selection-end-column="38" />
+        <state relative-caret-position="317">
+          <caret line="99" column="43" selection-start-line="99" selection-start-column="43" selection-end-line="99" selection-end-column="43" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/ShareSongStructure.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="69" column="17" selection-start-line="69" selection-start-column="17" selection-end-line="69" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/ontologies/musicelements/MusicElementsOntology.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="470">
-          <caret line="64" column="63" selection-start-line="64" selection-start-column="63" selection-end-line="64" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/ontologies/musicelements/vocabulary/concepts/ChordsAttributes.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-          <folding>
-            <element signature="e#799#800#0" expanded="true" />
-            <element signature="e#844#845#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Musician.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="281" column="57" selection-start-line="281" selection-start-column="57" selection-end-line="281" selection-end-column="57" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/interfaces/SongStructure.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="37" selection-start-line="10" selection-start-column="37" selection-end-line="10" selection-end-column="37" />
+        <state relative-caret-position="255">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
           <folding />
         </state>
       </provider>
