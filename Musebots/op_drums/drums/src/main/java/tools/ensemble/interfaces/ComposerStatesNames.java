@@ -23,6 +23,7 @@ public interface ComposerStatesNames {
     //STATE FOR ACCOMPANIMENT
 
     public final static String STATE_WAIT_FOR_ACCOMP_REQUEST = "waitForAccompRequest";
+    public final static String STATE_CONFIRM_COMPOSIION = "confirmComposition";
     public final static String STATE_COMPOSE_ACCOMP = "composeAccompaniment";
     public final static String STATE_PLAY_ACCOMP = "playAccomp";
     public final static String STATE_END_ACCOMP = "end";

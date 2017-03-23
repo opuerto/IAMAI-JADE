@@ -175,7 +175,6 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
             if (counter < 1)
             {
                 System.out.println(counter);
-                System.out.println("MIERDAaa");
                 ACLMessage message = createMessage();
                 if(message != null)
                 {

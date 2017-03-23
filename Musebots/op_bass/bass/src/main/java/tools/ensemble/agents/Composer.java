@@ -14,6 +14,7 @@ import jade.wrapper.ControllerException;
 import jm.music.data.Score;
 import jm.util.Play;
 import tools.ensemble.behaviours.ComposerBhaviours.accompaniment.ComposeAccompanimentBehaviour;
+import tools.ensemble.behaviours.ComposerBhaviours.accompaniment.ConfirmComposeAccompaniment;
 import tools.ensemble.behaviours.ComposerBhaviours.accompaniment.PlayAccompanimentBehaviour;
 import tools.ensemble.behaviours.ComposerBhaviours.accompaniment.ResponseAccompanimentRequest;
 import tools.ensemble.behaviours.ComposerBhaviours.intro.ComposeIntro;
@@ -60,7 +61,7 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
     protected void setup()
     {
         //run the midi
-        Play.midi(new Score(),false,false,2,0);
+        Play.midi(new Score(),false,false,3,0);
 
         //
 
@@ -233,8 +234,11 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         ResponseAccompanimentRequest responseAccompanimentRequest = new ResponseAccompanimentRequest(this);
         responseAccompanimentRequest.setDataStore(accompaniementFSM.getDataStore());
         accompaniementFSM.registerFirstState(responseAccompanimentRequest,STATE_WAIT_FOR_ACCOMP_REQUEST);
-
-        //Instance of the behaviour compose accompaniment
+        //Instance confirm composition
+        ConfirmComposeAccompaniment confirm = new ConfirmComposeAccompaniment(this);
+        confirm.setDataStore(accompaniementFSM.getDataStore());
+        accompaniementFSM.registerState(confirm,STATE_CONFIRM_COMPOSIION);
+         //Instance of the behaviour compose accompaniment
         ComposeAccompanimentBehaviour CAB = new ComposeAccompanimentBehaviour(this);
         CAB.setDataStore(accompaniementFSM.getDataStore());
         accompaniementFSM.registerState(CAB,STATE_COMPOSE_ACCOMP);
@@ -246,7 +250,10 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         // Transitions
 
         accompaniementFSM.registerTransition(STATE_WAIT_FOR_ACCOMP_REQUEST,STATE_WAIT_FOR_ACCOMP_REQUEST,0);
-        accompaniementFSM.registerTransition(STATE_WAIT_FOR_ACCOMP_REQUEST,STATE_COMPOSE_ACCOMP,1);
+        accompaniementFSM.registerTransition(STATE_WAIT_FOR_ACCOMP_REQUEST,STATE_CONFIRM_COMPOSIION,9);
+        accompaniementFSM.registerTransition(STATE_CONFIRM_COMPOSIION,STATE_CONFIRM_COMPOSIION,8);
+        accompaniementFSM.registerTransition(STATE_CONFIRM_COMPOSIION,STATE_COMPOSE_ACCOMP,1);
+        //accompaniementFSM.registerTransition(STATE_WAIT_FOR_ACCOMP_REQUEST,STATE_COMPOSE_ACCOMP,1);
         accompaniementFSM.registerTransition(STATE_COMPOSE_ACCOMP,STATE_COMPOSE_ACCOMP,2);
         accompaniementFSM.registerTransition(STATE_COMPOSE_ACCOMP,STATE_WAIT_FOR_ACCOMP_REQUEST,3);
         accompaniementFSM.registerTransition(STATE_COMPOSE_ACCOMP,STATE_PLAY_ACCOMP,4);

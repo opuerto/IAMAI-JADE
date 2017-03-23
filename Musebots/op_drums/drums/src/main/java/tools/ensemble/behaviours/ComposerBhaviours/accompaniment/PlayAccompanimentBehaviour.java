@@ -1,5 +1,6 @@
 package tools.ensemble.behaviours.ComposerBhaviours.accompaniment;
 
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 import jade.content.lang.Codec;
 import jade.content.onto.Ontology;
 import jade.content.onto.basic.Action;
@@ -48,9 +49,10 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
             if(holdPlay < 1)
             {
                 Character section = (Character) getDataStore().get(NEXT_SECTION_TO_PLAY);
+                Integer sIndex = (Integer) getDataStore().get(NEXT_SECTION_INDEX);
                 System.out.println("play after head");
                 System.out.println("next section "+section);
-                PlayScore play = new PlayScore((Long) getDataStore().get(PLAY_TIME_LEFT), (Score) getDataStore().get(ACCOMPANIMENT_SCORE),section);
+                PlayScore play = new PlayScore((Long) getDataStore().get(PLAY_TIME_LEFT), (Score) getDataStore().get(ACCOMPANIMENT_SCORE),section,sIndex);
                 play.setDataStore(getDataStore());
                 agent.addBehaviour(play);
                 holdPlay = 1;
@@ -62,11 +64,13 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
         {
             if(firstTimeHere < 0)
             {
+                Character section = (Character) getDataStore().get(NEXT_SECTION_TO_PLAY);
+                Integer sIndex = (Integer) getDataStore().get(NEXT_SECTION_INDEX);
                 System.out.println("this is the "+getBehaviourName() +"play!!");
                 if(getDataStore().containsKey(PLAY_TIME_LEFT))
                 {
                     System.out.println("play after intro");
-                    PlayScore play = new PlayScore((Long) getDataStore().get(PLAY_TIME_LEFT), (Score) getDataStore().get(ACCOMPANIMENT_SCORE), (Character) getDataStore().get(getDataStore().get(NEXT_SECTION_TO_PLAY)));
+                    PlayScore play = new PlayScore((Long) getDataStore().get(PLAY_TIME_LEFT), (Score) getDataStore().get(ACCOMPANIMENT_SCORE), section,sIndex);
                     play.setDataStore(getDataStore());
                     agent.addBehaviour(play);
 
@@ -114,17 +118,19 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
     {
         private Score accompanimentScore;
         private char section;
-        public PlayScore(long timeLeft, Score score,char section)
+        private int sIndex;
+        public PlayScore(long timeLeft, Score score,char section, int sIndex)
         {
             super(agent,timeLeft);
             this.accompanimentScore = score;
             this.section = section;
+            this.sIndex = sIndex;
 
         }
 
         protected void onWake()
         {
-            Play.midi(accompanimentScore,false,false,5,0);
+            Play.midi(accompanimentScore,false,false,3,0);
             //View.print(accompanimentScore);
             long timeStarted = System.currentTimeMillis();
             //Calculate the lenght of the intro.
@@ -162,13 +168,19 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
                 getDataStore().put(HOLD_COMPOSITION,holdComposition);
             }
 
-            UpdateSynchronizerConversation sendInforSyn = new UpdateSynchronizerConversation(myAgent,section,timeLeft);
+            UpdateSynchronizerConversation sendInforSyn = new UpdateSynchronizerConversation(myAgent,section,timeLeft,sIndex);
             sendInforSyn.setDataStore(getDataStore());
             myAgent.addBehaviour(sendInforSyn);
+
             transition = 6;
 
 
         }
+
+
+
+
+
 
     }
 
@@ -177,12 +189,14 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
         private char currentSection;
         private Long timeLeft;
         private Section section;
+        private int sIndex;
         private ACLMessage messageForSyn;
-        public UpdateSynchronizerConversation(Agent a, char section, Long timeLeft)
+        public UpdateSynchronizerConversation(Agent a, char section, Long timeLeft, int sIndex)
         {
             super(a);
             this.currentSection = section;
             this.timeLeft = timeLeft;
+            this.sIndex = sIndex;
         }
 
         public void action()
@@ -193,6 +207,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
             section.setAccompanimentCurrentSection(theSection);
             Date theTimeLeft = new Date(timeLeft);
             section.setTimeLeft(theTimeLeft);
+            section.setSectionIndex(sIndex);
             messageForSyn = new ACLMessage(ACLMessage.INFORM);
             messageForSyn.setConversationId("update-syn-what-section-is-played");
             messageForSyn.setOntology(timeHandlerOntology.getName());

@@ -110,7 +110,7 @@ public class ComposeIntro extends OneShotBehaviour implements DataStoreComposer,
     private void ComposeIntro()
     {
         int lenght = introInstanceConcepts.getIntroLength();
-        int rootPitch = c4; //set start pitch to C
+        int rootPitch = E4; //set start pitch to C
        // int pitch = C3; // variable to store the calculated pitch (initialized with a start pitch value)
         int numberOfNotes = lenght * introScore.getNumerator();
         // build the rhythms

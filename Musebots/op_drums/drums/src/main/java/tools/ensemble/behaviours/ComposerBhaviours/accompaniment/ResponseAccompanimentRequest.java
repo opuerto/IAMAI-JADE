@@ -42,8 +42,8 @@ public class ResponseAccompanimentRequest extends OneShotBehaviour implements Da
                 getDataStore().remove(CURRENT_MESSAGE);
                 getDataStore().put(CURRENT_MESSAGE,replyRequestToMusician);
             }
-            transition = 1;
-        }
+            transition = 9;
+        }else{block();}
     }
 
     public int onEnd()

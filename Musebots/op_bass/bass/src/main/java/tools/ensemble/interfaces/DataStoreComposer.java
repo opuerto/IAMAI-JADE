@@ -38,4 +38,6 @@ public interface DataStoreComposer {
 
     //Section that the musician going to paly
     public static final String NEXT_SECTION_TO_PLAY = "nextSectionToPlay";
+ // the index of the character that represent the song form in the string array
+   public static final String NEXT_SECTION_INDEX = "nextSectionIndex";
 }

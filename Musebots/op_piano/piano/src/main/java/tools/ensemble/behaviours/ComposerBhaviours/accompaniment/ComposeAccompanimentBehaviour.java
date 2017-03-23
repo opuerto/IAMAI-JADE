@@ -32,8 +32,10 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
     private Phrase AccompanimentPhrase = new Phrase("Accompaniment Phrase");
     private Part AccompanimentPianoPart = new Part("Accompaniment Piano",PIANO,2);
     private String form;
+    private int rootPitch;
     private Queue<Character> queueSections = new LinkedList<Character>();
-    private int rootPitch = C4;
+    private Queue<Integer> queueSectionIndex = new LinkedList<Integer>();
+
 
 
     public ComposeAccompanimentBehaviour(Agent a)
@@ -55,11 +57,13 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
             form = Musician.tuneForm;
             AccompanimentScore.setTempo(Musician.tempo);
 
-            for (char c : form.toCharArray())
+            for(int i = 0; i < form.length(); i++)
             {
-                queueSections.add(c);
+                queueSections.add(form.charAt(i));
+                queueSectionIndex.add(i);
             }
             System.out.println("Original queueSection "+queueSections);
+            System.out.println("Original queueIndex "+queueSectionIndex);
 
         }
         if(getDataStore().containsKey(FROM_PLAY_TO_COMPOSE))
@@ -68,28 +72,32 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
 
             if(getDataStore().containsKey(HOLD_COMPOSITION))
             {
+                //This is a flag that allows to avoid this process while we are playing a section
                 int hold = (Integer) getDataStore().get(HOLD_COMPOSITION);
+                //We set to zero this flat and will be trigger the process of play this composition in the next state
                 int holdPlay = 0;
                 if (hold < 1)
                 {
-                    //composeAccompanimentB();
-                  //  AccompanimentPianoPart.empty();
-                   // AccompanimentPhrase.empty();
-                   // AccompanimentScore.empty();
-                    //composeChordProgression();
+
                     if(!queueSections.isEmpty())
                     {
 
+
                         Character s = queueSections.remove();
+                        Integer sIndex = queueSectionIndex.remove();
                         System.out.println("the section is "+s);
+                        System.out.println("the index is "+sIndex);
                         //Store the next section to be played
-                        if(getDataStore().containsKey(NEXT_SECTION_TO_PLAY))
+                        if(getDataStore().containsKey(NEXT_SECTION_TO_PLAY) && getDataStore().containsKey(NEXT_SECTION_TO_PLAY))
                         {
                             getDataStore().remove(NEXT_SECTION_TO_PLAY);
                             getDataStore().put(NEXT_SECTION_TO_PLAY,s);
+                            getDataStore().remove(NEXT_SECTION_INDEX);
+                            getDataStore().put(NEXT_SECTION_INDEX,sIndex);
                         }else
                         {
                             getDataStore().put(NEXT_SECTION_TO_PLAY,s);
+                            getDataStore().put(NEXT_SECTION_INDEX,sIndex);
                         }
                         AccompanimentScore.empty();
                         AccompanimentPianoPart.empty();
@@ -105,30 +113,41 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                                 AccompanimentScore.addPart(composeSectionB());
                                 break;
                         }
-                        //AccompanimentScore.addPart(CP.getNextSection(s));
-                        //AccompanimentScore.addPart(AccompanimentPianoPart);
+
 
                     }
                     else
                     {
-                        for (char c : form.toCharArray())
+
+                        for(int i = 0; i < form.length(); i++)
                         {
-                            queueSections.add(c);
+                            queueSections.add(form.charAt(i));
+                            queueSectionIndex.add(i);
                         }
                         System.out.println("Original queueSection "+queueSections);
+                        System.out.println("Original queueIndex "+queueSectionIndex);
                         Character s = queueSections.remove();
+                        Integer sIndex = queueSectionIndex.remove();
                         System.out.println("the section is "+s);
+                        System.out.println("the index is "+sIndex);
+                        if(getDataStore().containsKey(NEXT_SECTION_TO_PLAY) && getDataStore().containsKey(NEXT_SECTION_TO_PLAY))
+                        {
+                            getDataStore().remove(NEXT_SECTION_TO_PLAY);
+                            getDataStore().put(NEXT_SECTION_TO_PLAY,s);
+                            getDataStore().remove(NEXT_SECTION_INDEX);
+                            getDataStore().put(NEXT_SECTION_INDEX,sIndex);
+                        }else
+                        {
+                            getDataStore().put(NEXT_SECTION_TO_PLAY,s);
+                            getDataStore().put(NEXT_SECTION_INDEX,sIndex);
+                        }
                         AccompanimentScore.empty();
                         AccompanimentPianoPart.empty();
                         switch (s)
                         {
                             case 'A':
                             {
-                                if(rootPitch < C3)
-                                {
-                                    System.out.println("menor que C3");
-                                    rootPitch = C4;
-                                }
+
                                 AccompanimentScore.addPart(composeSectionA());
                                 break;
                             }
@@ -157,46 +176,6 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
             }
 
         }
-
-
-        ACLMessage replyConfirm = myAgent.receive(mt1);
-        if(replyConfirm != null)
-        {
-            System.out.println("Agent confirm I will Compose");
-            ACLMessage replyConfirmToMusician = replyConfirm.createReply();
-            replyConfirmToMusician.setPerformative(ACLMessage.INFORM);
-            replyConfirmToMusician.setConversationId("request-accompaniment-conversation-INFORM");
-            replyConfirmToMusician.setReplyWith(replyConfirm.getSender().getLocalName()+System.currentTimeMillis());
-            myAgent.send(replyConfirmToMusician);
-            //AccompanimentPianoPart.empty();
-            //AccompanimentPhrase.empty();
-            //AccompanimentScore.empty();
-            //composeChordProgression();
-            //getDataStore().put(ACCOMPANIMENT_SCORE,AccompanimentScore);
-            if(getDataStore().containsKey(FROM_PLAY_TO_COMPOSE))
-            {
-                getDataStore().remove(FROM_PLAY_TO_COMPOSE);
-                getDataStore().put(FROM_PLAY_TO_COMPOSE,true);
-            }else
-            {
-                getDataStore().put(FROM_PLAY_TO_COMPOSE,true);
-            }
-
-            if(getDataStore().containsKey(HOLD_COMPOSITION))
-            {
-                getDataStore().remove(HOLD_COMPOSITION);
-                int holdComposition = 0;
-                getDataStore().put(HOLD_COMPOSITION,holdComposition);
-            }
-            else
-            {
-                int holdComposition = 0;
-                getDataStore().put(HOLD_COMPOSITION,holdComposition);
-            }
-
-            //transition = 4;
-
-        }//else {block();}
 
 
     }

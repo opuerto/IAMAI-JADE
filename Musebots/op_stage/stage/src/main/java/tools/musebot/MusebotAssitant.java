@@ -59,7 +59,7 @@ public class MusebotAssitant extends Agent implements OSCListener {
 
             if(msg.getName().equals("/mc/agentList")) {
                 //KILL THE AGENT MYSELF SINCE IT HAS NO PURPUSE TO LIVE ANYMORE
-                doDelete();
+                //doDelete();
                 //heartbeat from agent
                 lastHeartbeat = System.currentTimeMillis();
 
