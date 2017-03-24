@@ -28,8 +28,8 @@ public class LeaderSoloist extends OneShotBehaviour implements DataStorteMusicia
         }
         else
         {
-            System.out.println("I'm goint to the silent state");
-            transition = 15;
+            System.out.println("I'm going to play the solo");
+            transition = 11;
         }
 
 

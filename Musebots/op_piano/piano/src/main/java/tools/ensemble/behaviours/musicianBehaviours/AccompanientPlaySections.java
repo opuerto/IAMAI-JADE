@@ -554,6 +554,7 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
         {
             if (c < 1)
             {
+
                 if(getDataStore().containsKey(INTERNAL_COMPOSER))
                 {
                     internalComposer = (AID) getDataStore().get(INTERNAL_COMPOSER);

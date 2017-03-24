@@ -67,6 +67,10 @@ public class ConfirmComposeAccompaniment extends OneShotBehaviour implements Dat
 
     public int onEnd()
     {
+        if(transition == 8 )
+        {
+            block(1000);
+        }
         return transition;
     }
 }

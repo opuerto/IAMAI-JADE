@@ -1,9 +1,11 @@
 package tools.ensemble.behaviours.ComposerBhaviours.accompaniment;
 
 import jade.core.Agent;
+import jade.core.behaviours.FSMBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import sun.swing.plaf.synth.SynthIcon;
 import tools.ensemble.interfaces.DataStoreComposer;
 
 /**
@@ -15,18 +17,20 @@ public class ResponseAccompanimentRequest extends OneShotBehaviour implements Da
     private MessageTemplate mt1 = MessageTemplate.and(
             MessageTemplate.MatchConversationId("request-accompaniment-conversation-REQUEST"),
             MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
-
-
-    public ResponseAccompanimentRequest(Agent a)
+    FSMBehaviour intro;
+    public ResponseAccompanimentRequest(Agent a, FSMBehaviour intro)
     {
         super(a);
+        this.intro = intro;
     }
 
     public void action()
     {
+        System.out.println("Leader");
         ACLMessage replyRequest = myAgent.receive(mt1);
         if(replyRequest != null)
         {
+
             //Get the time left on the intro.
             long introTimeLeft = Long.parseLong(replyRequest.getContent());
             //Store it in the vector for share it with the next state.
@@ -42,12 +46,17 @@ public class ResponseAccompanimentRequest extends OneShotBehaviour implements Da
                 getDataStore().remove(CURRENT_MESSAGE);
                 getDataStore().put(CURRENT_MESSAGE,replyRequestToMusician);
             }
+            myAgent.removeBehaviour(intro);
             transition = 9;
         }else{block();}
     }
 
     public int onEnd()
     {
+        if(transition == 0)
+        {
+            block(500);
+        }
         return transition;
     }
 }

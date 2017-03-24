@@ -19,7 +19,7 @@ import jade.util.leap.ArrayList;
 public class AccompanientGetStructure extends OneShotBehaviour {
 
     Agent agent;
-    int transition;
+    int transition = 32;
     public AccompanientGetStructure (Agent a)
     {
         super(a);
@@ -35,6 +35,10 @@ public class AccompanientGetStructure extends OneShotBehaviour {
 
     public int onEnd()
     {
+        if(transition == 32)
+        {
+            block(100);
+        }
         return transition;
     }
 
@@ -86,7 +90,7 @@ public class AccompanientGetStructure extends OneShotBehaviour {
         }else
         {
             block();
-            transition = 32;
+            //transition = 32;
         }
 
 

@@ -5,9 +5,12 @@ package tools.ensemble.interfaces;
  */
 public interface MusicianStates {
     //States
+
+    //General states
     public final static String STATE_START = "Start";
     public final static String STATE_REGISTER = "Register";
     public final static String STATE_GET_MEMBERS = "Get_members";
+    //Leader State
     public final static String STATE_LEADER = "Leader";
     public final static String STATE_LEADER_GET_SONG_STRUCTURE = "LeaderGetSongStructure";
     public final static String STATE_SHARE_STRUCTURE = "ShareStructure";
@@ -18,9 +21,12 @@ public interface MusicianStates {
     public final static String STATE_SILENT = "Silent";
     public final static String STATE_REQUEST_END = "RequestEnd";
     public final static String STATE_END ="End";
+
+    //Accompaniest states
     public final static String STATE_ACCOMPANIST="Accompanist";
     public final static String STATE_GET_STRUCTURE="GetStructure";
     public final static String STATE_INTRO ="Intro";
+    public final static String STATE_PLAY_SECTIONS ="State_Play_Head";
     public final static String STATE_ACCEPT_INTRO="AcceptIntro";
     public final static String STATE_REFUSE_INTRO="RefuseIntro";
     public final static String STATE_ACCEPT_ACCOMPANIMENT="AcceptAccompaniment";

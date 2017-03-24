@@ -58,6 +58,7 @@ public class FindInternalMusician extends Behaviour {
         {
             return true;
         }
+        block(500);
         return false;
 
     }

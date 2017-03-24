@@ -101,6 +101,9 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
     private float duration;
     //length of the intro
     private int lenght;
+    //Block
+    private boolean block = false;
+    private boolean restart = false ;
 
 
     //Only for now will help us to use the composer conversation simulation
@@ -166,6 +169,8 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
                 transition = 7;
                 break;
         }
+
+
     }
 
     public int onEnd()
@@ -175,6 +180,10 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
         {
             agent.removeBehaviour(fsmBehaviour);
             fsmBehaviour = null;
+        }
+        if(transition == 8)
+        {
+            block(500);
         }
         return transition;
     }

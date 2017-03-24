@@ -29,7 +29,7 @@ import jade.util.leap.ArrayList;
 
 public class Musician extends Agent implements MusicianStates,DataStorteMusicians, JMC {
 
-    private boolean leader = false;
+    public static boolean leader = false;
     private boolean acompaniement = true;
     private AID myMusician = new AID();
     //Map<String, String> songStructure = new HashMap<String, String>();

@@ -32,7 +32,7 @@ import jade.util.leap.ArrayList;
 
 public class Musician extends Agent implements MusicianStates,DataStorteMusicians, JMC {
 
-    private boolean leader = true;
+    public static boolean leader = true;
     private boolean acompaniement = false;
     private AID myMusician = new AID();
     //Map<String, String> songStructure = new HashMap<String, String>();
@@ -99,6 +99,13 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         //Register the state RequestINTRO To the FSM
         fsm.registerState(requestIntro,STATE_REQUEST_INTRO);
 
+        //State Request Solo
+        //Get the instance of the behaviour
+        LeaderRequestSoloToMyComposer LRSTC = new LeaderRequestSoloToMyComposer(this);
+        //Share the data structure of the fsm
+        LRSTC.setDataStore(fsm.getDataStore());
+        fsm.registerState(LRSTC,STATE_REQUEST_SOLO);
+
         fsm.registerLastState(new TemporaryBehaviour(),STATE_SILENT);
        /* fsm.registerState(new TemporaryBehaviour(),STATE_LEADER);
         fsm.registerState(new TemporaryBehaviour(),STATE_REQUEST_SOLO);
@@ -137,6 +144,10 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         fsm.registerTransition(STATE_SHARE_STRUCTURE,STATE_SHARE_STRUCTURE,28);
         fsm.registerTransition(STATE_REQUEST_INTRO,STATE_REQUEST_INTRO,29);
         fsm.registerTransition(STATE_REQUEST_INTRO,STATE_LEADER,17);
+        //Transition to request the solo
+        fsm.registerTransition(STATE_LEADER,STATE_REQUEST_SOLO,11);
+        fsm.registerTransition(STATE_REQUEST_SOLO,STATE_REQUEST_SOLO,30);
+        fsm.registerTransition(STATE_REQUEST_SOLO,STATE_SILENT,50);
 
         /*fsm.registerTransition(STATE_SHARE_STRUCTURE,STATE_REQUEST_INTRO,4);
         fsm.registerTransition(STATE_REFUSE_INTRO,STATE_LEADER,17);

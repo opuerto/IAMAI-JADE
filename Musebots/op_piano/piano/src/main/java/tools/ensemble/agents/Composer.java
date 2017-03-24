@@ -231,7 +231,7 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         accompaniementFSM.getDataStore().put(ACCOMPANIMENT_COMPOSER_INSTANCE,accConcept);
         accompaniementFSM.getDataStore().put(COMPOSER_MY_INTERNAL_SYNCHRONIZER,internalTimeManager);
         //Instance of the Behaviour
-        ResponseAccompanimentRequest responseAccompanimentRequest = new ResponseAccompanimentRequest(this);
+        ResponseAccompanimentRequest responseAccompanimentRequest = new ResponseAccompanimentRequest(this,introFSM);
         responseAccompanimentRequest.setDataStore(accompaniementFSM.getDataStore());
         accompaniementFSM.registerFirstState(responseAccompanimentRequest,STATE_WAIT_FOR_ACCOMP_REQUEST);
         //Instance confirm composition
@@ -260,6 +260,8 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_PLAY_ACCOMP,5);
         accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_COMPOSE_ACCOMP,6);
         accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_END_ACCOMP,7);
+        ;
+
 
         //example transition
         accompaniementFSM.registerTransition(STATE_COMPOSE_ACCOMP,STATE_END_ACCOMP,10);

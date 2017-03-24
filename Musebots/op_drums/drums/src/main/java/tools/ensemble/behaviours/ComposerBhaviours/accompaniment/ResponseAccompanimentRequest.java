@@ -1,6 +1,7 @@
 package tools.ensemble.behaviours.ComposerBhaviours.accompaniment;
 
 import jade.core.Agent;
+import jade.core.behaviours.FSMBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -15,11 +16,13 @@ public class ResponseAccompanimentRequest extends OneShotBehaviour implements Da
     private MessageTemplate mt1 = MessageTemplate.and(
             MessageTemplate.MatchConversationId("request-accompaniment-conversation-REQUEST"),
             MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
+    FSMBehaviour intro;
 
+    public ResponseAccompanimentRequest(Agent a, FSMBehaviour intro)
 
-    public ResponseAccompanimentRequest(Agent a)
     {
         super(a);
+        this.intro = intro;
     }
 
     public void action()
@@ -42,12 +45,17 @@ public class ResponseAccompanimentRequest extends OneShotBehaviour implements Da
                 getDataStore().remove(CURRENT_MESSAGE);
                 getDataStore().put(CURRENT_MESSAGE,replyRequestToMusician);
             }
+            myAgent.removeBehaviour(intro);
             transition = 9;
         }else{block();}
     }
 
     public int onEnd()
     {
+        if(transition == 0)
+        {
+            block();
+        }
         return transition;
     }
 }

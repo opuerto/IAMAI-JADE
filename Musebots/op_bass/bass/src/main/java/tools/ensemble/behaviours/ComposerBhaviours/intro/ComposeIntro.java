@@ -172,6 +172,10 @@ public class ComposeIntro extends OneShotBehaviour implements DataStoreComposer,
     public int onEnd()
     {
         firstTimeState++;
+        if (transition == 2)
+        {
+            block(500);
+        }
         return transition;
     }
 

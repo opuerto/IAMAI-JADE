@@ -16,6 +16,7 @@ import jade.lang.acl.ACLMessage;
 import jade.wrapper.ControllerException;
 import jm.music.data.Score;
 import jm.util.Play;
+import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStoreComposer;
 import tools.ensemble.interfaces.DataStoreTimeManager;
 import tools.ensemble.ontologies.composer.vocabulary.concepts.AccompanimentConcepts;
@@ -111,6 +112,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
     {
 
         firstTimeHere++;
+
         return transition;
     }
 
@@ -130,6 +132,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
 
         protected void onWake()
         {
+            //Musician.leader = true;
             Play.midi(accompanimentScore,false,false,3,0);
             //View.print(accompanimentScore);
             long timeStarted = System.currentTimeMillis();
@@ -173,7 +176,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
             myAgent.addBehaviour(sendInforSyn);
 
             transition = 6;
-
+            block();
 
         }
 
@@ -256,6 +259,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
             }
 
             myAgent.send(messageForSyn);
+            block();
 
         }
     }

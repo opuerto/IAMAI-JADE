@@ -307,6 +307,8 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
             getDataStore().put(INTRO_TIMESTAMP,introTimestamp);
             System.out.println("Intro timestamp: "+introTimestamp);
             System.out.println("Agent "+inform.getSender().getName()+" The intro has started to play");
+            //Let know the request solo state that this is the first time that a solo is played in the song. So he will wait until the head is done
+            getDataStore().put(FIRST_SOLO,true);
             steps = 1;
             //myAgent.doWait(introDuration);
 

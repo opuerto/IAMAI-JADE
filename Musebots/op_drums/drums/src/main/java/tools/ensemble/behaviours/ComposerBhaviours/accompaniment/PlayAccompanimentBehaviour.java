@@ -111,6 +111,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
     {
 
         firstTimeHere++;
+
         return transition;
     }
 
@@ -173,6 +174,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
             myAgent.addBehaviour(sendInforSyn);
 
             transition = 6;
+            block();
 
 
         }
@@ -256,6 +258,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
             }
 
             myAgent.send(messageForSyn);
+            block();
 
         }
     }

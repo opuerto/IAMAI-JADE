@@ -110,6 +110,10 @@ public class GetMembers extends OneShotBehaviour implements DataStorteMusicians 
 
     }
     public int onEnd() {
+        if(transition == 0)
+        {
+            block(500);
+        }
         return transition;
     } //Exit with the transition value to the corresponding state.
 }
