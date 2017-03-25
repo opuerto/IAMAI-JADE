@@ -285,6 +285,7 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
         }
         else if(type.equals("D") && extension == 7)
         {
+
             int[] pitchArrayDominant7 = new int[4];
             pitchArrayDominant7[0] = pitch;
             pitchArrayDominant7[1] = pitch + 4;
@@ -293,11 +294,44 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
             return pitchArrayDominant7;
 
         }
+        else if (type.equals("Db") && extension == 7)
+        {
+            int[] pitchArrayDominantB7 = new int[4];
+            pitchArrayDominantB7[0] = pitch-1;
+            pitchArrayDominantB7[1] = pitch + 3;
+            pitchArrayDominantB7[2] = pitch + 6;
+            pitchArrayDominantB7[3] = pitch + 9;
+            return pitchArrayDominantB7;
+        }
+        else if(type.equals("M") && extension == 0)
+        {
+            int[] pitchArrayTriad = new int[3];
+            pitchArrayTriad[0] = pitch ;
+            pitchArrayTriad[1] = pitch + 4;
+            pitchArrayTriad[2] = pitch + 7;
+            return pitchArrayTriad;
+        }
+        else if (type.equals("m") && extension == 0)
+        {
+            int[] pitchArrayTriad = new int[3];
+            pitchArrayTriad[0] = pitch ;
+            pitchArrayTriad[1] = pitch + 3;
+            pitchArrayTriad[2] = pitch + 7;
+            return pitchArrayTriad;
+        }else if(type.equals("Dsus"))
+        {
+            int[] pitchArrayTriad = new int[3];
+            pitchArrayTriad[0] = pitch ;
+            pitchArrayTriad[1] = pitch + 7;
+            pitchArrayTriad[2] = pitch + 10;
+            return pitchArrayTriad;
+        }
         else
         {
             pitchArray[0] = pitch;
             pitchArray[1] = rootPitch + 4;
             pitchArray[2] = rootPitch + 7;
+
         }
 
         return pitchArray;

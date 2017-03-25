@@ -121,6 +121,10 @@ public class ShareSongStructure extends OneShotBehaviour implements SongStructur
 
     public int onEnd() {
 
+        if(transition == 28)
+        {
+            block(500);
+        }
         return transition;
     } //Exit with the transition value to the corresponding state.
 

@@ -26,7 +26,6 @@ public class ResponseAccompanimentRequest extends OneShotBehaviour implements Da
 
     public void action()
     {
-        System.out.println("Leader");
         ACLMessage replyRequest = myAgent.receive(mt1);
         if(replyRequest != null)
         {

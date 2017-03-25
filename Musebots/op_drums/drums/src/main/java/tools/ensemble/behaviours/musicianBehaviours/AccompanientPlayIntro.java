@@ -549,6 +549,7 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
                 statePassInfo = 1;
                 return true;
             }
+            block(500);
             return false;
         }
     }
@@ -698,6 +699,10 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
             public int onEnd()
            {
                 firstTime++;
+               if (transition == 2)
+               {
+                   block(500);
+               }
                 return transition;
             }
         }
@@ -740,6 +745,10 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
             public int onEnd()
             {
                 firstTimeHere++;
+                if (confirmTransition == 4)
+                {
+                    block(500);
+                }
                 return confirmTransition;
             }
 
@@ -796,6 +805,10 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
             }
             public int onEnd()
             {
+                if(transition == 6)
+                {
+                    block(500);
+                }
                 return transition;
             }
         }

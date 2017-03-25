@@ -5,6 +5,8 @@ import jade.core.Agent;
 import jade.core.behaviours.FSMBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
+import jade.util.SynchList;
 import tools.ensemble.interfaces.DataStorteMusicians;
 
 /**
@@ -15,9 +17,14 @@ import tools.ensemble.interfaces.DataStorteMusicians;
 public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements DataStorteMusicians{
 
     Agent agent;
+    //Store the internal composer ID
+
     //Check if is the first time doing this action
     private int firstTimeHere = 0;
-    private  int transition = 30;
+    private  int transitionParentBehaviour = 30;
+    //Variables to calculate the time of intro
+    private long introStartedAt;
+    private long introDuration;
     //Check if is the first solo to be played in the song, if so, Wait until the end of the head.
     private int firstTimeSolo;
     //Messages
@@ -52,14 +59,19 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
             }
 
             FSMBehaviour requestSolo = new FSMBehaviour(agent);
-            requestSolo.registerFirstState(new tempClass(),REQUEST_PLAY);
-            requestSolo.registerState(new tempClass(),HANDLE_AGREE);
+            RequestPlayBehaviour requestPlayBehaviour = new RequestPlayBehaviour();
+            requestPlayBehaviour.setDataStore(getDataStore());
+            requestSolo.registerFirstState(requestPlayBehaviour,REQUEST_PLAY);
+            HandleAgreeBehaviour handleAgreeBehaviour = new HandleAgreeBehaviour();
+            handleAgreeBehaviour.setDataStore(getDataStore());
+            requestSolo.registerState(handleAgreeBehaviour,HANDLE_AGREE);
             requestSolo.registerLastState(new tempClass(),HANDLE_CONFIRM);
 
             //Register the transitions
             requestSolo.registerTransition(REQUEST_PLAY,HANDLE_AGREE,0);
             requestSolo.registerTransition(HANDLE_AGREE,HANDLE_AGREE,2);
             requestSolo.registerTransition(HANDLE_AGREE,HANDLE_CONFIRM,3);
+
 
             agent.addBehaviour(requestSolo);
 
@@ -69,12 +81,16 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
     public int onEnd()
     {
         firstTimeHere++;
-        return transition;
+        if(transitionParentBehaviour == 30)
+        {
+            block(500);
+        }
+        return transitionParentBehaviour;
     }
 
     private class RequestPlayBehaviour extends OneShotBehaviour
     {
-        int transition;
+        int transition = 0;
         public RequestPlayBehaviour()
         {
             super(agent);
@@ -82,14 +98,121 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
 
         public void action()
         {
-            //Todo: Implementar la conversacion con el composer pasar the flag first time solo
+           requestMessage.setConversationId("Request-Solo-To-Composer");
+           requestMessage.setReplyWith(agent.getLocalName()+System.currentTimeMillis());
+            if(getDataStore().containsKey(INTERNAL_COMPOSER))
+            {
+                internalComposer = (AID) getDataStore().get(INTERNAL_COMPOSER);
+
+            }
+            requestMessage.addReceiver(internalComposer);
+            requestMessage.setContent(String.valueOf(firstTimeSolo));
+            System.out.println("The internal composer "+internalComposer);
+            //Wait until the intro finished
+            if (getDataStore().containsKey(INTRO_DURATION) && getDataStore().containsKey(INTRO_TIMESTAMP))
+            {
+
+                introDuration = (Long) getDataStore().get(INTRO_DURATION);
+                introStartedAt = (Long) getDataStore().get(INTRO_TIMESTAMP);
+                Long now = System.currentTimeMillis();
+                long elapsedTime = introStartedAt - now;
+                long timeLeft = introDuration - elapsedTime;
+                //Wait until the intro has finish before request a solo
+                agent.doWait(timeLeft);
+            }
+
+            agent.send(requestMessage);
 
         }
 
         public int onEnd()
         {
+            if (transition == 0)
+            {
+                block(500);
+            }
             return transition;
         }
+    }
+
+    private class HandleAgreeBehaviour extends OneShotBehaviour
+    {
+        int transition = 2;
+        int firstTimeHere = 0;
+        private MessageTemplate mt1 = MessageTemplate.and(
+                MessageTemplate.MatchConversationId("request-solo-to-composer-agree"),
+                MessageTemplate.MatchPerformative(ACLMessage.AGREE)
+        );
+        private MessageTemplate mt2andmt1;
+        public HandleAgreeBehaviour()
+        {
+            super(agent);
+        }
+
+        public void action()
+        {
+            if (firstTimeHere < 0)
+            {
+                mt2andmt1 = MessageTemplate.and(mt1,MessageTemplate.MatchInReplyTo(requestMessage.getReplyWith()));
+            }
+
+            replyAgree = agent.receive(mt2andmt1);
+            if(replyAgree != null)
+            {
+                System.out.println("The composer agree");
+                ACLMessage replyAgreeToComposer = replyAgree.createReply();
+                replyAgreeToComposer.setConversationId("request-solo-to-composer-Confirm");
+                replyAgreeToComposer.setPerformative(ACLMessage.CONFIRM);
+                replyAgreeToComposer.setReplyWith(replyAgree.getSender().getLocalName()+System.currentTimeMillis());
+                replyAgree.setReplyWith(replyAgreeToComposer.getReplyWith());
+                agent.send(replyAgreeToComposer);
+                transition = 3;
+            }
+            else {block();}
+
+        }
+
+        public int onEnd()
+        {
+            firstTimeHere++;
+            if (transition == 2)
+            {
+                block(500);
+            }
+            return transition;
+        }
+    }
+
+    private class requestHandleConfirm extends OneShotBehaviour
+    {
+
+        private MessageTemplate mt1 = MessageTemplate.and(MessageTemplate.MatchConversationId("request-solo-to-composer-Inform"),
+                MessageTemplate.MatchPerformative(ACLMessage.INFORM)
+        );
+        private MessageTemplate mt1Andmt2;
+        public requestHandleConfirm()
+        {
+            super(agent);
+        }
+
+        public void action()
+        {
+            mt1Andmt2 = MessageTemplate.and(mt1,MessageTemplate.MatchInReplyTo(replyAgree.getReplyWith()));
+            ACLMessage inform = agent.receive(mt1Andmt2);
+            if(inform != null)
+            {
+                System.out.println("The agent informed it will play");
+                //Send the state compose of the FSM inside the accompanimentPlaySection to the end state.
+                transitionParentBehaviour = 80;
+                //Stop the simple behaviour that is the parent of this fsm
+
+            }else{block();}
+
+
+
+        }
+
+
     }
 
     private class tempClass extends OneShotBehaviour

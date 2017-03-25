@@ -37,7 +37,7 @@ public class AccompanientGetStructure extends OneShotBehaviour {
     {
         if(transition == 32)
         {
-            block(100);
+            block(500);
         }
         return transition;
     }

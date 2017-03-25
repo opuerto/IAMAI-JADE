@@ -50,8 +50,8 @@
       <file leaf-file-name="MusebotAssitant.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/tools/musebot/MusebotAssitant.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+            <state relative-caret-position="153">
+              <caret line="19" column="40" selection-start-line="19" selection-start-column="40" selection-end-line="19" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -371,8 +371,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
+      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -393,7 +394,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -951,12 +951,17 @@
       <workItem from="1490280317510" duration="3261000" />
       <workItem from="1490284393440" duration="20687000" />
       <workItem from="1490360127492" duration="1033000" />
-      <workItem from="1490362060809" duration="2643000" />
+      <workItem from="1490362060809" duration="5690000" />
+      <workItem from="1490369277283" duration="1491000" />
+      <workItem from="1490372160624" duration="2907000" />
+      <workItem from="1490378356034" duration="4288000" />
+      <workItem from="1490383362753" duration="317000" />
+      <workItem from="1490384222497" duration="22691000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="360475000" />
+    <option name="totallyTimeSpent" value="395216000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="7" />
@@ -1416,8 +1421,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tools/musebot/MusebotAssitant.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+        <state relative-caret-position="153">
+          <caret line="19" column="40" selection-start-line="19" selection-start-column="40" selection-end-line="19" selection-end-column="40" />
           <folding />
         </state>
       </provider>

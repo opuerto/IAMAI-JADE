@@ -12,6 +12,7 @@ public class Section implements Concept {
     private String accompanimentCurrentSection;
     private Date timeLeft;
     private int sectionIndex;
+    private Date sectionStartedAt;
 
     public void setAccompanimentCurrentSection(String section)
     {
@@ -41,6 +42,15 @@ public class Section implements Concept {
     public int getSectionIndex()
     {
         return sectionIndex;
+    }
+
+    public void setSectionStartedAt(Date started)
+    {
+        this.sectionStartedAt = started;
+    }
+    public Date getSectionStartedAt()
+    {
+        return sectionStartedAt;
     }
 
 }

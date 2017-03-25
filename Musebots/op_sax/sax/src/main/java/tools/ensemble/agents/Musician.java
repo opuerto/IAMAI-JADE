@@ -106,7 +106,13 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         LRSTC.setDataStore(fsm.getDataStore());
         fsm.registerState(LRSTC,STATE_REQUEST_SOLO);
 
+
+
         fsm.registerLastState(new TemporaryBehaviour(),STATE_SILENT);
+
+        //Temporal Transition
+        fsm.registerTransition(STATE_REQUEST_SOLO,STATE_SILENT,80);
+
        /* fsm.registerState(new TemporaryBehaviour(),STATE_LEADER);
         fsm.registerState(new TemporaryBehaviour(),STATE_REQUEST_SOLO);
         fsm.registerState(new TemporaryBehaviour(),STATE_PASS_LEAD);
@@ -297,6 +303,8 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
             CM7.setExtension(7);
             sectionBchords.add(CM7);
             sectionBchords.add(CM7);
+
+
 
             //set the chords for section C
             sectionCchords = new ArrayList();

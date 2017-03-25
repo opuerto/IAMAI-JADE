@@ -40,4 +40,7 @@ public interface DataStoreComposer {
     public static final String NEXT_SECTION_TO_PLAY = "nextSectionToPlay";
     // the index of the character that represent the song form in the string array
     public static final String NEXT_SECTION_INDEX = "nextSectionIndex";
+
+    //Save the info about the sections sent by the syn, that we will use to play the solo.
+    public static final String SECTION_INSTANCE_FOR_SYN_SOLO = "sectionInstanceForSyncSolo";
 }

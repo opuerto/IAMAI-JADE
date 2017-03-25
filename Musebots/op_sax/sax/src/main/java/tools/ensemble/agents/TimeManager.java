@@ -4,6 +4,8 @@ import jade.content.lang.Codec;
 import jade.content.lang.sl.SLCodec;
 import jade.content.onto.Ontology;
 import jade.core.Agent;
+import jade.core.behaviours.FSMBehaviour;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.ParallelBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -14,6 +16,9 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.wrapper.ControllerException;
 import tools.ensemble.behaviours.timeManagerBehaviours.*;
+import tools.ensemble.behaviours.timeManagerBehaviours.FindSection.CheckForInfoInternally;
+import tools.ensemble.behaviours.timeManagerBehaviours.FindSection.RequestToExternalSyn;
+import tools.ensemble.behaviours.timeManagerBehaviours.FindSection.ResponseRequestSectionInfo;
 import tools.ensemble.interfaces.DataStoreTimeManager;
 import tools.ensemble.ontologies.timemanager.TimeHandler;
 import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Section;
@@ -119,6 +124,40 @@ public class TimeManager extends Agent implements DataStoreTimeManager {
         provideIntroData.setDataStore(pb.getDataStore());
         pb.addSubBehaviour(provideIntroData);
         //Add the Behaviour
+
+        //State machine for Response Info Section
+        FSMBehaviour responseInfoSection = new FSMBehaviour(this);
+        responseInfoSection.setDataStore(pb.getDataStore());
+        //create the instance of the first state action
+        ResponseRequestSectionInfo RRSI = new ResponseRequestSectionInfo(this);
+        RRSI.setDataStore(responseInfoSection.getDataStore());
+        responseInfoSection.registerFirstState(RRSI,"ResponseRequest");
+        RequestToExternalSyn RTES = new RequestToExternalSyn(this,timeHandlerOntology,codec);
+        RTES.setDataStore(responseInfoSection.getDataStore());
+        responseInfoSection.registerState(RTES,"RequestToExternal");
+        CheckForInfoInternally CFII = new CheckForInfoInternally(this,timeHandlerOntology,codec);
+        CFII.setDataStore(responseInfoSection.getDataStore());
+        responseInfoSection.registerState(CFII,"CheckInfoInternally");
+        responseInfoSection.registerLastState(new OneShotBehaviour() {
+            @Override
+            public void action() {
+
+            }
+        },"lastState");
+
+        responseInfoSection.registerTransition("ResponseRequest","ResponseRequest",0);
+        responseInfoSection.registerTransition("ResponseRequest","RequestToExternal",1);
+        responseInfoSection.registerTransition("ResponseRequest","CheckInfoInternally",2);
+        responseInfoSection.registerTransition("RequestToExternal","RequestToExternal",3);
+        responseInfoSection.registerTransition("RequestToExternal","ResponseRequest",4);
+        responseInfoSection.registerTransition("CheckInfoInternally","CheckInfoInternally",5);
+        responseInfoSection.registerTransition("CheckInfoInternally","ResponseRequest",6);
+        responseInfoSection.registerTransition("CheckInfoInternally","RequestToExternal",7);
+        responseInfoSection.registerTransition("ResponseRequest","lastState",8);
+
+        //Add the state to the parallel behavior
+
+        pb.addSubBehaviour(responseInfoSection);
         addBehaviour(pb);
 
 

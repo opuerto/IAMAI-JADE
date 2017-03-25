@@ -272,7 +272,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
             timeSignatureNumerator = NUMERATOR;
             timeSignatureDenominator = DENOMINATOR;
             tuneForm = FORM;
-
+     /*
             //set the chords for section A
             sectionAchords = new ArrayList();
             //Create the individual chords.
@@ -315,11 +315,61 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
             Cm7.setMajorOrMinor("M");
             Cm7.setExtension(7);
             sectionBchords.add(Cm7);
+                */
+
+            //New chords
+            //set the chords for section A
+            sectionAchords = new ArrayList();
+            ChordsAttributes F = new ChordsAttributes();
+            F.setRootPitch(F4);
+            F.setMajorOrMinor("M");
+            F.setExtension(0);
+            //Add them to the list of section A
+            sectionAchords.add(F);
+
+            ChordsAttributes Eb7 = new ChordsAttributes();
+            Eb7.setRootPitch(E4);
+            Eb7.setMajorOrMinor("Db");
+            Eb7.setExtension(7);
+            //Add them to the list of section A
+            sectionAchords.add(Eb7);
+
+            ChordsAttributes Db7 = new ChordsAttributes();
+            Db7.setRootPitch(D4);
+            Db7.setMajorOrMinor("Db");
+            Db7.setExtension(7);
+            //Add them to the list of section A
+            sectionAchords.add(Db7);
+
+            ChordsAttributes C7sus = new ChordsAttributes();
+            C7sus.setRootPitch(C4);
+            C7sus.setMajorOrMinor("Dsus");
+            C7sus.setExtension(7);
+            //Add them to the list of section A
+            sectionAchords.add(C7sus);
+
+            ChordsAttributes F2 = new ChordsAttributes();
+            F2.setRootPitch(F4);
+            F2.setMajorOrMinor("M");
+            F2.setExtension(0);
+            sectionAchords.add(F2);
+
+
+            //set the chords for section B
+            sectionBchords = new ArrayList();
+            //Create the individual chords for section B.
+            sectionBchords.add(Eb7);
+            sectionBchords.add(F);
+            sectionBchords.add(Eb7);
+            sectionBchords.add(Db7);
+            sectionBchords.add(C7sus);
+            sectionBchords.add(F);
+
 
             //set the chords for section C
             sectionCchords = new ArrayList();
             //Create the individual chords for section C.
-            sectionCchords.add(Cm7);
+            sectionCchords.add(F);
 
             //create instance of the object ScoreElements and set the object in the DataStore of the behaviour
             ScoreElements se = new ScoreElements();
@@ -350,7 +400,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
             }
         }*/
         public void action(){
-            System.out.println(getBehaviourName());
+            //System.out.println(getBehaviourName());
             //System.out.println(getDataStore().get("musicianList"));
 
         }

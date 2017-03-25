@@ -157,6 +157,10 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
             agent.removeBehaviour(fsmPlayHead);
             fsmPlayHead = null;
         }
+        if(transition == 32)
+        {
+            block(500);
+        }
         return transition;
     }
 
@@ -209,6 +213,10 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
         public int onEnd()
         {
             counter++;
+            if(transition == 0)
+            {
+                block(500);
+            }
             return transition;
         }
 
@@ -271,6 +279,10 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
         public int onEnd()
         {
             getInfoFirstTime++;
+            if (transition == 4)
+            {
+                block(500);
+            }
             return transition;
         }
 
@@ -409,6 +421,7 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
         protected void handleRefuse(ACLMessage refuse) {
             System.out.println("The agent "+refuse.getSender().getName() +" refuse");
             stateCheckIntroData = 1;
+
         }
 
         protected void handleNotUnderstood(ACLMessage notUnderstood) {
@@ -595,6 +608,7 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
             {
                 return true;
             }
+            block(500);
             return false;
         }
 
@@ -626,6 +640,7 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
                 requestMessage.setReplyWith(internalComposer.getLocalName()+System.currentTimeMillis());
                 requestMessage.addReceiver(internalComposer);
                 requestMessage.setContent(String.valueOf(calculateTimeLeft()));
+
 
                 agent.send(requestMessage);
 
@@ -673,6 +688,10 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
             public int onEnd()
             {
                 firstTimeHere++;
+                if (transition == 2)
+                {
+                    block(500);
+                }
                 return transition;
             }
         }

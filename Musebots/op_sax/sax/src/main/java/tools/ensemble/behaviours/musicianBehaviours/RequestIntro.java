@@ -118,6 +118,10 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
     public int onEnd() {
 
         counter++;
+        if (transition == 29)
+        {
+            block(500);
+        }
         return transition;
     } //Exit with the transition value to the corresponding state.
 

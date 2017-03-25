@@ -26,6 +26,7 @@ public class TimeHandler extends Ontology {
     public static final String CURRENT_SECTION = "accompanimentCurrentSection";
     public static final String SECTION_TIME_LEFT = "timeLeft";
     public static final String SECTION_INDEX = "sectionIndex";
+    public static final String SECTION_STARTED_AT = "sectionStartedAt";
 
 
     //concept
@@ -70,6 +71,9 @@ public class TimeHandler extends Ontology {
             cs.add(CURRENT_SECTION,(PrimitiveSchema)getSchema(BasicOntology.STRING), ObjectSchema.MANDATORY);
             cs.add(SECTION_TIME_LEFT,(PrimitiveSchema)getSchema(BasicOntology.DATE));
             cs.add(SECTION_INDEX,(PrimitiveSchema)getSchema(BasicOntology.INTEGER));
+            cs.add(SECTION_STARTED_AT,(PrimitiveSchema)getSchema(BasicOntology.DATE));
+
+
 
             cs = (ConceptSchema)getSchema(INTRO);
             cs.add(INTRO_LENGHT,(PrimitiveSchema)getSchema(BasicOntology.FLOAT), ObjectSchema.MANDATORY);
@@ -79,7 +83,7 @@ public class TimeHandler extends Ontology {
             cs.add(SONG_STARTED_AT,(PrimitiveSchema)getSchema(BasicOntology.FLOAT));
         }
         catch(OntologyException oe) {
-        oe.printStackTrace();
+            oe.printStackTrace();
         }
     }
 
