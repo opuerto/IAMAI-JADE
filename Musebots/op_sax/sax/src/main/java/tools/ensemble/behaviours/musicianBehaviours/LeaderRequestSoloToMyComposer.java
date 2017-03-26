@@ -7,6 +7,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.util.SynchList;
+import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStorteMusicians;
 
 /**
@@ -114,11 +115,13 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
             if(getDataStore().containsKey(INTERNAL_COMPOSER))
             {
                 internalComposer = (AID) getDataStore().get(INTERNAL_COMPOSER);
-
+                System.out.println("The internal composer "+internalComposer.getLocalName());
             }
+
+            System.out.println("The internal Composer "+internalComposer);
             requestMessage.addReceiver(internalComposer);
             requestMessage.setContent(String.valueOf(firstTimeSolo));
-            System.out.println("The internal composer "+internalComposer);
+
             //Wait until the intro finished
             if (getDataStore().containsKey(INTRO_DURATION) && getDataStore().containsKey(INTRO_TIMESTAMP))
             {

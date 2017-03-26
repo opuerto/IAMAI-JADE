@@ -6,6 +6,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jm.JMC;
 import jm.music.data.*;
+import jm.util.Play;
 import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStoreComposer;
 import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ChordsAttributes;
@@ -51,6 +52,7 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
         }*/
         if (firstTimeHere < 1 )
         {
+
             form = Musician.tuneForm;
             AccompanimentScore.setTempo(Musician.tempo);
 
@@ -62,7 +64,6 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
             System.out.println("Original queueSection "+queueSections);
             System.out.println("Original queueIndex "+queueSectionIndex);
 
-
         }
         if(getDataStore().containsKey(FROM_PLAY_TO_COMPOSE))
         {
@@ -70,6 +71,7 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
 
             if(getDataStore().containsKey(HOLD_COMPOSITION))
             {
+
                 //This is a flag that allows to avoid this process while we are playing a section
                 int hold = (Integer) getDataStore().get(HOLD_COMPOSITION);
                 //We set to zero this flat and will be trigger the process of play this composition in the next state

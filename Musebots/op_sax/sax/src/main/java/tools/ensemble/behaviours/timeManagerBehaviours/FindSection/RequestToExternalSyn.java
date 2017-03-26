@@ -30,7 +30,7 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
     private String form;
     private Ontology SynOnto;
     private Codec language;
-    private int firsSolo;
+   // private int firsSolo;
     private int sectionIndex;
     private String CurrentSection;
     private Date timeLeft;
@@ -55,11 +55,11 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
                 if (firstTimeHere < 1)
                 {
                     form = Musician.tuneForm;
-                    if (getDataStore().containsKey(FIRST_TIME_SOLO_IN_SYN))
+                   /* if (getDataStore().containsKey(FIRST_TIME_SOLO_IN_SYN))
                     {
                         firsSolo = (Integer) getDataStore().get(FIRST_TIME_SOLO_IN_SYN);
 
-                    }
+                    }*/
 
                     if(getDataStore().containsKey(TIME_MANAGER_LIST))
                     {
@@ -110,8 +110,9 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
                         timeLeft = ((Section) concept).getTimeLeft();
                         sectionStartedAt = ((Section) concept).getSectionStartedAt();
                     }
+                    state = 2;
 
-                    if(firsSolo == 1)
+                    /*if(firsSolo == 1)
                     {
                         //Check if the song is in the last section of the structure so we can start right at the beginning
                         int lastSectionIndex = form.length()-1;
@@ -148,7 +149,7 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
                     else // If is not the first solo to be play in the song then send the composer whatever it got from the external synchronizer
                     {
                         state = 2;
-                    }
+                    }*/
 
 
                 }else

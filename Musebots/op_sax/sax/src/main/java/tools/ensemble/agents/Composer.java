@@ -11,6 +11,10 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.wrapper.ControllerException;
+import jm.JMC;
+import jm.music.data.Note;
+import jm.music.data.Part;
+import jm.music.data.Phrase;
 import jm.music.data.Score;
 import jm.util.Play;
 import tools.ensemble.behaviours.ComposerBhaviours.accompaniment.ComposeAccompanimentBehaviour;
@@ -21,10 +25,7 @@ import tools.ensemble.behaviours.ComposerBhaviours.intro.ComposeIntro;
 import tools.ensemble.behaviours.ComposerBhaviours.intro.ComposerEndIntro;
 import tools.ensemble.behaviours.ComposerBhaviours.intro.ComposerPlayIntro;
 import tools.ensemble.behaviours.ComposerBhaviours.intro.ExpectingIntroRequest;
-import tools.ensemble.behaviours.ComposerBhaviours.solo.ConfirmToMusician;
-import tools.ensemble.behaviours.ComposerBhaviours.solo.GetInfoSectionFromSyn;
-import tools.ensemble.behaviours.ComposerBhaviours.solo.RequestInfoSectionToSyn;
-import tools.ensemble.behaviours.ComposerBhaviours.solo.ResponseSoloRequest;
+import tools.ensemble.behaviours.ComposerBhaviours.solo.*;
 import tools.ensemble.interfaces.ComposerStatesNames;
 import tools.ensemble.interfaces.DataStoreComposer;
 import tools.ensemble.interfaces.DataStorteMusicians;
@@ -40,7 +41,7 @@ import tools.ensemble.ontologies.timemanager.TimeHandler;
 /**
  * Created by OscarAlfonso on 2/22/2017.
  */
-public class Composer extends Agent implements MusicianStates,DataStorteMusicians,ComposerStatesNames,DataStoreComposer {
+public class Composer extends Agent implements MusicianStates,DataStorteMusicians,ComposerStatesNames,DataStoreComposer, JMC {
 
     //The  Ontologies
     private Codec codec = new SLCodec();
@@ -65,7 +66,7 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
     protected void setup()
     {
         //run the midi
-        Play.midi(new Score(),false,false,7,0);
+        Play.midi(new Score(),false,false,1,0);
 
         //
 
@@ -221,7 +222,10 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         ConfirmToMusician confirm = new ConfirmToMusician(this);
         confirm.setDataStore(soloFSM.getDataStore());
         soloFSM.registerState(confirm,STATE_CONFIRM_TO_MUSICIAN);
-        soloFSM.registerState(new TemporaryBehaviour(),STATE_COMPOSE_SOLO);
+
+        ComposeSoloBehaviour composeSoloBehaviour = new ComposeSoloBehaviour(this);
+        composeSoloBehaviour.setDataStore(soloFSM.getDataStore());
+        soloFSM.registerState(composeSoloBehaviour,STATE_COMPOSE_SOLO);
         soloFSM.registerState(new TemporaryBehaviour(),STATE_PLAY_SOLO);
         soloFSM.registerLastState(new TemporaryBehaviour(),STATE_END_SOLO);
 
@@ -234,15 +238,17 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         soloFSM.registerTransition(STATE_GET_INFO_SECTION,STATE_GET_INFO_SECTION,4);
         soloFSM.registerTransition(STATE_GET_INFO_SECTION,STATE_CONFIRM_TO_MUSICIAN,5);
         soloFSM.registerTransition(STATE_CONFIRM_TO_MUSICIAN,STATE_CONFIRM_TO_MUSICIAN,6);
+        soloFSM.registerTransition(STATE_CONFIRM_TO_MUSICIAN,STATE_COMPOSE_SOLO,7);
+        soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_COMPOSE_SOLO,8);
         //soloFSM.registerTransition(STATE_WAIT_FOR_SOLO_REQUEST,STATE_COMPOSE_SOLO,1);
         //soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_COMPOSE_SOLO,20);
-        soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_PLAY_SOLO,7);
-        soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_WAIT_FOR_SOLO_REQUEST,8);
-        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_COMPOSE_SOLO,9);
-        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_END_SOLO,10);
+        soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_PLAY_SOLO,9);
+        soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_WAIT_FOR_SOLO_REQUEST,10);
+        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_COMPOSE_SOLO,11);
+        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_END_SOLO,12);
 
         //example transition
-        soloFSM.registerTransition(STATE_CONFIRM_TO_MUSICIAN,STATE_END_SOLO,11);
+        soloFSM.registerTransition(STATE_CONFIRM_TO_MUSICIAN,STATE_END_SOLO,13);
 
         // Add the SoloFSM to the agent behaviour
         addBehaviour(soloFSM);
@@ -297,7 +303,7 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
 
     private class TemporaryBehaviour extends OneShotBehaviour {
                public void action(){
-            System.out.println("composer behaviour "+getBehaviourName());
+            System.out.println("composer behaviour and bye"+getBehaviourName());
 
 
         }

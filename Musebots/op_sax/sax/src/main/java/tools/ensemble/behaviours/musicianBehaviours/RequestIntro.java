@@ -35,7 +35,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
     //manage the exit of the state
     private int transition;
     //get the number of measure that will determines the lenght of the intro
-    private int numberOfMeasures = 4;
+    private int numberOfMeasures = 3;
     //Flag that check if was the first time in this state
     private int counter = 0;
     // a class that extend the contract-net initiator

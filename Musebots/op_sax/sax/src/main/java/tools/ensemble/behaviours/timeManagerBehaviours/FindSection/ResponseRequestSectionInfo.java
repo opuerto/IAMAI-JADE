@@ -36,7 +36,7 @@ public class ResponseRequestSectionInfo extends OneShotBehaviour implements Data
 
             if (firtSolo != 0)
             {
-                getDataStore().put(FIRST_TIME_SOLO_IN_SYN,firtSolo);
+                //getDataStore().put(FIRST_TIME_SOLO_IN_SYN,firtSolo);
                 transition = 1;
             }
             else

@@ -13,6 +13,7 @@ public class ConfirmToMusician extends OneShotBehaviour implements DataStoreComp
 
     private int transition = 6;
     private int firstTimeHere = 0;
+    private int holdComposition = 0;
     private AID internalMusician;
     public ConfirmToMusician(Agent a){
         super(a);
@@ -30,7 +31,16 @@ public class ConfirmToMusician extends OneShotBehaviour implements DataStoreComp
         confirm.setConversationId("request-solo-to-composer-Inform");
         confirm.addReceiver(internalMusician);
         myAgent.send(confirm);
-        transition = 11;
+        if(getDataStore().containsKey(HOLD_COMPOSITION))
+        {
+            getDataStore().remove(HOLD_COMPOSITION);
+            getDataStore().put(HOLD_COMPOSITION,holdComposition);
+        }
+        else
+        {
+            getDataStore().put(HOLD_COMPOSITION,holdComposition);
+        }
+        transition = 7;
     }
 
     public int onEnd()

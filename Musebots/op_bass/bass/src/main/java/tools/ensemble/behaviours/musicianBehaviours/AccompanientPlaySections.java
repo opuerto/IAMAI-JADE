@@ -422,6 +422,7 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
 
         protected void handleRefuse(ACLMessage refuse) {
             System.out.println("The agent "+refuse.getSender().getName() +" refuse");
+
             stateCheckIntroData = 1;
 
         }

@@ -8,6 +8,7 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.wrapper.ControllerException;
+import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStorteMusicians;
 
 import java.util.Vector;
@@ -101,8 +102,11 @@ public class GetMembers extends OneShotBehaviour implements DataStorteMusicians 
             for (int i=0; i<resultSearchComposer.length; i++)
             {
                 internalComposer = resultSearchComposer[i].getName();
+                System.out.println("the internal composer found was "+internalComposer);
             }
             getDataStore().put(INTERNAL_COMPOSER,internalComposer);
+
+
 
         }catch (FIPAException fe)
         {
@@ -113,7 +117,15 @@ public class GetMembers extends OneShotBehaviour implements DataStorteMusicians 
 
 
 
-        if(Musicians.isEmpty() || Musicians.size() < 4) //here was menor que 4
+        if(Musicians.isEmpty() || Musicians.size() < 2) //here was menor que 4
+        {
+            transition = 0;
+        }
+        else if(internalComposer.getLocalName().equals(""))
+        {
+            transition = 0;
+        }
+        else if(internalTimeManager.getLocalName().equals(""))
         {
             transition = 0;
         }

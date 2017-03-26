@@ -20,7 +20,7 @@ public class GetEveryTimeManager extends Behaviour implements DataStoreTimeManag
     private Agent agent;
     private Vector externalTimeManagerList = new Vector();
 
-    private int listLength = 3;
+    private int listLength = 2;
 
     public GetEveryTimeManager(Agent a)
     {

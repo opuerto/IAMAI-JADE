@@ -119,6 +119,14 @@ public class GetMembers extends OneShotBehaviour implements DataStorteMusicians 
         {
             transition = 0;
         }
+        else if(internalComposer.getLocalName().equals(""))
+        {
+            transition = 0;
+        }
+        else if(internalTimeManager.getLocalName().equals(""))
+        {
+            transition = 0;
+        }
         else if(leader)
         {
             //Setting a flag that we will use in the next state, so we can know if this is the first agent been leader.

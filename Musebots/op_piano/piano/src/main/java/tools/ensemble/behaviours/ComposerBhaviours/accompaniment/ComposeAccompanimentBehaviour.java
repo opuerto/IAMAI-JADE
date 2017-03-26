@@ -7,6 +7,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jm.JMC;
 import jm.music.data.*;
+import jm.util.Play;
 import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStoreComposer;
 import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ChordsAttributes;
@@ -55,6 +56,7 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
         }*/
         if (firstTimeHere < 1 )
         {
+
             form = Musician.tuneForm;
             AccompanimentScore.setTempo(Musician.tempo);
 
@@ -65,6 +67,7 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
             }
             System.out.println("Original queueSection "+queueSections);
             System.out.println("Original queueIndex "+queueSectionIndex);
+
 
         }
         if(getDataStore().containsKey(FROM_PLAY_TO_COMPOSE))
@@ -79,7 +82,6 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                 int holdPlay = 0;
                 if (hold < 1)
                 {
-
                     if(!queueSections.isEmpty()) {
 
 

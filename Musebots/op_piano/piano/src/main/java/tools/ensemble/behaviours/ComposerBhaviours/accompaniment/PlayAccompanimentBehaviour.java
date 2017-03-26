@@ -100,8 +100,13 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
 
     private void play()
     {
+
         accompanimentScore = (Score) getDataStore().get(ACCOMPANIMENT_SCORE);
-        Play.midi(accompanimentScore,false,false,3,0);
+        Play.midi(accompanimentScore,false,false,12,3);
+
+
+
+
         //View.print(accompanimentScore);
         sectionStartedAt = new Date();
         long timeStarted = sectionStartedAt.getTime();
