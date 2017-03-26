@@ -104,12 +104,14 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                         {
                             case 'A':
 
+                                AccompanimentScore.setTempo(Musician.tempo);
                                 AccompanimentScore.addPart(composeSectionA(snarePart.getTitle()));
                                 AccompanimentScore.addPart(composeSectionA(ridePart.getTitle()));
                                 break;
 
                             case 'B':
 
+                                AccompanimentScore.setTempo(Musician.tempo);
                                 AccompanimentScore.addPart(composeSectionB(snarePart.getTitle()));
                                 AccompanimentScore.addPart(composeSectionB(ridePart.getTitle()));
                                 break;
@@ -148,12 +150,13 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                         {
                             case 'A':
                             {
-
+                                AccompanimentScore.setTempo(Musician.tempo);
                                 AccompanimentScore.addPart(composeSectionA(snarePart.getTitle()));
                                 AccompanimentScore.addPart(composeSectionA(ridePart.getTitle()));
                                 break;
                             }
                             case 'B':
+                                AccompanimentScore.setTempo(Musician.tempo);
                                 AccompanimentScore.addPart(composeSectionB(snarePart.getTitle()));
                                 AccompanimentScore.addPart(composeSectionB(ridePart.getTitle()));
                                 break;

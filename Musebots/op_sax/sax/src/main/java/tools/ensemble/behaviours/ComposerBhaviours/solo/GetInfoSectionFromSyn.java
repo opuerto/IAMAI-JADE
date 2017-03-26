@@ -5,12 +5,15 @@ import jade.content.ContentElement;
 import jade.content.lang.Codec;
 import jade.content.onto.OntologyException;
 import jade.content.onto.basic.Action;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import tools.ensemble.interfaces.DataStoreComposer;
 import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Section;
+
+import java.security.acl.Acl;
 
 /**
  * Created by OscarAlfonso on 3/25/2017.
@@ -25,6 +28,8 @@ public class GetInfoSectionFromSyn extends OneShotBehaviour implements DataStore
     );
     //store the message that was sent by the musician In the previous state
     ACLMessage previousMusicianMessage;
+    //
+    private AID internalMusician;
     //Section Instance
     Section se = new Section();
 
@@ -37,7 +42,10 @@ public class GetInfoSectionFromSyn extends OneShotBehaviour implements DataStore
     {
         if (firstTimeHere < 1)
         {
-
+            if (getDataStore().containsKey(INTERNAL_MUSICIAN_AID))
+            {
+                internalMusician = (AID) getDataStore().get(INTERNAL_MUSICIAN_AID);
+            }
         }
 
         ACLMessage getInfoSection = myAgent.receive(mt1);
@@ -70,6 +78,7 @@ public class GetInfoSectionFromSyn extends OneShotBehaviour implements DataStore
                     getDataStore().put(SECTION_INSTANCE_FOR_SYN_SOLO,se);
                 }
             }
+            transition = 5;
 
         }else
         {

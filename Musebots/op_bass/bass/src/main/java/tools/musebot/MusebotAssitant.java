@@ -14,6 +14,7 @@ import de.sciss.net.OSCServer;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.*;
+import tools.ensemble.agents.Musician;
 
 public class MusebotAssitant extends Agent implements OSCListener {
     OSCServer server;
@@ -65,6 +66,19 @@ public class MusebotAssitant extends Agent implements OSCListener {
         {
             //Kill the agent stage
             doDelete();
+        }
+        else if(msg.getName().equals("/mc/time")) {
+            float tempo = (Float)msg.getArg(0);
+            int tickCount = (Integer)msg.getArg(1);
+            int t = tickCount;
+            double tm = (double)tempo;
+
+            if(t % 16 == 0 && tm != Musician.tempo)
+            {
+                Musician.tempo = (int) tm;
+                System.out.println("new tempo "+Musician.tempo);
+            }
+
         }
 
     }

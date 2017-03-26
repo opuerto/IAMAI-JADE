@@ -130,12 +130,12 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
                             //will take until the current section is finish
                             long now = System.currentTimeMillis();
                             long timeElapsed = now - sectionStartedAt.getTime();
-                            System.out.println("the elapsed time is "+timeElapsed);
+                            //System.out.println("the elapsed time is "+timeElapsed);
                             long leftTime = timeLeft.getTime() - timeElapsed;
-                            System.out.println("the time left in section "+CurrentSection+ " is "+leftTime);
+                            //System.out.println("the time left in section "+CurrentSection+ " is "+leftTime);
                             if(leftTime > 0)
                             {
-                                myAgent.doWait(leftTime);
+                                block(leftTime);
                             }
 
                             //make sure that the next time first time is set to zero
@@ -183,10 +183,6 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
     public int onEnd()
     {
         firstTimeHere++;
-        if(firstTimeHere == 0)
-        {
-            System.out.println(firstTimeHere);
-        }
 
         if (transition == 3)
         {

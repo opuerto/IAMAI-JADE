@@ -65,12 +65,23 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
             HandleAgreeBehaviour handleAgreeBehaviour = new HandleAgreeBehaviour();
             handleAgreeBehaviour.setDataStore(getDataStore());
             requestSolo.registerState(handleAgreeBehaviour,HANDLE_AGREE);
-            requestSolo.registerLastState(new tempClass(),HANDLE_CONFIRM);
+
+            requestHandleConfirm HandleConfirm = new requestHandleConfirm();
+            HandleConfirm.setDataStore(getDataStore());
+            requestSolo.registerState(HandleConfirm,HANDLE_CONFIRM);
+            requestSolo.registerLastState(new OneShotBehaviour() {
+                @Override
+                public void action() {
+                    System.out.println("Last State in requestSolo State machine");
+                }
+            },"LastState");
 
             //Register the transitions
             requestSolo.registerTransition(REQUEST_PLAY,HANDLE_AGREE,0);
             requestSolo.registerTransition(HANDLE_AGREE,HANDLE_AGREE,2);
             requestSolo.registerTransition(HANDLE_AGREE,HANDLE_CONFIRM,3);
+            requestSolo.registerTransition(HANDLE_CONFIRM,HANDLE_CONFIRM,4);
+            requestSolo.registerTransition(HANDLE_CONFIRM,"LastState",5);
 
 
             agent.addBehaviour(requestSolo);
@@ -186,6 +197,7 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
     private class requestHandleConfirm extends OneShotBehaviour
     {
 
+        private int transiton= 4;
         private MessageTemplate mt1 = MessageTemplate.and(MessageTemplate.MatchConversationId("request-solo-to-composer-Inform"),
                 MessageTemplate.MatchPerformative(ACLMessage.INFORM)
         );
@@ -197,11 +209,13 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
 
         public void action()
         {
-            mt1Andmt2 = MessageTemplate.and(mt1,MessageTemplate.MatchInReplyTo(replyAgree.getReplyWith()));
-            ACLMessage inform = agent.receive(mt1Andmt2);
+            //System.out.println("FUCKKK");
+            //mt1Andmt2 = MessageTemplate.and(mt1,MessageTemplate.MatchInReplyTo(replyAgree.getReplyWith()));
+            //System.out.println("reply with "+replyAgree.getReplyWith());
+            ACLMessage inform = agent.receive(mt1);
             if(inform != null)
             {
-                System.out.println("The agent informed it will play");
+                System.out.println("The agent informed it will play the solo");
                 //Send the state compose of the FSM inside the accompanimentPlaySection to the end state.
                 transitionParentBehaviour = 80;
                 //Stop the simple behaviour that is the parent of this fsm
@@ -210,6 +224,15 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
 
 
 
+        }
+
+        public int onEnd()
+        {
+            if(transiton == 4)
+            {
+                block(500);
+            }
+            return transiton;
         }
 
 

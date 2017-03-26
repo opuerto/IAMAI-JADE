@@ -44,6 +44,7 @@ public class ResponseSoloRequest extends OneShotBehaviour implements DataStoreCo
         ACLMessage replyRequest = myAgent.receive(mt1);
         if(replyRequest != null)
         {
+            getDataStore().put(INTERNAL_MUSICIAN_AID,replyRequest.getSender());
             System.out.println("I got the request");
             if(getDataStore().containsKey(COMPOSER_MY_INTERNAL_SYNCHRONIZER))
             {
@@ -60,11 +61,11 @@ public class ResponseSoloRequest extends OneShotBehaviour implements DataStoreCo
             if(getDataStore().containsKey(CURRENT_MESSAGE_FOR_MUSICIAN))
             {
                 getDataStore().remove(CURRENT_MESSAGE_FOR_MUSICIAN);
-                getDataStore().put(CURRENT_MESSAGE_FOR_MUSICIAN,replyToMusician);
+                getDataStore().put(CURRENT_MESSAGE_FOR_MUSICIAN,replyRequest);
             }
             else
             {
-                getDataStore().put(CURRENT_MESSAGE_FOR_MUSICIAN,replyToMusician);
+                getDataStore().put(CURRENT_MESSAGE_FOR_MUSICIAN,replyRequest);
             }
             transition = 1;
 

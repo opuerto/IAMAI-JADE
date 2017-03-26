@@ -102,11 +102,12 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                                 switch (s) {
                                     case 'A':
 
+                                        AccompanimentScore.setTempo(Musician.tempo);
                                         AccompanimentScore.addPart(composeSectionA());
                                         break;
 
                                     case 'B':
-
+                                        AccompanimentScore.setTempo(Musician.tempo);
                                         AccompanimentScore.addPart(composeSectionB());
                                         break;
                                 }
@@ -143,10 +144,12 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                             case 'A':
                             {
 
+                                AccompanimentScore.setTempo(Musician.tempo);
                                 AccompanimentScore.addPart(composeSectionA());
                                 break;
                             }
                             case 'B':
+                                AccompanimentScore.setTempo(Musician.tempo);
                                 AccompanimentScore.addPart(composeSectionB());
                                 break;
                         }
