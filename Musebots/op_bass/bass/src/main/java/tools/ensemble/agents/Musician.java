@@ -162,7 +162,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         fsm.registerTransition(STATE_GET_STRUCTURE,STATE_INTRO,6);
         fsm.registerTransition(STATE_INTRO,STATE_INTRO,8);
         fsm.registerTransition(STATE_INTRO,STATE_PLAY_HEAD,7);
-        fsm.registerTransition(STATE_PLAY_HEAD,STATE_PLAY_HEAD,32);
+        fsm.registerTransition(STATE_PLAY_HEAD,STATE_PLAY_HEAD,40);
         fsm.registerTransition(STATE_PLAY_HEAD,STATE_ACCEPT_ACCOMPANIMENT,9);
 
 

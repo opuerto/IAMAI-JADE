@@ -58,15 +58,28 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
     FSMBehaviour soloFSM;
     FSMBehaviour accompaniementFSM;
 
+
+
     //The instance of the objects on the ontology
     public IntroConcepts introConceptsIntance = new IntroConcepts();
     public SoloConcepts soloConceptsInstance = new SoloConcepts();
     public AccompanimentConcepts accConcept = new AccompanimentConcepts();
+    //Rules for compose and perform solo
+    public static int holdSoloComposition = 0;
+    public static int holdSoloPlayback = 0;
+    public static int NextSectionSoloIndex = 0;
+    public static Character NextSectionSoloCharacter = 0;
+    public static Long timeLeftInCurrentsection = null;
+    public static int measuresCounter = 0;
+    public static int firstTimePlayingSolo = 0;
+    //Score for the Solo
+    public static Score SoloSaxScore = new Score("Sax Solo Score");
+
 
     protected void setup()
     {
         //run the midi
-        Play.midi(new Score(),false,false,1,0);
+        Play.midi(new Score(),false,false,1,1);
 
         //
 
@@ -226,7 +239,10 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         ComposeSoloBehaviour composeSoloBehaviour = new ComposeSoloBehaviour(this);
         composeSoloBehaviour.setDataStore(soloFSM.getDataStore());
         soloFSM.registerState(composeSoloBehaviour,STATE_COMPOSE_SOLO);
-        soloFSM.registerState(new TemporaryBehaviour(),STATE_PLAY_SOLO);
+
+        PlaySoloBehaviour playSoloBehaviour = new PlaySoloBehaviour(this,timeHandlerOntology,codec);
+        playSoloBehaviour.setDataStore(soloFSM.getDataStore());
+        soloFSM.registerState(playSoloBehaviour,STATE_PLAY_SOLO);
         soloFSM.registerLastState(new TemporaryBehaviour(),STATE_END_SOLO);
 
         //Register Transitions
@@ -240,15 +256,20 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         soloFSM.registerTransition(STATE_CONFIRM_TO_MUSICIAN,STATE_CONFIRM_TO_MUSICIAN,6);
         soloFSM.registerTransition(STATE_CONFIRM_TO_MUSICIAN,STATE_COMPOSE_SOLO,7);
         soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_COMPOSE_SOLO,8);
+        soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_WAIT_FOR_SOLO_REQUEST,18);
         //soloFSM.registerTransition(STATE_WAIT_FOR_SOLO_REQUEST,STATE_COMPOSE_SOLO,1);
         //soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_COMPOSE_SOLO,20);
         soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_PLAY_SOLO,9);
-        soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_WAIT_FOR_SOLO_REQUEST,10);
-        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_COMPOSE_SOLO,11);
-        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_END_SOLO,12);
+        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_PLAY_SOLO,10);
+        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_COMPOSE_SOLO,12);
+        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_REQUEST_INFO_SECTION,13);
+        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_WAIT_FOR_SOLO_REQUEST,17);
+        soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_WAIT_FOR_SOLO_REQUEST,14);
+        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_COMPOSE_SOLO,15);
+        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_END_SOLO,16);
 
         //example transition
-        soloFSM.registerTransition(STATE_CONFIRM_TO_MUSICIAN,STATE_END_SOLO,13);
+        soloFSM.registerTransition(STATE_CONFIRM_TO_MUSICIAN,STATE_END_SOLO,17);
 
         // Add the SoloFSM to the agent behaviour
         addBehaviour(soloFSM);

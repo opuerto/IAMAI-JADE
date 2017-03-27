@@ -140,10 +140,11 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
         switch (step)
         {
             case 0:
-                transition = 32;
+                transition = 40;
                 break;
             case 1:
-                transition = 9;
+
+                transition = 20;
         }
 
 
@@ -152,12 +153,12 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
     public int onEnd()
     {
         firstTimeAction++;
-        if (transition == 9)
+      /*  if (transition == 20)
         {
             agent.removeBehaviour(fsmPlayHead);
             fsmPlayHead = null;
-        }
-        if(transition == 32)
+        }*/
+        if(transition == 40)
         {
             block(500);
         }
@@ -591,12 +592,20 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
                 requestHandleConfirm handleConfirmBehavior = new requestHandleConfirm();
                 handleConfirmBehavior.setDataStore(getDataStore());
                 requestAccompaniment.registerLastState(handleConfirmBehavior,HANDLE_CONFIRM);
+                requestAccompaniment.registerLastState(new OneShotBehaviour() {
+                    @Override
+                    public void action() {
+                        System.out.println("Last State in requestSolo State machine");
+                    }
+                },"LastState");
 
                 //Transition
 
                 requestAccompaniment.registerTransition(REQUEST_PLAY,HANDLE_AGREE,0);
                 requestAccompaniment.registerTransition(HANDLE_AGREE,HANDLE_AGREE,2);
                 requestAccompaniment.registerTransition(HANDLE_AGREE,HANDLE_CONFIRM,3);
+                requestAccompaniment.registerTransition(HANDLE_CONFIRM,HANDLE_CONFIRM,4);
+                requestAccompaniment.registerTransition(HANDLE_CONFIRM,"LastState",5);
 
                 agent.addBehaviour(requestAccompaniment);
 
@@ -686,8 +695,10 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
                     replyAgreeToComposer.setReplyWith(replyAgree.getSender().getLocalName()+System.currentTimeMillis());
                     replyAgree.setReplyWith(replyAgreeToComposer.getReplyWith());
                     agent.send(replyAgreeToComposer);
+                    //Send the state compose of the FSM inside the accompanimentPlaySection to the end state.
+                    stateComposeSections = 1;
                     transition = 3;
-                }else{block();}
+                }
             }
 
             public int onEnd()
@@ -708,6 +719,7 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
                     MessageTemplate.MatchPerformative(ACLMessage.INFORM)
                     );
             private MessageTemplate mt1Andmt2;
+            private int transition = 4;
             public requestHandleConfirm()
             {
                 super(agent);
@@ -715,19 +727,29 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
 
             public void action()
             {
+                System.out.println("Confirm handle");
                 mt1Andmt2 = MessageTemplate.and(mt1,MessageTemplate.MatchInReplyTo(replyAgree.getReplyWith()));
-                ACLMessage inform = agent.receive(mt1Andmt2);
+                ACLMessage inform = agent.receive(mt1);
                 if(inform != null)
                 {
+
                     System.out.println("The agent informed it will play");
-                    //Send the state compose of the FSM inside the accompanimentPlaySection to the end state.
-                    stateComposeSections = 1;
+
+                    transition = 5;
                     //Stop the simple behaviour that is the parent of this fsm
                     goOut = true;
                 }else{block();}
 
 
 
+            }
+            public int onEnd()
+            {
+                if (transition ==4)
+                {
+                    block(500);
+                }
+                return transition;
             }
 
 

@@ -6,6 +6,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import sun.swing.plaf.synth.SynthIcon;
+import tools.ensemble.agents.Composer;
 import tools.ensemble.interfaces.DataStoreComposer;
 
 /**
@@ -29,11 +30,12 @@ public class ResponseAccompanimentRequest extends OneShotBehaviour implements Da
         ACLMessage replyRequest = myAgent.receive(mt1);
         if(replyRequest != null)
         {
-
+            getDataStore().put(INTERNAL_MUSICIAN_AID,replyRequest.getSender());
             //Get the time left on the intro.
             long introTimeLeft = Long.parseLong(replyRequest.getContent());
             //Store it in the vector for share it with the next state.
-            getDataStore().put(PLAY_TIME_LEFT,introTimeLeft);
+            //getDataStore().put(PLAY_TIME_LEFT,introTimeLeft);
+            Composer.sectionPlayLeft = introTimeLeft;
             //Create the message for the reply to the musician.
             ACLMessage replyRequestToMusician = replyRequest.createReply();
             replyRequestToMusician.setConversationId("request-accompaniment-conversation-AGREE");

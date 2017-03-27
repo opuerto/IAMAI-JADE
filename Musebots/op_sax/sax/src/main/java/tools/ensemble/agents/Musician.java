@@ -54,6 +54,9 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
     public static List sectionBchords;
     public static List sectionCchords;
 
+    public static AID lastMusicianIpassedTheLeadership = null;
+
+
 
 
 
@@ -108,6 +111,9 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         LRSTC.setDataStore(fsm.getDataStore());
         fsm.registerState(LRSTC,STATE_REQUEST_SOLO);
 
+        PassLeadToAccomBehaviour passLead = new PassLeadToAccomBehaviour(this);
+        passLead.setDataStore(fsm.getDataStore());
+        fsm.registerState(passLead,STATE_PASS_LEAD);
 
 
         fsm.registerLastState(new TemporaryBehaviour(),STATE_SILENT);
@@ -155,7 +161,8 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         //Transition to request the solo
         fsm.registerTransition(STATE_LEADER,STATE_REQUEST_SOLO,11);
         fsm.registerTransition(STATE_REQUEST_SOLO,STATE_REQUEST_SOLO,30);
-        fsm.registerTransition(STATE_REQUEST_SOLO,STATE_SILENT,50);
+        fsm.registerTransition(STATE_REQUEST_SOLO,STATE_PASS_LEAD,12);
+        fsm.registerTransition(STATE_PASS_LEAD,STATE_PASS_LEAD,34);
 
         /*fsm.registerTransition(STATE_SHARE_STRUCTURE,STATE_REQUEST_INTRO,4);
         fsm.registerTransition(STATE_REFUSE_INTRO,STATE_LEADER,17);

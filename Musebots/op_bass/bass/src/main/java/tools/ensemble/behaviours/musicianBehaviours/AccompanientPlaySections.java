@@ -140,7 +140,7 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
         switch (step)
         {
             case 0:
-                transition = 32;
+                transition = 40;
                 break;
             case 1:
                 transition = 9;
@@ -157,7 +157,7 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
             agent.removeBehaviour(fsmPlayHead);
             fsmPlayHead = null;
         }
-        if(transition == 32)
+        if(transition == 40)
         {
             block(500);
         }

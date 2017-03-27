@@ -119,6 +119,11 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         //Register the state
         fsm.registerState(playSections, STATE_PLAY_SECTIONS);
 
+        //Wait to lead
+        WaitToGetLead getLead = new WaitToGetLead(this);
+        getLead.setDataStore(fsm.getDataStore());
+        fsm.registerState(getLead,STATE_WAITING_LEADERSHIP);
+
         fsm.registerLastState(new TemporaryBehaviour(),STATE_ACCEPT_ACCOMPANIMENT);
        /* fsm.registerState(new TemporaryBehaviour(),STATE_LEADER);
         fsm.registerState(new TemporaryBehaviour(),STATE_REQUEST_SOLO);
@@ -164,8 +169,11 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         fsm.registerTransition(STATE_GET_STRUCTURE,STATE_INTRO,6);
         fsm.registerTransition(STATE_INTRO,STATE_INTRO,8);
         fsm.registerTransition(STATE_INTRO, STATE_PLAY_SECTIONS,7);
-        fsm.registerTransition(STATE_PLAY_SECTIONS, STATE_PLAY_SECTIONS,32);
-        fsm.registerTransition(STATE_PLAY_SECTIONS,STATE_ACCEPT_ACCOMPANIMENT,9);
+        fsm.registerTransition(STATE_PLAY_SECTIONS, STATE_PLAY_SECTIONS,40);
+        fsm.registerTransition(STATE_PLAY_SECTIONS, STATE_WAITING_LEADERSHIP,20);
+        fsm.registerTransition(STATE_WAITING_LEADERSHIP, STATE_WAITING_LEADERSHIP,37);
+
+        //fsm.registerTransition(STATE_PLAY_SECTIONS,STATE_ACCEPT_ACCOMPANIMENT,9);
 
 
         /*fsm.registerTransition(STATE_SHARE_STRUCTURE,STATE_REQUEST_INTRO,4);

@@ -102,7 +102,7 @@ public class GetMembers extends OneShotBehaviour implements DataStorteMusicians 
             for (int i=0; i<resultSearchComposer.length; i++)
             {
                 internalComposer = resultSearchComposer[i].getName();
-                System.out.println("the internal composer found was "+internalComposer);
+                //System.out.println("the internal composer found was "+internalComposer);
             }
             getDataStore().put(INTERNAL_COMPOSER,internalComposer);
 

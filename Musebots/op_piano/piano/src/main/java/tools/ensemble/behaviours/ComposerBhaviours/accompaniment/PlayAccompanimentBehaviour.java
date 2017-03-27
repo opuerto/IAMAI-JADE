@@ -16,6 +16,7 @@ import jade.lang.acl.ACLMessage;
 import jade.wrapper.ControllerException;
 import jm.music.data.Score;
 import jm.util.Play;
+import tools.ensemble.agents.Composer;
 import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStoreComposer;
 import tools.ensemble.interfaces.DataStoreTimeManager;
@@ -48,13 +49,16 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
 
     public void action()
     {
-        if(getDataStore().containsKey(HOLD_PLAYBACK))
+        if(Composer.holdPlay < 1)
         {
-            int holdPlay = (Integer) getDataStore().get(HOLD_PLAYBACK);
+            //int holdPlay = (Integer) getDataStore().get(HOLD_PLAYBACK);
+            int holdPlay = Composer.holdPlay ;
             if(holdPlay < 1)
             {
-                theSection = (Character) getDataStore().get(NEXT_SECTION_TO_PLAY);
-                theIndexSection = (Integer) getDataStore().get(NEXT_SECTION_INDEX);
+                //theSection = (Character) getDataStore().get(NEXT_SECTION_TO_PLAY);
+                //theIndexSection = (Integer) getDataStore().get(NEXT_SECTION_INDEX);
+                theSection = Composer.NextsectionCharacter;
+                theIndexSection = Composer.NextsectionIndex;
                 System.out.println("play after head");
                 System.out.println("next section "+theSection);
                 //PlayScore play = new PlayScore((Long) getDataStore().get(PLAY_TIME_LEFT), (Score) getDataStore().get(ACCOMPANIMENT_SCORE),section,sIndex);
@@ -65,12 +69,15 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
                 Send the agent to sleep until the current section played end.
                 */
 
-               myAgent.doWait((Long) getDataStore().get(PLAY_TIME_LEFT));
+               //myAgent.doWait((Long) getDataStore().get(PLAY_TIME_LEFT));
+                myAgent.doWait(Composer.sectionPlayLeft);
                 //Call the function that play and calculate the lenght of the section
+
                play();
-                holdPlay = 1;
-                getDataStore().remove(HOLD_PLAYBACK);
-                getDataStore().put(HOLD_PLAYBACK,holdPlay);
+                //holdPlay = 1;
+                Composer.holdPlay = 1;
+                //getDataStore().remove(HOLD_PLAYBACK);
+                //getDataStore().put(HOLD_PLAYBACK,holdPlay);
                 transition = 6;
             }
         }
@@ -101,9 +108,12 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
     private void play()
     {
 
-        accompanimentScore = (Score) getDataStore().get(ACCOMPANIMENT_SCORE);
-        Play.midi(accompanimentScore,false,false,12,3);
+        //accompanimentScore = (Score) getDataStore().get(ACCOMPANIMENT_SCORE);
+        accompanimentScore = Composer.accompanimentScore;
 
+            Play.midi(Composer.accompanimentScore,false,false,2,0);
+        System.out.println("TIMESTAMP START PLAYING NOW = "+System.currentTimeMillis());
+            Composer.measureCounter++;
 
 
 
@@ -123,18 +133,20 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
 
         long timeLeft = (long) (lengthOfSection - transcurrentTime);
         System.out.println("time left: "+timeLeft);
-        getDataStore().remove(PLAY_TIME_LEFT);
-        getDataStore().put(PLAY_TIME_LEFT,timeLeft);
-        if(getDataStore().containsKey(FROM_PLAY_TO_COMPOSE))
+        System.out.println("the tempo "+ Musician.tempo);
+        //getDataStore().remove(PLAY_TIME_LEFT);
+        //getDataStore().put(PLAY_TIME_LEFT,timeLeft);
+        Composer.sectionPlayLeft = timeLeft;
+       /* if(getDataStore().containsKey(FROM_PLAY_TO_COMPOSE))
         {
             getDataStore().remove(FROM_PLAY_TO_COMPOSE);
             getDataStore().put(FROM_PLAY_TO_COMPOSE,true);
         }else
         {
             getDataStore().put(FROM_PLAY_TO_COMPOSE,true);
-        }
+        }*/
 
-        if(getDataStore().containsKey(HOLD_COMPOSITION))
+       /* if(getDataStore().containsKey(HOLD_COMPOSITION))
         {
             getDataStore().remove(HOLD_COMPOSITION);
             int holdComposition = 0;
@@ -144,7 +156,8 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
         {
             int holdComposition = 0;
             getDataStore().put(HOLD_COMPOSITION,holdComposition);
-        }
+        }*/
+        Composer.holdComposition = 0;
         //send the message to the synchronizer
         UpdateTheSynWithSectionInfo(theSection,timeLeft,theIndexSection);
     }

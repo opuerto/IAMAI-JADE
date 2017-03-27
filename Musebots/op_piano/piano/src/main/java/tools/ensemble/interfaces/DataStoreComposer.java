@@ -44,4 +44,19 @@ public interface DataStoreComposer {
     //Save the info about the sections sent by the syn, that we will use to play the solo.
    public static final String SECTION_INSTANCE_FOR_SYN_SOLO = "sectionInstanceForSyncSolo";
 
+ //Save the internal Musician ID
+ public static final String INTERNAL_MUSICIAN_AID = "internalMusicianID";
+
+ //Store if is the first solo played in the sond
+ public static final String FIRST_TIME_SOLO = "firstTimeSolo";
+
+
+ //Store current message from musician
+ public static final String CURRENT_MESSAGE_FOR_MUSICIAN = "currentMessageFromMusician";
+
+ //Store current message from musician
+ public static final String CURRENT_MESSAGE_FOR_SYN = "currentMessageFromSyn";
+
+
+
 }

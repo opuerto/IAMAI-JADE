@@ -212,7 +212,7 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
 
         public void action()
         {
-            //System.out.println("FUCKKK");
+
             //mt1Andmt2 = MessageTemplate.and(mt1,MessageTemplate.MatchInReplyTo(replyAgree.getReplyWith()));
             //System.out.println("reply with "+replyAgree.getReplyWith());
             ACLMessage inform = agent.receive(mt1);
@@ -220,7 +220,7 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
             {
                 System.out.println("The agent informed it will play the solo");
                 //Send the state compose of the FSM inside the accompanimentPlaySection to the end state.
-                transitionParentBehaviour = 80;
+                transitionParentBehaviour = 12;
                 //Stop the simple behaviour that is the parent of this fsm
 
             }else{block();}

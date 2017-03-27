@@ -44,9 +44,26 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
     private Ontology musicianOntology = MusicianOntology.getInstance();
     private Ontology timeHandlerOntology = TimeHandler.getInstance();
     private Ontology composerOntology = ComposerOntology.getInstance();
+
     // The Internal Time Manager
     private AID internalTimeManager = new AID();
 
+    //Rules to be used during composing and performing
+    public static int holdComposition = 0;
+    public static int holdPlay = 0;
+    public static int NextsectionIndex;
+    public static Character NextsectionCharacter;
+    public static Long sectionPlayLeft;
+    public static int measureCounter = 0;
+    public static int firstTimePlayingSolo = 0;
+    public static int holdSoloComposition = 0;
+    public static int holdSoloPlayback = 0;
+    public static int NextSectionSoloIndex = 0;
+    public static Character NextSectionSoloCharacter = 0;
+    public static Long timeLeftInCurrentsection = null;
+    public static Score SoloPianoScore = new Score("Piano Solo Score");
+
+    public static Score accompanimentScore = new Score("Accompaniment Piano");
 
     //Finite state machines objects declaration
     FSMBehaviour introFSM;
@@ -61,7 +78,7 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
     protected void setup()
     {
         //run the midi
-        Play.midi(new Score(),false,false,12,0);
+        Play.midi(new Score(),false,false,2,0);
 
         //
 

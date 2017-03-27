@@ -58,10 +58,19 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
     public SoloConcepts soloConceptsInstance = new SoloConcepts();
     public AccompanimentConcepts accConcept = new AccompanimentConcepts();
 
+    //Rules to be used during composing and performing
+    public static int holdComposition = 0;
+    public static int holdPlay = 0;
+    public static int NextsectionIndex;
+    public static Character NextsectionCharacter;
+    public static Long sectionPlayLeft;
+    public static int measureCounter = 0;
+
+    public static Score accompanimentScore = new Score("Accompaniment Bass");
     protected void setup()
     {
         //run the midi
-        Play.midi(new Score(),false,false,6,0);
+        Play.midi(new Score(),false,false,3,0);
 
         //
 

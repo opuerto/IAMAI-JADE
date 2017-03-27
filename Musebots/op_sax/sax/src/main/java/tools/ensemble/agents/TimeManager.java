@@ -7,6 +7,7 @@ import jade.core.Agent;
 import jade.core.behaviours.FSMBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.ParallelBehaviour;
+import jade.core.behaviours.TickerBehaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -15,6 +16,11 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.wrapper.ControllerException;
+import jm.JMC;
+import jm.music.data.Part;
+import jm.music.data.Phrase;
+import jm.music.data.Score;
+import jm.util.Write;
 import tools.ensemble.behaviours.timeManagerBehaviours.*;
 import tools.ensemble.behaviours.timeManagerBehaviours.FindSection.CheckForInfoInternally;
 import tools.ensemble.behaviours.timeManagerBehaviours.FindSection.RequestToExternalSyn;
@@ -29,7 +35,7 @@ import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Song;
 /**
  * Created by OscarAlfonso on 1/29/2017.
  */
-public class TimeManager extends Agent implements DataStoreTimeManager {
+public class TimeManager extends Agent implements DataStoreTimeManager, JMC {
 
     private Codec codec = new SLCodec();
     private Ontology timeHandlerOntology = TimeHandler.getInstance();
@@ -38,6 +44,10 @@ public class TimeManager extends Agent implements DataStoreTimeManager {
     private Section dataSection = new Section();
     private Intro dataIntro = new Intro();
     private Song dataSong = new Song();
+    public static Score MainScore = new Score();
+    public static Phrase MainPhrase = new Phrase();
+    public static Part SAXPART = new Part("SAX PART",SAXOPHONE,5);
+    public static long alive = System.currentTimeMillis();
 
     protected void setup()
     {
@@ -50,6 +60,22 @@ public class TimeManager extends Agent implements DataStoreTimeManager {
 
         //Register the parallel behaviour
         registerParallelBehaviour();
+
+        /*addBehaviour(new TickerBehaviour(this,30000) {
+            @Override
+            protected void onTick() {
+                long now = System.currentTimeMillis();
+
+                if ((now - alive) > 40000)
+                {
+                    System.out.println("SAVE SCORE");
+                    MainScore.setTempo(Musician.tempo);
+                    SAXPART.addPhrase(MainPhrase);
+                    MainScore.addPart(SAXPART);
+                    Write.midi(MainScore,"SaxScore.mid");
+                }
+            }
+        });*/
 
     }
 

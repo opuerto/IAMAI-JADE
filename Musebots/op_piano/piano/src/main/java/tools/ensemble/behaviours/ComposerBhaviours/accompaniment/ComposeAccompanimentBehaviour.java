@@ -8,6 +8,7 @@ import jade.lang.acl.MessageTemplate;
 import jm.JMC;
 import jm.music.data.*;
 import jm.util.Play;
+import tools.ensemble.agents.Composer;
 import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStoreComposer;
 import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ChordsAttributes;
@@ -29,7 +30,8 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
     );
    // private MessageTemplate mt1andmt2;
 
-    private Score AccompanimentScore = new Score("Accompaniment Score");
+    //private Score AccompanimentScore = new Score("Accompaniment Score");
+
     private Phrase AccompanimentPhrase = new Phrase("Accompaniment Phrase");
     private Part AccompanimentPianoPart = new Part("Accompaniment Piano",PIANO,2);
     private String form;
@@ -58,7 +60,8 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
         {
 
             form = Musician.tuneForm;
-            AccompanimentScore.setTempo(Musician.tempo);
+            //AccompanimentScore.setTempo(Musician.tempo);
+            Composer.accompanimentScore.setTempo(Musician.tempo);
 
             for(int i = 0; i < form.length(); i++)
             {
@@ -70,27 +73,30 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
 
 
         }
-        if(getDataStore().containsKey(FROM_PLAY_TO_COMPOSE))
-        {
+       /* if(getDataStore().containsKey(FROM_PLAY_TO_COMPOSE))
+        {*/
 
 
-            if(getDataStore().containsKey(HOLD_COMPOSITION))
+            if(Composer.holdComposition < 1)
             {
                 //This is a flag that allows to avoid this process while we are playing a section
-                int hold = (Integer) getDataStore().get(HOLD_COMPOSITION);
+                //int hold = (Integer) getDataStore().get(HOLD_COMPOSITION);
                 //We set to zero this flat and will be trigger the process of play this composition in the next state
-                int holdPlay = 0;
-                if (hold < 1)
+                //int holdPlay = 0;
+                Composer.holdPlay = 0;
+                if (Composer.holdComposition < 1)
                 {
                     if(!queueSections.isEmpty()) {
 
 
-                        Character s = queueSections.remove();
-                         sIndex = queueSectionIndex.remove();
-                                System.out.println("the section is " + s);
-                                System.out.println("the index is " + sIndex);
+                        //Character s = queueSections.remove();
+                        // sIndex = queueSectionIndex.remove();
+                        Composer.NextsectionCharacter = queueSections.remove();
+                         Composer.NextsectionIndex = queueSectionIndex.remove();
+                                System.out.println("the section is " + Composer.NextsectionCharacter);
+                                System.out.println("the index is " + Composer.NextsectionIndex);
                                 //Store the next section to be played
-                                if (getDataStore().containsKey(NEXT_SECTION_TO_PLAY) && getDataStore().containsKey(NEXT_SECTION_TO_PLAY)) {
+                                /*if (getDataStore().containsKey(NEXT_SECTION_TO_PLAY) && getDataStore().containsKey(NEXT_SECTION_TO_PLAY)) {
                                     getDataStore().remove(NEXT_SECTION_TO_PLAY);
                                     getDataStore().put(NEXT_SECTION_TO_PLAY, s);
                                     getDataStore().remove(NEXT_SECTION_INDEX);
@@ -98,19 +104,24 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                                 } else {
                                     getDataStore().put(NEXT_SECTION_TO_PLAY, s);
                                     getDataStore().put(NEXT_SECTION_INDEX, sIndex);
-                                }
-                                AccompanimentScore.empty();
+                                }*/
+                                //AccompanimentScore.empty();
+                                Composer.accompanimentScore.empty();
                                 AccompanimentPianoPart.empty();
-                                switch (s) {
+                                switch (Composer.NextsectionCharacter) {
                                     case 'A':
 
-                                        AccompanimentScore.setTempo(Musician.tempo);
-                                        AccompanimentScore.addPart(composeSectionA());
+                                        //AccompanimentScore.setTempo(Musician.tempo);
+                                        //AccompanimentScore.addPart(composeSectionA());
+                                        Composer.accompanimentScore.setTempo(Musician.tempo);
+                                        Composer.accompanimentScore.add(composeSectionA());
                                         break;
 
                                     case 'B':
-                                        AccompanimentScore.setTempo(Musician.tempo);
-                                        AccompanimentScore.addPart(composeSectionB());
+                                        //AccompanimentScore.setTempo(Musician.tempo);
+                                        //AccompanimentScore.addPart(composeSectionB());
+                                        Composer.accompanimentScore.setTempo(Musician.tempo);
+                                        Composer.accompanimentScore.addPart(composeSectionB());
                                         break;
                                 }
                     }
@@ -124,11 +135,13 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                         }
                         System.out.println("Original queueSection "+queueSections);
                         System.out.println("Original queueIndex "+queueSectionIndex);
-                        Character s = queueSections.remove();
-                        sIndex = queueSectionIndex.remove();
-                        System.out.println("the section is "+s);
-                        System.out.println("the index is "+sIndex);
-                        if(getDataStore().containsKey(NEXT_SECTION_TO_PLAY) && getDataStore().containsKey(NEXT_SECTION_TO_PLAY))
+                        //Character s = queueSections.remove();
+                        //sIndex = queueSectionIndex.remove();
+                        Composer.NextsectionCharacter = queueSections.remove();
+                        Composer.NextsectionIndex = queueSectionIndex.remove();
+                        System.out.println("the section is "+Composer.NextsectionCharacter );
+                        System.out.println("the index is "+Composer.NextsectionIndex);
+                       /* if(getDataStore().containsKey(NEXT_SECTION_TO_PLAY) && getDataStore().containsKey(NEXT_SECTION_TO_PLAY))
                         {
                             getDataStore().remove(NEXT_SECTION_TO_PLAY);
                             getDataStore().put(NEXT_SECTION_TO_PLAY,s);
@@ -138,41 +151,42 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                         {
                             getDataStore().put(NEXT_SECTION_TO_PLAY,s);
                             getDataStore().put(NEXT_SECTION_INDEX,sIndex);
-                        }
-                        AccompanimentScore.empty();
+                        }*/
+                        Composer.accompanimentScore.empty();
                         AccompanimentPianoPart.empty();
-                        switch (s)
+                        switch ( Composer.NextsectionCharacter)
                         {
                             case 'A':
                             {
 
-                                AccompanimentScore.setTempo(Musician.tempo);
-                                AccompanimentScore.addPart(composeSectionA());
+                                Composer.accompanimentScore.setTempo(Musician.tempo);
+                                Composer.accompanimentScore.addPart(composeSectionA());
                                 break;
                             }
                             case 'B':
-                                AccompanimentScore.setTempo(Musician.tempo);
-                                AccompanimentScore.addPart(composeSectionB());
+                                Composer.accompanimentScore.setTempo(Musician.tempo);
+                                Composer.accompanimentScore.addPart(composeSectionB());
                                 break;
                         }
                         //AccompanimentScore.addPart(CP.getNextSection(s));
                     }
-                    getDataStore().remove(ACCOMPANIMENT_SCORE);
-                    getDataStore().put(ACCOMPANIMENT_SCORE,AccompanimentScore);
-                    hold = 1;
-                    getDataStore().remove(HOLD_COMPOSITION);
-                    getDataStore().put(HOLD_COMPOSITION,hold);
-                    if(getDataStore().containsKey(HOLD_PLAYBACK))
-                    {
-                        getDataStore().remove(HOLD_PLAYBACK);
-                        getDataStore().put(HOLD_PLAYBACK,holdPlay);
-                    }else
-                    {
-                        getDataStore().put(HOLD_PLAYBACK,holdPlay);
-                    }
+                    //getDataStore().remove(ACCOMPANIMENT_SCORE);
+                    //getDataStore().put(ACCOMPANIMENT_SCORE,AccompanimentScore);
+                    //hold = 1;
+                    Composer.holdComposition = 1;
+                    //getDataStore().remove(HOLD_COMPOSITION);
+                    //getDataStore().put(HOLD_COMPOSITION,hold);
+                   // if(getDataStore().containsKey(HOLD_PLAYBACK))
+                    //{
+                     //   getDataStore().remove(HOLD_PLAYBACK);
+                     //   getDataStore().put(HOLD_PLAYBACK,holdPlay);
+                    //}else
+                   // {
+                    //    getDataStore().put(HOLD_PLAYBACK,holdPlay);
+                   // }
 
                        //If I'm a leader I cant continue playing accompaniment.
-                        if(sIndex == 0 && Musician.leader)
+                        if(Composer.NextsectionIndex == 0 && Musician.leader)
                         {
                             transition = 3;
                         }else
@@ -189,7 +203,7 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
         }
 
 
-    }
+    //}
 
 
     private Part composeSectionA()
@@ -201,7 +215,7 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
         {
             //rootPitch = ((Long) Musician.sectionAchords.get(i)).intValue();
             ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.sectionAchords.get(i);
-            System.out.println(chordAttrbute);
+            //System.out.println(chordAttrbute);
             rootPitch = chordAttrbute.getRootPitch();
             String noteType = chordAttrbute.getMajorOrMinor();
             int extension = chordAttrbute.getExtension();
@@ -226,7 +240,11 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
 
         return pianoPart;
     }
-    private Part composeSectionB()
+
+
+
+
+   private Part composeSectionB()
     {
 
         Part pianoPart = new Part("Piano Part",PIANO,2);
@@ -236,7 +254,7 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
         {
             //rootPitch = ((Long) Musician.sectionAchords.get(i)).intValue();
             ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.sectionBchords.get(i);
-            System.out.println(chordAttrbute);
+            //System.out.println(chordAttrbute);
             rootPitch = chordAttrbute.getRootPitch();
             String noteType = chordAttrbute.getMajorOrMinor();
             int extension = chordAttrbute.getExtension();
@@ -260,6 +278,83 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
         }
 
         pianoPart.addCPhrase(chord);
+        return pianoPart;
+
+    }
+
+    private Part composeSectionAs()
+    {
+        Part pianoPart = new Part("Piano Part",PIANO,2);
+        //Part bassPart = new Part("Bass Part",BASS,3);
+        Phrase phrase = new Phrase();
+
+        int size = Musician.sectionAchords.size();
+        for(int i = 0; i < size; i++)
+        {
+            //rootPitch = ((Long) Musician.sectionAchords.get(i)).intValue();
+            ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.sectionAchords.get(i);
+            System.out.println(chordAttrbute);
+            rootPitch = chordAttrbute.getRootPitch()-24;
+            String noteType = chordAttrbute.getMajorOrMinor();
+            int extension = chordAttrbute.getExtension();
+
+            for(int j = 0; j < Musician.timeSignatureDenominator; j++)
+            {
+
+                if(j<1)
+                {
+                    phrase.add(new Note(rootPitch,C,60));
+                }
+                else
+                {
+                    phrase.add(new Note(rootPitch+3,C,60));
+                }
+                //phrase.add(new Note(rootPitch-2,C,80));
+                //phrase.add(new Note(rootPitch-3,C,80));
+                //phrase.add(new Note(rootPitch-5,C,80));
+            }
+        }
+
+        pianoPart.addPhrase(phrase);
+
+        return  pianoPart;
+    }
+    private Part composeSectionBs()
+    {
+
+        Part pianoPart = new Part("Piano Part",PIANO,2);
+        Phrase phrase = new Phrase();
+
+        int size = Musician.sectionBchords.size();
+        for(int i = 0; i < size; i++)
+        {
+            //rootPitch = ((Long) Musician.sectionAchords.get(i)).intValue();
+            ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.sectionBchords.get(i);
+            System.out.println(chordAttrbute);
+            rootPitch = chordAttrbute.getRootPitch()-24;
+            String noteType = chordAttrbute.getMajorOrMinor();
+            int extension = chordAttrbute.getExtension();
+
+            for(int j = 0; j < Musician.timeSignatureDenominator; j++)
+            {
+                phrase.add(new Note(rootPitch,C,60));
+                //if(j<1)
+                //{
+                //    phrase.add(new Note(rootPitch,C,80));
+                // }
+                // else
+                //{
+                //    phrase.add(new Note(REST,C,80));
+                // }
+
+                //phrase.add(new Note(rootPitch+4,C,80));
+                //phrase.add(new Note(rootPitch+7,C,80));
+                //phrase.add(new Note(rootPitch+4,C,80));
+
+            }
+        }
+
+        pianoPart.addPhrase(phrase);
         return pianoPart;
 
     }

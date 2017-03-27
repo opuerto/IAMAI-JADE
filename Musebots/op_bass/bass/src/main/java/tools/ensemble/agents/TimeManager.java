@@ -118,6 +118,13 @@ public class TimeManager extends Agent implements DataStoreTimeManager {
         RequestIntroDataResponder provideIntroData = new RequestIntroDataResponder(this,mt1andmt2andmt3,timeHandlerOntology,codec);
         provideIntroData.setDataStore(pb.getDataStore());
         pb.addSubBehaviour(provideIntroData);
+
+
+        //The behaviour that provide the current section
+        ResponseSectionRequestFromExtComp RSRFEC = new ResponseSectionRequestFromExtComp(this,timeHandlerOntology,codec);
+        RSRFEC.setDataStore(pb.getDataStore());
+        pb.addSubBehaviour(RSRFEC);
+
         //Add the Behaviour
         addBehaviour(pb);
 

@@ -48,7 +48,9 @@ public class GetInfoSections extends Behaviour implements DataStoreTimeManager {
                         sectionInstance.setAccompanimentCurrentSection(s);
                         sectionInstance.setTimeLeft(((Section) concept).getTimeLeft());
                         sectionInstance.setSectionIndex(((Section) concept).getSectionIndex());
-                        System.out.println("index time mana "+((Section) concept).getSectionIndex());
+                        sectionInstance.setSectionStartedAt(((Section) concept).getSectionStartedAt());
+                        getDataStore().remove(SECTION_INSTANCE);
+                        getDataStore().put(SECTION_INSTANCE,sectionInstance);
 
                     }
                     else
@@ -58,8 +60,8 @@ public class GetInfoSections extends Behaviour implements DataStoreTimeManager {
                         sectionInstance.setAccompanimentCurrentSection(s);
                         sectionInstance.setTimeLeft(((Section) concept).getTimeLeft());
                         sectionInstance.setSectionIndex(((Section) concept).getSectionIndex());
+                        sectionInstance.setSectionStartedAt(((Section) concept).getSectionStartedAt());
                         getDataStore().put(SECTION_INSTANCE,sectionInstance);
-                        System.out.println("index time mana "+((Section) concept).getSectionIndex());
 
 
                     }

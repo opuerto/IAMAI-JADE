@@ -47,6 +47,15 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
     // The Internal Time Manager
     private AID internalTimeManager = new AID();
 
+    //Rules to be used during composing and performing
+    public static int holdComposition = 0;
+    public static int holdPlay = 0;
+    public static int NextsectionIndex;
+    public static Character NextsectionCharacter;
+    public static Long sectionPlayLeft;
+    public static int measureCounter = 0;
+
+    public static Score accompanimentScore = new Score("Accompaniment Drums");
 
     //Finite state machines objects declaration
     FSMBehaviour introFSM;
@@ -61,7 +70,7 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
     protected void setup()
     {
         //run the midi
-        Play.midi(new Score(),false,false,15,0);
+        Play.midi(new Score(),false,false,4,0);
 
         //
 
