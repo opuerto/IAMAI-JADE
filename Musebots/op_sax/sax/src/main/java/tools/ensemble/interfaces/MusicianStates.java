@@ -34,4 +34,5 @@ public interface MusicianStates {
     public final static String STATE_ACCOMPANIENT_SILENT="AccompanientSilent";
     public final static String STATE_WAITING_LEADERSHIP="WaitingLeadership";
     public final static String STATE_ACCEPT_ENDING="AcceptEnding";
+    public final static String STATE_FROM_LEADING_TO_SUPPORT = "fromLeadingToSupport";
 }

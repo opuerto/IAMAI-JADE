@@ -74,11 +74,12 @@ public class MusebotAssitant extends Agent implements OSCListener {
              int t = tickCount;
              double tm = (double)tempo;
 
-           /* if(t % 16 == 0 && tm != Musician.tempo)
+            if(t % 16 == 0 && tm != Musician.getTempo())
             {
-                Musician.tempo = (int) tm;
-                System.out.println("new tempo "+Musician.tempo);
-            }*/
+
+                Musician.setTempo ((int) tm);
+                System.out.println("new tempo "+Musician.getTempo());
+            }
 
         }
 

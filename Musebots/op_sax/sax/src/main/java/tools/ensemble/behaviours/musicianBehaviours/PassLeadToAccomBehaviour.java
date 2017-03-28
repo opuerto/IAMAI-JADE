@@ -223,9 +223,9 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
                         if (!findMycandidate)
                         {
 
-                            if (Musician.lastMusicianIpassedTheLeadership != null)
+                            if (Musician.lastMusicianIpassedTheLeadership != null && receivers.size() > 1)
                             {
-                                if(Musician.lastMusicianIpassedTheLeadership != ms.getSender())
+                                if(Musician.lastMusicianIpassedTheLeadership != ms.getSender() )
                                 {
                                     accept = reply;
                                     Musician.lastMusicianIpassedTheLeadership = ms.getSender();

@@ -49,16 +49,16 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
 
     public void action()
     {
-        if(Composer.holdPlay < 1)
+        if(Composer.getHoldPlay() < 1)
         {
             //int holdPlay = (Integer) getDataStore().get(HOLD_PLAYBACK);
-            int holdPlay = Composer.holdPlay ;
+            int holdPlay = Composer.getHoldPlay() ;
             if(holdPlay < 1)
             {
                 //theSection = (Character) getDataStore().get(NEXT_SECTION_TO_PLAY);
                 //theIndexSection = (Integer) getDataStore().get(NEXT_SECTION_INDEX);
-                theSection = Composer.NextsectionCharacter;
-                theIndexSection = Composer.NextsectionIndex;
+                theSection = Composer.getNextsectionCharacter();
+                theIndexSection = Composer.getNextsectionIndex();
                 System.out.println("play after head");
                 System.out.println("next section "+theSection);
                 //PlayScore play = new PlayScore((Long) getDataStore().get(PLAY_TIME_LEFT), (Score) getDataStore().get(ACCOMPANIMENT_SCORE),section,sIndex);
@@ -70,21 +70,18 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
                 */
 
                //myAgent.doWait((Long) getDataStore().get(PLAY_TIME_LEFT));
-                myAgent.doWait(Composer.sectionPlayLeft);
+                myAgent.doWait(Composer.getSectionPlayLeft());
                 //Call the function that play and calculate the lenght of the section
-               if(Musician.getLeader())
+
+               if (!Musician.getLeader())
                {
-                   transition = 11;
-               } else
-               {
-                   transition = 6;
+                   play();
                }
-               play();
                 //holdPlay = 1;
-                Composer.holdPlay = 1;
+                Composer.setHoldPlay(1);
                 //getDataStore().remove(HOLD_PLAYBACK);
                 //getDataStore().put(HOLD_PLAYBACK,holdPlay);
-
+                transition = 6;
             }
         }
        /* else
@@ -115,13 +112,13 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
     {
 
         //accompanimentScore = (Score) getDataStore().get(ACCOMPANIMENT_SCORE);
-        accompanimentScore = Composer.accompanimentScore;
+        accompanimentScore = Composer.getAccompanimentScore();
 
-        if (!Musician.getLeader())
-        Play.midi(Composer.accompanimentScore,false,false,2,0);
-        System.out.println("TIMESTAMP START PLAYING NOW = "+System.currentTimeMillis());
-            Composer.measureCounter++;
-
+        //if (!Musician.getLeader())
+        Play.midi(Composer.getAccompanimentScore(),false,false,5,0);
+         Composer.incrementMeasureCounter();
+        System.out.println("The cycle number is "+Composer.getMeasureCounter());
+        System.out.println("The current section is "+Composer.getNextsectionCharacter());
 
 
         //View.print(accompanimentScore);
@@ -140,10 +137,10 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
 
         long timeLeft = (long) (lengthOfSection - transcurrentTime);
         System.out.println("time left: "+timeLeft);
-        System.out.println("the tempo "+ Musician.tempo);
+        System.out.println("the tempo "+ Musician.getTempo());
         //getDataStore().remove(PLAY_TIME_LEFT);
         //getDataStore().put(PLAY_TIME_LEFT,timeLeft);
-        Composer.sectionPlayLeft = timeLeft;
+         Composer.setSectionPlayLeft(timeLeft);
        /* if(getDataStore().containsKey(FROM_PLAY_TO_COMPOSE))
         {
             getDataStore().remove(FROM_PLAY_TO_COMPOSE);
@@ -164,7 +161,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
             int holdComposition = 0;
             getDataStore().put(HOLD_COMPOSITION,holdComposition);
         }*/
-        Composer.holdComposition = 0;
+        Composer.setHoldComposition(0);
         //send the message to the synchronizer
         UpdateTheSynWithSectionInfo(theSection,timeLeft,theIndexSection);
     }

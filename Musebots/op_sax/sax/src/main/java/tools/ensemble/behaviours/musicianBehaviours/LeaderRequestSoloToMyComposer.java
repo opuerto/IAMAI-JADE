@@ -131,6 +131,7 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
                 Long now = System.currentTimeMillis();
                 long elapsedTime = introStartedAt - now;
                 long timeLeft = introDuration - elapsedTime;
+                System.out.println("time left "+timeLeft);
                 //Wait until the intro has finish before request a solo
                 agent.doWait(timeLeft);
             }

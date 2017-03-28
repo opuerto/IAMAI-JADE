@@ -54,9 +54,9 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
         if (firstTimeHere < 1 )
         {
 
-            form = Musician.tuneForm;
+            form = Musician.getTuneForm();
             //AccompanimentScore.setTempo(Musician.tempo);
-            Composer.accompanimentScore.setTempo(Musician.tempo);
+            Composer.getAccompanimentScore().setTempo(Musician.tempo);
 
             for(int i = 0; i < form.length(); i++)
             {
@@ -72,24 +72,24 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
         {*/
 
 
-        if(Composer.holdComposition < 1)
+        if(Composer.getHoldComposition() < 1)
         {
             //This is a flag that allows to avoid this process while we are playing a section
             //int hold = (Integer) getDataStore().get(HOLD_COMPOSITION);
             //We set to zero this flat and will be trigger the process of play this composition in the next state
             //int holdPlay = 0;
-            Composer.holdPlay = 0;
-            if (Composer.holdComposition < 1)
+            Composer.setHoldPlay(0);
+            if (Composer.getHoldComposition() < 1)
             {
                 if(!queueSections.isEmpty()) {
 
 
                     //Character s = queueSections.remove();
                     // sIndex = queueSectionIndex.remove();
-                    Composer.NextsectionCharacter = queueSections.remove();
-                    Composer.NextsectionIndex = queueSectionIndex.remove();
-                    System.out.println("the section is " + Composer.NextsectionCharacter);
-                    System.out.println("the index is " + Composer.NextsectionIndex);
+                    Composer.setNextsectionCharacter(queueSections.remove());
+                    Composer.setNextSectionIndex(queueSectionIndex.remove());
+                    System.out.println("the section is " + Composer.getNextsectionCharacter());
+                    System.out.println("the index is " + Composer.getNextsectionIndex());
                     //Store the next section to be played
                                 /*if (getDataStore().containsKey(NEXT_SECTION_TO_PLAY) && getDataStore().containsKey(NEXT_SECTION_TO_PLAY)) {
                                     getDataStore().remove(NEXT_SECTION_TO_PLAY);
@@ -101,22 +101,22 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                                     getDataStore().put(NEXT_SECTION_INDEX, sIndex);
                                 }*/
                     //AccompanimentScore.empty();
-                    Composer.accompanimentScore.empty();
+                    Composer.getAccompanimentScore().empty();
                     AccompanimentBassPart.empty();
-                    switch (Composer.NextsectionCharacter) {
+                    switch (Composer.getNextsectionCharacter()) {
                         case 'A':
 
                             //AccompanimentScore.setTempo(Musician.tempo);
                             //AccompanimentScore.addPart(composeSectionA());
-                            Composer.accompanimentScore.setTempo(Musician.tempo);
-                            Composer.accompanimentScore.add(composeSectionA());
+                            Composer.getAccompanimentScore().setTempo(Musician.getTempo());
+                            Composer.getAccompanimentScore().add(composeSectionA());
                             break;
 
                         case 'B':
                             //AccompanimentScore.setTempo(Musician.tempo);
                             //AccompanimentScore.addPart(composeSectionB());
-                            Composer.accompanimentScore.setTempo(Musician.tempo);
-                            Composer.accompanimentScore.addPart(composeSectionB());
+                            Composer.getAccompanimentScore().setTempo(Musician.getTempo());
+                            Composer.getAccompanimentScore().addPart(composeSectionB());
                             break;
                     }
                 }
@@ -132,10 +132,10 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                     System.out.println("Original queueIndex "+queueSectionIndex);
                     //Character s = queueSections.remove();
                     //sIndex = queueSectionIndex.remove();
-                    Composer.NextsectionCharacter = queueSections.remove();
-                    Composer.NextsectionIndex = queueSectionIndex.remove();
-                    System.out.println("the section is "+Composer.NextsectionCharacter );
-                    System.out.println("the index is "+Composer.NextsectionIndex);
+                    Composer.setNextsectionCharacter(queueSections.remove());
+                    Composer.setNextSectionIndex(queueSectionIndex.remove());
+                    System.out.println("the section is "+Composer.getNextsectionCharacter() );
+                    System.out.println("the index is "+Composer.getNextsectionIndex());
                        /* if(getDataStore().containsKey(NEXT_SECTION_TO_PLAY) && getDataStore().containsKey(NEXT_SECTION_TO_PLAY))
                         {
                             getDataStore().remove(NEXT_SECTION_TO_PLAY);
@@ -147,19 +147,19 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                             getDataStore().put(NEXT_SECTION_TO_PLAY,s);
                             getDataStore().put(NEXT_SECTION_INDEX,sIndex);
                         }*/
-                    Composer.accompanimentScore.empty();
+                    Composer.getAccompanimentScore().empty();
                     AccompanimentBassPart.empty();
-                    switch ( Composer.NextsectionCharacter)
+                    switch ( Composer.getNextsectionCharacter())
                     {
                         case 'A':
                         {
 
-                            Composer.accompanimentScore.setTempo(Musician.tempo);
-                            Composer.accompanimentScore.add(composeSectionA());
+                            Composer.getAccompanimentScore().setTempo(Musician.getTempo());
+                            Composer.getAccompanimentScore().add(composeSectionA());
                             break;
                         }
                         case 'B':
-                            Composer.accompanimentScore.setTempo(Musician.tempo);
+                            Composer.accompanimentScore.setTempo(Musician.getTempo());
                             Composer.accompanimentScore.add(composeSectionB());
                             break;
                     }
@@ -168,7 +168,7 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                 //getDataStore().remove(ACCOMPANIMENT_SCORE);
                 //getDataStore().put(ACCOMPANIMENT_SCORE,AccompanimentScore);
                 //hold = 1;
-                Composer.holdComposition = 1;
+                Composer.setHoldComposition(1);
                 //getDataStore().remove(HOLD_COMPOSITION);
                 //getDataStore().put(HOLD_COMPOSITION,hold);
                 // if(getDataStore().containsKey(HOLD_PLAYBACK))
@@ -181,8 +181,9 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                 // }
 
                 //If I'm a leader I cant continue playing accompaniment.
-                if(Composer.NextsectionIndex == 0 && Musician.leader)
+                if(Musician.getLeader())
                 {
+                    Composer.getAccompanimentScore().empty();
                     transition = 3;
                 }else
                 {
@@ -204,17 +205,17 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
         //Part bassPart = new Part("Bass Part",BASS,3);
         Phrase phrase = new Phrase();
         
-        int size = Musician.sectionAchords.size();
+        int size = Musician.getSectionAchords().size();
         for(int i = 0; i < size; i++)
         {
             //rootPitch = ((Long) Musician.sectionAchords.get(i)).intValue();
-            ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.sectionAchords.get(i);
+            ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.getSectionAchords().get(i);
             System.out.println(chordAttrbute);
             rootPitch = chordAttrbute.getRootPitch()-24;
             String noteType = chordAttrbute.getMajorOrMinor();
             int extension = chordAttrbute.getExtension();
 
-            for(int j = 0; j < Musician.timeSignatureDenominator; j++)
+            for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
             {
 
                 if(j<1)
@@ -241,17 +242,17 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
         Part bassPart = new Part("Bass Part",BASS,3);
         Phrase phrase = new Phrase();
 
-        int size = Musician.sectionBchords.size();
+        int size = Musician.getSectionBchords().size();
         for(int i = 0; i < size; i++)
         {
             //rootPitch = ((Long) Musician.sectionAchords.get(i)).intValue();
-            ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.sectionBchords.get(i);
+            ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.getSectionBchords().get(i);
             System.out.println(chordAttrbute);
             rootPitch = chordAttrbute.getRootPitch()-24;
             String noteType = chordAttrbute.getMajorOrMinor();
             int extension = chordAttrbute.getExtension();
 
-            for(int j = 0; j < Musician.timeSignatureDenominator; j++)
+            for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
             {
                 phrase.add(new Note(rootPitch,C,60));
                 //if(j<1)

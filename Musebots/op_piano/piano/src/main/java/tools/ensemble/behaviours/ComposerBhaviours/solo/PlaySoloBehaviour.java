@@ -18,6 +18,7 @@ import jm.music.data.Part;
 import jm.music.data.Phrase;
 import jm.music.data.Score;
 import jm.util.Play;
+import jm.util.View;
 import tools.ensemble.agents.Composer;
 import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStoreComposer;
@@ -59,9 +60,9 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
 
         }
 
-        if (Composer.holdSoloPlayback < 1)
+        if (Composer.getHoldSoloPlayback() < 1)
         {
-            if (getDataStore().containsKey(SECTION_INSTANCE_FOR_SYN_SOLO) && Composer.timeLeftInCurrentsection == null)
+            if (getDataStore().containsKey(SECTION_INSTANCE_FOR_SYN_SOLO) && Composer.getTimeLeftInCurrentsection() == null)
             {
                 section = (Section) getDataStore().get(SECTION_INSTANCE_FOR_SYN_SOLO);
                 sectionTimeLeft = section.getTimeLeft();
@@ -74,21 +75,37 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
                     //We didn't have time to play, then go to request the section again.
                     transition = 13;
                 }
+                else
+                {
+                    transition = 12;
+                }
             }else
             {
-                timeLeft = Composer.timeLeftInCurrentsection;
+                timeLeft = Composer.getTimeLeftInCurrentsection();
+                if (timeLeft < 0)
+                {
+                    transition = 13;
+                }
+                else
+                {
+                    transition = 12;
+                }
             }
-            theSection = Composer.NextSectionSoloCharacter;
-            theIndexSection = Composer.NextSectionSoloIndex;
+            theSection = Composer.getNextSectionSoloCharacter();
+            theIndexSection = Composer.getNextSectionSoloIndex();
 
-            myAgent.doWait(timeLeft);
+            if (timeLeft > 0)
+            {
+                myAgent.doWait(timeLeft);
+            }
+
             //Play the solo
 
             play();
-            Composer.holdSoloPlayback = 1;
+            Composer.setHoldSoloPlayback(1);
 
             //Go to compose another section of solo
-            transition = 12;
+            //transition = 12;
         }
     }
 
@@ -102,17 +119,18 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
     private void play()
     {
 
-
-        Play.midi(Composer.SoloPianoScore,false,false,2,0);
+        System.out.println("Im in playing");
+        Play.midi(Composer.getSoloPianoScore(),false,false,6,0);
+        View.print(Composer.getSoloPianoScore());
 
 
         sectionStartedAt = new Date();
         long timeStartedAt = sectionStartedAt.getTime();
 
         //Calculate the lenght of the solosection
-        double betPerMeasure = Composer.SoloPianoScore.getNumerator();
-        double numberOfMeasure = Composer.SoloPianoScore.getEndTime()/betPerMeasure;
-        double tempo = Composer.SoloPianoScore.getTempo();
+        double betPerMeasure = Composer.getSoloPianoScore().getNumerator();
+        double numberOfMeasure = Composer.getSoloPianoScore().getEndTime()/betPerMeasure;
+        double tempo = Composer.getSoloPianoScore().getTempo();
         double lengthOfSection = (betPerMeasure*numberOfMeasure/tempo)*60*1000;
         long currentTimes = System.currentTimeMillis();
         System.out.println("current Time "+currentTimes);
@@ -121,13 +139,13 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
 
         long timeLeft = (long) (lengthOfSection - transcurrentTime);
         System.out.println("time left: "+timeLeft);
-        System.out.println("the tempo "+ Musician.tempo);
+        System.out.println("the tempo "+ Musician.getTempo());
         System.out.println("playing section "+theSection);
         System.out.println("playing index "+theIndexSection);
         //Update the time left.
-        Composer.timeLeftInCurrentsection = timeLeft;
+        Composer.setTimeLeftInCurrentsection(timeLeft);
         //Set the rule to 0 so it can compose the next part of the solo.
-        Composer.holdSoloComposition = 0;
+        Composer.setHodSoloComposition(0);
         //UpdateTheSynWithSectionInfo(theSection,timeLeft,theIndexSection);
     }
     private void UpdateTheSynWithSectionInfo(char sec, Long time, int Index)

@@ -63,7 +63,8 @@ public class GetInfoSectionFromSyn extends OneShotBehaviour implements DataStore
             Concept concept = ((Action)content).getAction();
             if(concept instanceof Section)
             {
-                System.out.println("Current Section : " +((Section) concept).getAccompanimentCurrentSection());
+                System.out.println("Current Section in  : " +getBehaviourName() +" is " +((Section) concept).getAccompanimentCurrentSection());
+                System.out.println("index in Section   : " +getBehaviourName() +" is " +((Section) concept).getSectionIndex());
                 System.out.println("Time left "+((Section) concept).getTimeLeft().getTime());
                 se.setAccompanimentCurrentSection(((Section) concept).getAccompanimentCurrentSection());
                 se.setSectionStartedAt(((Section) concept).getSectionStartedAt());
@@ -79,6 +80,7 @@ public class GetInfoSectionFromSyn extends OneShotBehaviour implements DataStore
                 }
             }
             transition = 5;
+
 
         }else
         {

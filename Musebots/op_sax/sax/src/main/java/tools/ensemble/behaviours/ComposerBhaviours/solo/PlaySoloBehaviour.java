@@ -83,12 +83,17 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
             theSection = Composer.NextSectionSoloCharacter;
             theIndexSection = Composer.NextSectionSoloIndex;
 
+           /* try {
+                Thread.sleep(timeLeft);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }*/
             myAgent.doWait(timeLeft);
             //Play the solo
-            if (Composer.measuresCounter >= Musician.tuneForm.length()*1)
+            if (Composer.getMeasureCounter() >= Musician.tuneForm.length())
             {
-                System.out.println("Get Out of here "+Composer.measuresCounter);
-                Composer.measuresCounter = 0;
+                System.out.println("Get Out of here "+Composer.getMeasureCounter());
+                Composer.setMeasureCounter(0);
                 stopAndPassLead();
                 transition = 17;
             }
@@ -116,7 +121,7 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
 
 
         Play.midi(Composer.SoloSaxScore,false,false,1,1);
-        Composer.measuresCounter++;
+        Composer.incrementMeasureCounter();
         sectionStartedAt = new Date();
         long timeStartedAt = sectionStartedAt.getTime();
 

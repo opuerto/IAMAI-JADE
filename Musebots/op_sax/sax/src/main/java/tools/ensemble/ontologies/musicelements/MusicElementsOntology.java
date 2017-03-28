@@ -55,7 +55,7 @@ public class MusicElementsOntology extends Ontology  {
             add(new ConceptSchema(SCORE_ELEMENTS), ScoreElements.class);
             add(new ConceptSchema(CHORDS_ATTRIBUTES), ChordsAttributes.class);
             ConceptSchema cs = (ConceptSchema)getSchema(SCORE_ELEMENTS);
-            cs.add(SCORE_TEMPO, (PrimitiveSchema)getSchema(BasicOntology.INTEGER));
+            cs.add(SCORE_TEMPO, (PrimitiveSchema)getSchema(BasicOntology.INTEGER),ObjectSchema.OPTIONAL);
             cs.add(SCORE_SIGNATURE_NUMERATOR, (PrimitiveSchema)getSchema(BasicOntology.INTEGER), ObjectSchema.OPTIONAL);
             cs.add(SCORE_SIGNATURE_DENOMITAOR, (PrimitiveSchema)getSchema(BasicOntology.INTEGER), ObjectSchema.OPTIONAL);
             cs.add(SCORE_FORM, (PrimitiveSchema)getSchema(BasicOntology.STRING), ObjectSchema.OPTIONAL);

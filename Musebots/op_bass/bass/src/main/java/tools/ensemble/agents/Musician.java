@@ -50,6 +50,82 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
     public static List sectionBchords;
     public static List sectionCchords;
 
+    public static synchronized void setLeader(Boolean lead) {
+        leader = lead;
+    }
+    public static synchronized boolean getLeader() {
+        return leader;
+    }
+
+    public static synchronized void setTempo(int temp)
+    {
+        tempo = temp;
+    }
+
+    public static synchronized int getTempo()
+    {
+        return tempo;
+    }
+
+    public static synchronized void setTimeSignatureNumerator(int numerator)
+    {
+        timeSignatureNumerator = numerator;
+    }
+
+    public static synchronized int getTimeSignatureNumerator()
+    {
+        return timeSignatureNumerator;
+    }
+
+    public static synchronized void setTimeSignatureDenominator(int denominator)
+    {
+        timeSignatureDenominator = denominator;
+    }
+
+    public static synchronized int getTimeSignatureDenominator()
+    {
+        return timeSignatureDenominator;
+    }
+
+    public static synchronized void setTuneForm(String Form)
+    {
+        tuneForm = Form;
+    }
+
+    public static synchronized String getTuneForm()
+    {
+        return tuneForm;
+    }
+
+    public static synchronized void setSectionAchords(List sectionA)
+    {
+        sectionAchords = sectionA;
+    }
+    public static synchronized List getSectionAchords()
+    {
+        return sectionAchords;
+    }
+
+    public static synchronized void setSectionBchords(List sectionB)
+    {
+        sectionBchords = sectionB;
+    }
+
+    public static synchronized List getSectionBchords()
+    {
+        return sectionBchords;
+    }
+
+    public static synchronized void setSectionCchords(List sectionC)
+    {
+        sectionCchords = sectionC;
+    }
+
+    public static synchronized List getSectionCchords()
+    {
+        return sectionCchords;
+    }
+
 
 
     protected void setup()

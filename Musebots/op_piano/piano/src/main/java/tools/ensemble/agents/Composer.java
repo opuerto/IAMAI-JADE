@@ -36,6 +36,11 @@ import tools.ensemble.ontologies.timemanager.TimeHandler;
 
 /**
  * Created by OscarAlfonso on 2/22/2017.
+ *
+ * Cada compositor tendra 3 syntesizers para este seran 456
+ * 4 para intro
+ * 5 para la compania
+ * 6 para los solos
  */
 public class Composer extends Agent implements MusicianStates,DataStorteMusicians,ComposerStatesNames,DataStoreComposer {
 
@@ -51,20 +56,140 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
 
     //Rules to be used during composing and performing
     public static int holdComposition = 0;
+    public static synchronized void setHoldComposition(int holdCompo)
+    {
+        holdComposition = holdCompo;
+    }
+
+    public static synchronized int getHoldComposition()
+    {
+        return holdComposition;
+    }
+
     public static int holdPlay = 0;
+    public static synchronized void setHoldPlay(int holdplay)
+    {
+        holdPlay =holdplay;
+    }
+    public static synchronized int getHoldPlay()
+    {
+        return holdPlay;
+    }
+
     public static int NextsectionIndex;
+    public static synchronized void setNextSectionIndex(int secIndex)
+    {
+        NextsectionIndex = secIndex;
+    }
+    public static synchronized int getNextsectionIndex()
+    {
+        return NextsectionIndex;
+    }
     public static Character NextsectionCharacter;
+    public static synchronized void  setNextsectionCharacter(Character nextSecChar)
+    {
+        NextsectionCharacter = nextSecChar;
+    }
+    public static synchronized Character getNextsectionCharacter()
+    {
+        return NextsectionCharacter;
+    }
     public static Long sectionPlayLeft;
+
+    public static synchronized void setSectionPlayLeft(Long playleft)
+    {
+        sectionPlayLeft = playleft;
+    }
+
+    public static synchronized Long getSectionPlayLeft()
+    {
+        return sectionPlayLeft;
+    }
     public static int measureCounter = 0;
+    public static synchronized void setMeasureCounter(int measure)
+    {
+        measureCounter = measure;
+    }
+    public static synchronized int getMeasureCounter()
+    {
+        return measureCounter;
+    }
+    public static synchronized void incrementMeasureCounter()
+    {
+        measureCounter++;
+    }
     public static int firstTimePlayingSolo = 0;
+    public static synchronized void setFirstTimePlayingSolo(int firstTime)
+    {
+        firstTimePlayingSolo = firstTime;
+    }
+    public static synchronized int getFirstTimePlayingSolo()
+    {
+        return firstTimePlayingSolo;
+    }
     public static int holdSoloComposition = 0;
+    public static synchronized void setHodSoloComposition(int solocomp)
+    {
+        holdSoloComposition = solocomp;
+    }
+    public static synchronized int getHoldSoloComposition()
+    {
+        return holdSoloComposition;
+    }
     public static int holdSoloPlayback = 0;
+    public static synchronized void setHoldSoloPlayback(int playback){
+        holdSoloPlayback = playback;
+    }
+    public static synchronized int getHoldSoloPlayback()
+    {
+        return holdSoloPlayback;
+    }
     public static int NextSectionSoloIndex = 0;
+    public static synchronized void setNextSectionSoloIndex(int soloIndex)
+    {
+        NextSectionSoloIndex = soloIndex;
+    }
+    public static synchronized int getNextSectionSoloIndex()
+    {
+        return NextSectionSoloIndex;
+    }
     public static Character NextSectionSoloCharacter = 0;
+    public static synchronized void setNextSectionSoloCharacter(Character c)
+    {
+        NextSectionSoloCharacter = c;
+    }
+    public static synchronized Character getNextSectionSoloCharacter()
+    {
+        return NextSectionSoloCharacter;
+    }
     public static Long timeLeftInCurrentsection = null;
+    public static synchronized void setTimeLeftInCurrentsection(Long time)
+    {
+        timeLeftInCurrentsection = time;
+    }
+    public static synchronized Long getTimeLeftInCurrentsection()
+    {
+        return timeLeftInCurrentsection;
+    }
     public static Score SoloPianoScore = new Score("Piano Solo Score");
+    public static synchronized void setSoloPianoScore(Score s)
+    {
+        SoloPianoScore = s;
+    }
+    public static synchronized Score getSoloPianoScore()
+    {
+        return SoloPianoScore;
+    }
 
     public static Score accompanimentScore = new Score("Accompaniment Piano");
+    public static synchronized void setAccompanimentScore(Score as)
+    {
+        accompanimentScore = as;
+    }
+    public static synchronized Score getAccompanimentScore()
+    {
+        return accompanimentScore;
+    }
 
     //Finite state machines objects declaration
     FSMBehaviour introFSM;
@@ -79,7 +204,9 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
     protected void setup()
     {
         //run the midi
-        Play.midi(new Score(),false,false,2,0);
+        Play.midi(new Score(),false,false,4,0);
+        Play.midi(new Score(),false,false,5,0);
+        Play.midi(new Score(),false,false,6,0);
 
         //
 

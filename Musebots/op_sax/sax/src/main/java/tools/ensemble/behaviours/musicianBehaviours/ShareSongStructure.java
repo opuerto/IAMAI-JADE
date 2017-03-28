@@ -8,6 +8,7 @@ import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStorteMusicians;
 import tools.ensemble.interfaces.SongStructure;
 import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ChordsAttributes;
@@ -64,6 +65,8 @@ public class ShareSongStructure extends OneShotBehaviour implements SongStructur
                 System.out.println(musiciansReceivers);
                 //Get the elements of the song structure
                 if(getDataStore().containsKey(SCORE_ELEMENTS)){scoreElements = (ScoreElements) getDataStore().get(SCORE_ELEMENTS);}
+                System.out.println("Score denominator: "+ Musician.getTimeSignatureDenominator());
+                System.out.println("Score form: "+ Musician.getTuneForm());
                 // Send the Inform to all musicians
                 ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
                 msg.setLanguage(codec.getName());

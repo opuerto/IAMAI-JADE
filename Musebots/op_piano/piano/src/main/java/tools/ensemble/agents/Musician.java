@@ -30,6 +30,7 @@ import jade.util.leap.ArrayList;
 public class Musician extends Agent implements MusicianStates,DataStorteMusicians, JMC {
 
     public static boolean leader = false;
+    public static boolean fromSupportToLead = false;
     private boolean acompaniement = true;
     private AID myMusician = new AID();
     //Map<String, String> songStructure = new HashMap<String, String>();
@@ -52,11 +53,21 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
 
 
 
+
     public static synchronized void setLeader(Boolean lead) {
         leader = lead;
     }
     public static synchronized boolean getLeader() {
         return leader;
+    }
+
+    public static synchronized void setFromSupportTolead(boolean t)
+    {
+        fromSupportToLead = t;
+    }
+    public static synchronized boolean getFromSupportTolead()
+    {
+        return fromSupportToLead;
     }
 
     public static synchronized void setTempo(int temp)
@@ -68,6 +79,67 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
     {
         return tempo;
     }
+
+    public static synchronized void setTimeSignatureNumerator(int numerator)
+    {
+       timeSignatureNumerator = numerator;
+    }
+
+    public static synchronized int getTimeSignatureNumerator()
+    {
+        return timeSignatureNumerator;
+    }
+
+    public static synchronized void setTimeSignatureDenominator(int denominator)
+    {
+        timeSignatureDenominator = denominator;
+    }
+
+    public static synchronized int getTimeSignatureDenominator()
+    {
+        return timeSignatureDenominator;
+    }
+
+    public static synchronized void setTuneForm(String Form)
+    {
+        tuneForm = Form;
+    }
+
+    public static synchronized String getTuneForm()
+    {
+        return tuneForm;
+    }
+
+    public static synchronized void setSectionAchords(List sectionA)
+    {
+       sectionAchords = sectionA;
+    }
+    public static synchronized List getSectionAchords()
+    {
+        return sectionAchords;
+    }
+
+    public static synchronized void setSectionBchords(List sectionB)
+    {
+        sectionBchords = sectionB;
+    }
+
+    public static synchronized List getSectionBchords()
+    {
+        return sectionBchords;
+    }
+
+    public static synchronized void setSectionCchords(List sectionC)
+    {
+        sectionCchords = sectionC;
+    }
+
+    public static synchronized List getSectionCchords()
+    {
+        return sectionCchords;
+    }
+
+
 
     protected void setup()
     {
@@ -305,11 +377,11 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         {
             //Since I got into this state remove FIRST_LEADER from the data store.
             getDataStore().remove(FIRST_LEADER);
-            tempo = TEMPO;
-            timeSignatureNumerator = NUMERATOR;
-            timeSignatureDenominator = DENOMINATOR;
-            tuneForm = FORM;
-     /*
+            setTempo(TEMPO);
+            setTimeSignatureNumerator(NUMERATOR);
+            setTimeSignatureDenominator(DENOMINATOR);
+            setTuneForm(FORM);
+            /*
             //set the chords for section A
             sectionAchords = new ArrayList();
             //Create the individual chords.
@@ -362,45 +434,45 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
             F.setMajorOrMinor("M");
             F.setExtension(0);
             //Add them to the list of section A
-            sectionAchords.add(F);
+            getSectionAchords().add(F);
 
             ChordsAttributes Eb7 = new ChordsAttributes();
             Eb7.setRootPitch(E4);
             Eb7.setMajorOrMinor("Db");
             Eb7.setExtension(7);
             //Add them to the list of section A
-            sectionAchords.add(Eb7);
+            getSectionAchords().add(Eb7);
 
             ChordsAttributes Db7 = new ChordsAttributes();
             Db7.setRootPitch(D4);
             Db7.setMajorOrMinor("Db");
             Db7.setExtension(7);
             //Add them to the list of section A
-            sectionAchords.add(Db7);
+            getSectionAchords().add(Db7);
 
             ChordsAttributes C7sus = new ChordsAttributes();
             C7sus.setRootPitch(C4);
             C7sus.setMajorOrMinor("Dsus");
             C7sus.setExtension(7);
             //Add them to the list of section A
-            sectionAchords.add(C7sus);
+            getSectionAchords().add(C7sus);
 
             ChordsAttributes F2 = new ChordsAttributes();
             F2.setRootPitch(F4);
             F2.setMajorOrMinor("M");
             F2.setExtension(0);
-            sectionAchords.add(F2);
+            getSectionAchords().add(F2);
 
 
             //set the chords for section B
             sectionBchords = new ArrayList();
             //Create the individual chords for section B.
-            sectionBchords.add(Eb7);
-            sectionBchords.add(F);
-            sectionBchords.add(Eb7);
-            sectionBchords.add(Db7);
-            sectionBchords.add(C7sus);
-            sectionBchords.add(F);
+            getSectionBchords().add(Eb7);
+            getSectionBchords().add(F);
+            getSectionBchords().add(Eb7);
+            getSectionBchords().add(Db7);
+            getSectionBchords().add(C7sus);
+            getSectionBchords().add(F);
 
 
             //set the chords for section C
@@ -410,13 +482,13 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
 
             //create instance of the object ScoreElements and set the object in the DataStore of the behaviour
             ScoreElements se = new ScoreElements();
-            se.setTempo(tempo);
-            se.setNumerator(timeSignatureNumerator);
-            se.setDenominator(timeSignatureDenominator);
-            se.setForm(tuneForm);
-            se.setSectionAchords(sectionAchords);
-            se.setSectionBchords(sectionBchords);
-            se.setSectionCchords(sectionCchords);
+            se.setTempo(getTempo());
+            se.setNumerator(getTimeSignatureNumerator());
+            se.setDenominator(getTimeSignatureDenominator());
+            se.setForm(getTuneForm());
+            se.setSectionAchords(getSectionAchords());
+            se.setSectionBchords(getSectionBchords());
+            se.setSectionCchords(getSectionCchords());
             getDataStore().put(SCORE_ELEMENTS,se);
 
 

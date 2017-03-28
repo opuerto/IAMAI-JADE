@@ -9,6 +9,7 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.ContractNetResponder;
+import tools.ensemble.agents.Musician;
 
 /**
  * Created by OscarAlfonso on 3/27/2017.
@@ -45,6 +46,8 @@ public class WaitToGetLead extends OneShotBehaviour {
             case 1:
                 System.out.println("I going to request a solo");
                 myAgent.send(informToLeader);
+                Musician.setLeader(true);
+                Musician.setFromSupportTolead(true);
                 transition = 14;
                 break;
 

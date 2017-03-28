@@ -11,6 +11,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.ContractNetInitiator;
+import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStorteMusicians;
 import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ScoreElements;
 import tools.ensemble.ontologies.musicians.vocabulary.actions.PlayIntroAction;
@@ -187,8 +188,11 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
             scoreElements = (ScoreElements) getDataStore().get(SCORE_ELEMENTS);
             double beatPerMeasure = scoreElements.getNumerator();
             double measures = numberOfMeasures;
-            double tempo = scoreElements.getTempo();
+
+            double tempo = Musician.getTempo();
+            System.out.println("Tempo in calculate duration "+tempo);
             introDuration = (long) ((beatPerMeasure*measures/tempo)*60*1000);
+            System.out.println("Intro duration "+introDuration);
             getDataStore().put(INTRO_DURATION,introDuration);
         }
 

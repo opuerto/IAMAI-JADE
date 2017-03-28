@@ -399,7 +399,7 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
 
             playIntroActionObject = new PlayIntroAction();
             //Calculate the duration of the intro based on the song structure and the lenght get from the leader
-            double calculateDuration = ((((double) Musician.timeSignatureNumerator*(double) lenght)/(double) Musician.tempo)*60*1000);
+            double calculateDuration = ((((double) Musician.getTimeSignatureNumerator()*(double) lenght)/(double) Musician.getTempo())*60*1000);
 
             duration = (float) calculateDuration;
             playIntroActionObject.setLenght(lenght);

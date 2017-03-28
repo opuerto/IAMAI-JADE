@@ -4,6 +4,7 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
+import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStoreComposer;
 
 /**
@@ -25,7 +26,12 @@ public class ConfirmToMusician extends OneShotBehaviour implements DataStoreComp
         {
             internalMusician = (AID) getDataStore().get(INTERNAL_MUSICIAN_AID);
             System.out.println("the internal composer "+internalMusician);
-
+            //from support to lead is the first time playing solo again
+            if (Musician.getFromSupportTolead())
+            {
+                getDataStore().remove(FIRST_TIME_SOLO);
+                getDataStore().put(FIRST_TIME_SOLO,1);
+            }
         }
         ACLMessage confirm = new ACLMessage(ACLMessage.INFORM);
         confirm.setConversationId("request-solo-to-composer-Inform");

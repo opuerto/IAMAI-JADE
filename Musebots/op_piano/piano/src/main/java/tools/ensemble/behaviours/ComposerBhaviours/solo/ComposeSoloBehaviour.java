@@ -48,7 +48,7 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
             }
             form = Musician.tuneForm;
 
-           //We want omit the section that is currently playing and start to soloing from the next section.
+            //We want omit the section that is currently playing and start to soloing from the next section.
             if(Composer.firstTimePlayingSolo > 0)
             {
                 System.out.println("Im first time solo");
@@ -58,7 +58,7 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
                 }
                 for (int i = 0; i<form.length(); i++)
                 {
-                    if(i != sectionInfo.getSectionIndex())
+                    if(i > sectionInfo.getSectionIndex())
                     {
                         queueSections.add(form.charAt(i));
                         queueSectionIndex.add(i);
@@ -73,11 +73,11 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
             {
                 System.out.println("Im not first time playing any more");
 
-                    for (int i = 0; i<form.length(); i++)
-                    {
-                        queueSections.add(form.charAt(i));
-                        queueSectionIndex.add(i);
-                    }
+                for (int i = 0; i<form.length(); i++)
+                {
+                    queueSections.add(form.charAt(i));
+                    queueSectionIndex.add(i);
+                }
                 System.out.println("Original queueSection in compose "+queueSections);
                 System.out.println("Original queueIndex in compose"+queueSectionIndex);
 
@@ -98,17 +98,17 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
                 System.out.println("the index is in compose" + Composer.NextSectionSoloIndex);
                 System.out.println("the reminder in section"  +queueSections);
 
-                Composer.SoloPianoScore.empty();
+                Composer.getSoloPianoScore().empty();
                 saxPart.empty();
                 switch (Composer.NextSectionSoloCharacter)
                 {
                     case 'A':
-                        Composer.SoloPianoScore.setTempo(Musician.tempo);
-                        Composer.SoloPianoScore.addPart(composeSectionA());
+                        Composer.getSoloPianoScore().setTempo(Musician.getTempo());
+                        Composer.getSoloPianoScore().addPart(composeSectionA());
                         break;
                     case 'B':
-                        Composer.SoloPianoScore.setTempo(Musician.tempo);
-                        Composer.SoloPianoScore.addPart(composeSectionB());
+                        Composer.getSoloPianoScore().setTempo(Musician.getTempo());
+                        Composer.getSoloPianoScore().addPart(composeSectionB());
                         break;
                 }
 
@@ -128,17 +128,17 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
                 Composer.NextSectionSoloIndex = queueSectionIndex.remove();
                 System.out.println("the section is " +  Composer.NextSectionSoloCharacter);
                 System.out.println("the index is " + Composer.NextSectionSoloIndex);
-                Composer.SoloPianoScore.empty();
+                Composer.getSoloPianoScore().empty();
                 saxPart.empty();
                 switch (Composer.NextSectionSoloCharacter)
                 {
                     case 'A':
-                        Composer.SoloPianoScore.setTempo(Musician.tempo);
-                        Composer.SoloPianoScore.addPart(composeSectionA());
+                        Composer.getSoloPianoScore().setTempo(Musician.getTempo());
+                        Composer.getSoloPianoScore().addPart(composeSectionA());
                         break;
                     case 'B':
-                        Composer.SoloPianoScore.setTempo(Musician.tempo);
-                        Composer.SoloPianoScore.addPart(composeSectionB());
+                        Composer.getSoloPianoScore().setTempo(Musician.getTempo());
+                        Composer.getSoloPianoScore().addPart(composeSectionB());
                         break;
                 }
 
@@ -146,6 +146,7 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
 
             Composer.holdSoloComposition = 1;
             transition = 9;
+
             //If Im not the leader I cant continue playing the solo
             /*if(Composer.NextSectionSoloIndex == 0 && !Musician.leader)
             {
@@ -174,13 +175,13 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
         for(int i = 0; i < size; i++)
         {
             //rootPitch = ((Long) Musician.sectionAchords.get(i)).intValue();
-            ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.sectionAchords.get(i);
+            ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.getSectionAchords().get(i);
             //System.out.println(chordAttrbute);
             rootPitch = chordAttrbute.getRootPitch();
             String noteType = chordAttrbute.getMajorOrMinor();
             int extension = chordAttrbute.getExtension();
 
-            for(int j = 0; j < Musician.timeSignatureDenominator; j++)
+            for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
             {
 
                 if(j<1)
@@ -220,20 +221,20 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
         //Part bassPart = new Part("Bass Part",BASS,3);
         Phrase phrase = new Phrase();
 
-        int size = Musician.sectionBchords.size();
+        int size = Musician.getSectionBchords().size();
         for(int i = 0; i < size; i++)
         {
             //rootPitch = ((Long) Musician.sectionAchords.get(i)).intValue();
-            ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.sectionBchords.get(i);
+            ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.getSectionBchords().get(i);
             //System.out.println(chordAttrbute);
             rootPitch = chordAttrbute.getRootPitch();
             String noteType = chordAttrbute.getMajorOrMinor();
             int extension = chordAttrbute.getExtension();
 
-            for(int j = 0; j < Musician.timeSignatureDenominator; j++)
+            for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
             {
                 phrase.add(new Note(rootPitch,QUARTER_NOTE,60));
-
+                //TimeManager.MainPhrase.add(new Note(rootPitch,QUARTER_NOTE,60));
                 //if(j<1)
                 //{
                 //    phrase.add(new Note(rootPitch,C,80));
