@@ -21,6 +21,7 @@ import tools.ensemble.behaviours.ComposerBhaviours.intro.ComposeIntro;
 import tools.ensemble.behaviours.ComposerBhaviours.intro.ComposerEndIntro;
 import tools.ensemble.behaviours.ComposerBhaviours.intro.ComposerPlayIntro;
 import tools.ensemble.behaviours.ComposerBhaviours.intro.ExpectingIntroRequest;
+import tools.ensemble.behaviours.ComposerBhaviours.solo.*;
 import tools.ensemble.interfaces.ComposerStatesNames;
 import tools.ensemble.interfaces.DataStoreComposer;
 import tools.ensemble.interfaces.DataStorteMusicians;
@@ -218,23 +219,57 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         soloFSM = new FSMBehaviour(this);
         soloFSM.getDataStore().put(SOLO_COMPOSER_INSTANCE,soloConceptsInstance);
         soloFSM.getDataStore().put(COMPOSER_MY_INTERNAL_SYNCHRONIZER,internalTimeManager);
-        soloFSM.registerFirstState(new TemporaryBehaviour(),STATE_WAIT_FOR_SOLO_REQUEST);
-        soloFSM.registerState(new TemporaryBehaviour(),STATE_COMPOSE_SOLO);
-        soloFSM.registerState(new TemporaryBehaviour(),STATE_PLAY_SOLO);
+
+        ResponseSoloRequest responseSoloRequest = new ResponseSoloRequest(this,timeHandlerOntology,codec);
+        responseSoloRequest.setDataStore(soloFSM.getDataStore());
+        soloFSM.registerFirstState(responseSoloRequest,STATE_WAIT_FOR_SOLO_REQUEST);
+
+        RequestInfoSectionToSyn requestInfoSectionToSyn = new RequestInfoSectionToSyn(this);
+        requestInfoSectionToSyn.setDataStore(soloFSM.getDataStore());
+        soloFSM.registerState(requestInfoSectionToSyn,STATE_REQUEST_INFO_SECTION);
+
+        GetInfoSectionFromSyn getInfoSectionFromSyn = new GetInfoSectionFromSyn(this);
+        getInfoSectionFromSyn.setDataStore(soloFSM.getDataStore());
+        soloFSM.registerState(getInfoSectionFromSyn,STATE_GET_INFO_SECTION);
+
+        ConfirmToMusician confirm = new ConfirmToMusician(this);
+        confirm.setDataStore(soloFSM.getDataStore());
+        soloFSM.registerState(confirm,STATE_CONFIRM_TO_MUSICIAN);
+
+        ComposeSoloBehaviour composeSoloBehaviour = new ComposeSoloBehaviour(this);
+        composeSoloBehaviour.setDataStore(soloFSM.getDataStore());
+        soloFSM.registerState(composeSoloBehaviour,STATE_COMPOSE_SOLO);
+
+        PlaySoloBehaviour playSoloBehaviour = new PlaySoloBehaviour(this,timeHandlerOntology,codec);
+        playSoloBehaviour.setDataStore(soloFSM.getDataStore());
+        soloFSM.registerState(playSoloBehaviour,STATE_PLAY_SOLO);
         soloFSM.registerLastState(new TemporaryBehaviour(),STATE_END_SOLO);
 
         //Register Transitions
 
         soloFSM.registerTransition(STATE_WAIT_FOR_SOLO_REQUEST,STATE_WAIT_FOR_SOLO_REQUEST,0);
-        soloFSM.registerTransition(STATE_WAIT_FOR_SOLO_REQUEST,STATE_COMPOSE_SOLO,1);
-        soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_COMPOSE_SOLO,2);
-        soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_PLAY_SOLO,3);
-        soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_WAIT_FOR_SOLO_REQUEST,4);
-        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_COMPOSE_SOLO,5);
-        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_END_SOLO,6);
+        soloFSM.registerTransition(STATE_WAIT_FOR_SOLO_REQUEST,STATE_REQUEST_INFO_SECTION,1);
+        soloFSM.registerTransition(STATE_REQUEST_INFO_SECTION,STATE_REQUEST_INFO_SECTION,2);
+        soloFSM.registerTransition(STATE_REQUEST_INFO_SECTION,STATE_GET_INFO_SECTION,3);
+        soloFSM.registerTransition(STATE_GET_INFO_SECTION,STATE_GET_INFO_SECTION,4);
+        soloFSM.registerTransition(STATE_GET_INFO_SECTION,STATE_CONFIRM_TO_MUSICIAN,5);
+        soloFSM.registerTransition(STATE_CONFIRM_TO_MUSICIAN,STATE_CONFIRM_TO_MUSICIAN,6);
+        soloFSM.registerTransition(STATE_CONFIRM_TO_MUSICIAN,STATE_COMPOSE_SOLO,7);
+        soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_COMPOSE_SOLO,8);
+        soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_WAIT_FOR_SOLO_REQUEST,18);
+        //soloFSM.registerTransition(STATE_WAIT_FOR_SOLO_REQUEST,STATE_COMPOSE_SOLO,1);
+        //soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_COMPOSE_SOLO,20);
+        soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_PLAY_SOLO,9);
+        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_PLAY_SOLO,10);
+        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_COMPOSE_SOLO,12);
+        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_REQUEST_INFO_SECTION,13);
+        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_WAIT_FOR_SOLO_REQUEST,17);
+        soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_WAIT_FOR_SOLO_REQUEST,14);
+        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_COMPOSE_SOLO,15);
+        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_END_SOLO,16);
 
         //example transition
-        soloFSM.registerTransition(STATE_WAIT_FOR_SOLO_REQUEST,STATE_END_SOLO,10);
+        soloFSM.registerTransition(STATE_CONFIRM_TO_MUSICIAN,STATE_END_SOLO,17);
 
         // Add the SoloFSM to the agent behaviour
         addBehaviour(soloFSM);
@@ -277,6 +312,7 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_PLAY_ACCOMP,5);
         accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_COMPOSE_ACCOMP,6);
         accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_END_ACCOMP,7);
+        accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_WAIT_FOR_ACCOMP_REQUEST,11);
         ;
 
 

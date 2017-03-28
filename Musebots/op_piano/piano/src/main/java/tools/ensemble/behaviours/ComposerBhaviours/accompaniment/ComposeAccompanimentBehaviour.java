@@ -186,7 +186,7 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                    // }
 
                        //If I'm a leader I cant continue playing accompaniment.
-                        if(Composer.NextsectionIndex == 0 && Musician.leader)
+                        if(Musician.getLeader())
                         {
                             transition = 3;
                         }else

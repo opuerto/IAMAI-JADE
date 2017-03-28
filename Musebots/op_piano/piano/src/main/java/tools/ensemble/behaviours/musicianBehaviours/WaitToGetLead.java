@@ -17,6 +17,8 @@ public class WaitToGetLead extends OneShotBehaviour {
 
     private int transition = 37;
     private int firstTimeHere = 0;
+    private int state = 0;
+    private ACLMessage informToLeader = null;
     private MessageTemplate mt1 = MessageTemplate.and(
             MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET),
             MessageTemplate.MatchPerformative(ACLMessage.CFP));
@@ -36,6 +38,16 @@ public class WaitToGetLead extends OneShotBehaviour {
             ResponseRequestSoloNegotiation responseTorequest = new ResponseRequestSoloNegotiation(myAgent,mt1Andmt2);
             responseTorequest.setDataStore(getDataStore());
             myAgent.addBehaviour(responseTorequest);
+        }
+
+        switch (state)
+        {
+            case 1:
+                System.out.println("I going to request a solo");
+                myAgent.send(informToLeader);
+                transition = 14;
+                break;
+
         }
 
     }
@@ -81,7 +93,10 @@ public class WaitToGetLead extends OneShotBehaviour {
         {
             System.out.println("Agent "+myAgent.getLocalName()+": Proposal accepted");
             ACLMessage inform = accept.createReply();
-            inform.setPerformative(ACLMessage.INFORM);
+            informToLeader = accept.createReply();
+            informToLeader.setPerformative(ACLMessage.INFORM);
+            inform.setPerformative(ACLMessage.PROPAGATE);
+            state = 1;
             return inform;
         }
 

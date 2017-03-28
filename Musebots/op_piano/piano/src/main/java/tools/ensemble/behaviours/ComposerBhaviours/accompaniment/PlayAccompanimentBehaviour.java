@@ -72,13 +72,19 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
                //myAgent.doWait((Long) getDataStore().get(PLAY_TIME_LEFT));
                 myAgent.doWait(Composer.sectionPlayLeft);
                 //Call the function that play and calculate the lenght of the section
-
+               if(Musician.getLeader())
+               {
+                   transition = 11;
+               } else
+               {
+                   transition = 6;
+               }
                play();
                 //holdPlay = 1;
                 Composer.holdPlay = 1;
                 //getDataStore().remove(HOLD_PLAYBACK);
                 //getDataStore().put(HOLD_PLAYBACK,holdPlay);
-                transition = 6;
+
             }
         }
        /* else
@@ -111,7 +117,8 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
         //accompanimentScore = (Score) getDataStore().get(ACCOMPANIMENT_SCORE);
         accompanimentScore = Composer.accompanimentScore;
 
-            Play.midi(Composer.accompanimentScore,false,false,2,0);
+        if (!Musician.getLeader())
+        Play.midi(Composer.accompanimentScore,false,false,2,0);
         System.out.println("TIMESTAMP START PLAYING NOW = "+System.currentTimeMillis());
             Composer.measureCounter++;
 

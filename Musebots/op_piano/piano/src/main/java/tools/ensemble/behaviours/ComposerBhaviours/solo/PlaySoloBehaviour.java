@@ -103,7 +103,7 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
     {
 
 
-        Play.midi(Composer.SoloPianoScore,false,false,1,1);
+        Play.midi(Composer.SoloPianoScore,false,false,2,0);
 
 
         sectionStartedAt = new Date();

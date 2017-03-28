@@ -52,7 +52,22 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
 
 
 
+    public static synchronized void setLeader(Boolean lead) {
+        leader = lead;
+    }
+    public static synchronized boolean getLeader() {
+        return leader;
+    }
 
+    public static synchronized void setTempo(int temp)
+    {
+        tempo = temp;
+    }
+
+    public static synchronized int getTempo()
+    {
+        return tempo;
+    }
 
     protected void setup()
     {
@@ -97,6 +112,12 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         //Register the state RequestINTRO To the FSM
         fsm.registerState(requestIntro,STATE_REQUEST_INTRO);
         fsm.registerLastState(new TemporaryBehaviour(),STATE_SILENT);
+        //State Request Solo
+        //Get the instance of the behaviour
+        LeaderRequestSoloToMyComposer LRSTC = new LeaderRequestSoloToMyComposer(this);
+        //Share the data structure of the fsm
+        LRSTC.setDataStore(fsm.getDataStore());
+        fsm.registerState(LRSTC,STATE_REQUEST_SOLO);
 
         //Register Accompaniest state
         fsm.registerState(new TemporaryBehaviour(),STATE_ACCOMPANIST);
@@ -172,6 +193,14 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         fsm.registerTransition(STATE_PLAY_SECTIONS, STATE_PLAY_SECTIONS,40);
         fsm.registerTransition(STATE_PLAY_SECTIONS, STATE_WAITING_LEADERSHIP,20);
         fsm.registerTransition(STATE_WAITING_LEADERSHIP, STATE_WAITING_LEADERSHIP,37);
+        fsm.registerTransition(STATE_WAITING_LEADERSHIP, STATE_REQUEST_SOLO,14);
+        fsm.registerTransition(STATE_REQUEST_SOLO,STATE_REQUEST_SOLO,30);
+        fsm.registerTransition(STATE_REQUEST_SOLO,STATE_PASS_LEAD,12);
+
+        //Temporal transition
+        fsm.registerTransition(STATE_REQUEST_SOLO,STATE_ACCEPT_ACCOMPANIMENT,80);
+
+
 
         //fsm.registerTransition(STATE_PLAY_SECTIONS,STATE_ACCEPT_ACCOMPANIMENT,9);
 

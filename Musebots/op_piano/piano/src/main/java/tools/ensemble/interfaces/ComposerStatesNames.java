@@ -16,9 +16,13 @@ public interface ComposerStatesNames {
     //STATES FOR SOLOS
 
     public final static String STATE_WAIT_FOR_SOLO_REQUEST = "waitForSoloRequest";
+    public final static String STATE_REQUEST_INFO_SECTION = "requestInfoSection";
+    public final static String STATE_GET_INFO_SECTION = "getInfoSection";
+    public final static String STATE_CONFIRM_TO_MUSICIAN = "confirmToMusician";
     public final static String STATE_COMPOSE_SOLO = "composeSolo";
     public final static String STATE_PLAY_SOLO = "playSolo";
     public final static String STATE_END_SOLO = "end";
+
 
     //STATE FOR ACCOMPANIMENT
 
