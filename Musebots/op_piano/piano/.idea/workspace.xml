@@ -67,8 +67,8 @@
       <file leaf-file-name="PlayAccompanimentBehaviour.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/PlayAccompanimentBehaviour.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
-              <caret line="182" column="0" selection-start-line="182" selection-start-column="0" selection-end-line="182" selection-end-column="0" />
+            <state relative-caret-position="568">
+              <caret line="198" column="1" selection-start-line="198" selection-start-column="1" selection-end-line="198" selection-end-column="1" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -997,8 +997,13 @@
           </PATH>
         </subPane>
       </pane>
+<<<<<<< HEAD
       <pane id="Scope" />
       <pane id="PackagesPane" />
+=======
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+>>>>>>> returnToSupport
       <pane id="Scratches" />
     </panes>
   </component>
@@ -1577,13 +1582,22 @@
       <workItem from="1490876390037" duration="5519000" />
       <workItem from="1490887590720" duration="12579000" />
       <workItem from="1490974156883" duration="4000" />
+<<<<<<< HEAD
       <workItem from="1490974378522" duration="33000" />
       <workItem from="1490975194407" duration="8000" />
+=======
+      <workItem from="1490974378522" duration="721000" />
+      <workItem from="1490975275226" duration="10000" />
+>>>>>>> returnToSupport
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="766427000" />
+=======
+    <option name="totallyTimeSpent" value="767117000" />
+>>>>>>> returnToSupport
   </component>
   <component name="ToolWindowManager">
     <frame x="49" y="26" width="1450" height="808" extended-state="0" />
@@ -2001,8 +2015,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/PlayAccompanimentBehaviour.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="182" column="0" selection-start-line="182" selection-start-column="0" selection-end-line="182" selection-end-column="0" />
+        <state relative-caret-position="568">
+          <caret line="198" column="1" selection-start-line="198" selection-start-column="1" selection-end-line="198" selection-end-column="1" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
