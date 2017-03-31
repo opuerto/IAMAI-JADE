@@ -52,7 +52,7 @@
       <file leaf-file-name="PlayAccompanimentBehaviour.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/PlayAccompanimentBehaviour.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="335">
+            <state relative-caret-position="833">
               <caret line="74" column="28" selection-start-line="74" selection-start-column="28" selection-end-line="74" selection-end-column="28" />
               <folding />
             </state>
@@ -1658,12 +1658,12 @@
       <workItem from="1490974374844" duration="37000" />
       <workItem from="1490975190570" duration="12000" />
       <workItem from="1490975952021" duration="633000" />
-      <workItem from="1490976782341" duration="56000" />
+      <workItem from="1490976782341" duration="516000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="723032000" />
+    <option name="totallyTimeSpent" value="723492000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="50" y="21" width="1345" height="804" extended-state="0" />
@@ -2113,7 +2113,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/PlayAccompanimentBehaviour.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
+        <state relative-caret-position="833">
           <caret line="74" column="28" selection-start-line="74" selection-start-column="28" selection-end-line="74" selection-end-column="28" />
           <folding />
         </state>
