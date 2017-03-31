@@ -16,12 +16,14 @@ import jade.lang.acl.ACLMessage;
 import jade.wrapper.ControllerException;
 import jm.music.data.Score;
 import jm.util.Play;
+import tools.ensemble.agents.Composer;
 import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStoreComposer;
 import tools.ensemble.interfaces.DataStoreTimeManager;
 import tools.ensemble.ontologies.composer.vocabulary.concepts.AccompanimentConcepts;
 import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Section;
 
+import java.nio.channels.NonWritableChannelException;
 import java.util.Date;
 
 /**
@@ -38,23 +40,49 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
     private char theSection;
     private int theIndexSection;
     private Date sectionStartedAt;
+    private Section section;
 
     public PlayAccompanimentBehaviour(Agent a, Ontology timehandlerOntology, Codec langugage)
     {
-        this.agent = a;
+       this.agent = a;
         this.timeHandlerOntology = timehandlerOntology;
         this.Language = langugage;
     }
 
     public void action()
     {
-        if(getDataStore().containsKey(HOLD_PLAYBACK))
+        if(Composer.getHoldPlay() < 1)
         {
-            int holdPlay = (Integer) getDataStore().get(HOLD_PLAYBACK);
+            //int holdPlay = (Integer) getDataStore().get(HOLD_PLAYBACK);
+            int holdPlay = Composer.getHoldPlay() ;
             if(holdPlay < 1)
             {
-                theSection = (Character) getDataStore().get(NEXT_SECTION_TO_PLAY);
-                theIndexSection = (Integer) getDataStore().get(NEXT_SECTION_INDEX);
+                if(Musician.getIsFromLeadingToSupport())
+                {
+                    //Calculate the time left
+                    if(getDataStore().containsKey(SECTION_INSTANCE_FOR_SYN_ACCOMP))
+                    {
+                        section = (Section) getDataStore().get(SECTION_INSTANCE_FOR_SYN_ACCOMP);
+                        long sectionStartedAt = section.getSectionStartedAt().getTime();
+                        long Now = System.currentTimeMillis();
+                        long timeElapsed = Now - sectionStartedAt;
+                        long timeLeft = section.getTimeLeft().getTime() - timeElapsed;
+                        Composer.setSectionPlayLeft(timeLeft);
+                        Musician.setIsFromLeadingToSupport(false);
+                        if (timeLeft < 0 )
+                        {
+                            Musician.setIsFromLeadingToSupport(false);
+                            Composer.firstTime = 0;
+                            transition = 17;
+                        }
+
+                    }
+
+                }
+                //theSection = (Character) getDataStore().get(NEXT_SECTION_TO_PLAY);
+                //theIndexSection = (Integer) getDataStore().get(NEXT_SECTION_INDEX);
+                theSection = Composer.getNextsectionCharacter();
+                theIndexSection = Composer.getNextsectionIndex();
                 System.out.println("play after head");
                 System.out.println("next section "+theSection);
                 //PlayScore play = new PlayScore((Long) getDataStore().get(PLAY_TIME_LEFT), (Score) getDataStore().get(ACCOMPANIMENT_SCORE),section,sIndex);
@@ -65,13 +93,31 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
                 Send the agent to sleep until the current section played end.
                 */
 
-                myAgent.doWait((Long) getDataStore().get(PLAY_TIME_LEFT));
+               //myAgent.doWait((Long) getDataStore().get(PLAY_TIME_LEFT));
+                if(Composer.getSectionPlayLeft() < 0)
+                {
+                    System.out.println("left time go to transition 17 "+Composer.getSectionPlayLeft());
+                    Musician.setIsFromLeadingToSupport(true);
+                    transition = 17;
+                }else
+                {
+                    myAgent.doWait(Composer.getSectionPlayLeft());
+                    System.out.println("the time left is "+Composer.getSectionPlayLeft());
+                    transition = 6;
+                    //myAgent.doDelete();
+                }
+
                 //Call the function that play and calculate the lenght of the section
-                play();
-                holdPlay = 1;
-                getDataStore().remove(HOLD_PLAYBACK);
-                getDataStore().put(HOLD_PLAYBACK,holdPlay);
-                transition = 6;
+
+               if (!Musician.getLeader() && transition == 6)
+               {
+                   play();
+               }
+                //holdPlay = 1;
+                Composer.setHoldPlay(1);
+                //getDataStore().remove(HOLD_PLAYBACK);
+                //getDataStore().put(HOLD_PLAYBACK,holdPlay);
+                //transition = 6;
             }
         }
        /* else
@@ -100,8 +146,17 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
 
     private void play()
     {
-        accompanimentScore = (Score) getDataStore().get(ACCOMPANIMENT_SCORE);
-        Play.midi(accompanimentScore,false,false,3,0);
+
+        //accompanimentScore = (Score) getDataStore().get(ACCOMPANIMENT_SCORE);
+        accompanimentScore = Composer.getAccompanimentScore();
+
+        //if (!Musician.getLeader())
+        Play.midi(Composer.getAccompanimentScore(),false,false,8,0);
+         Composer.incrementMeasureCounter();
+        System.out.println("The cycle number is "+Composer.getMeasureCounter());
+        System.out.println("The current section is "+Composer.getNextsectionCharacter());
+
+
         //View.print(accompanimentScore);
         sectionStartedAt = new Date();
         long timeStarted = sectionStartedAt.getTime();
@@ -118,18 +173,20 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
 
         long timeLeft = (long) (lengthOfSection - transcurrentTime);
         System.out.println("time left: "+timeLeft);
-        getDataStore().remove(PLAY_TIME_LEFT);
-        getDataStore().put(PLAY_TIME_LEFT,timeLeft);
-        if(getDataStore().containsKey(FROM_PLAY_TO_COMPOSE))
+        System.out.println("the tempo "+ Musician.getTempo());
+        //getDataStore().remove(PLAY_TIME_LEFT);
+        //getDataStore().put(PLAY_TIME_LEFT,timeLeft);
+         Composer.setSectionPlayLeft(timeLeft);
+       /* if(getDataStore().containsKey(FROM_PLAY_TO_COMPOSE))
         {
             getDataStore().remove(FROM_PLAY_TO_COMPOSE);
             getDataStore().put(FROM_PLAY_TO_COMPOSE,true);
         }else
         {
             getDataStore().put(FROM_PLAY_TO_COMPOSE,true);
-        }
+        }*/
 
-        if(getDataStore().containsKey(HOLD_COMPOSITION))
+       /* if(getDataStore().containsKey(HOLD_COMPOSITION))
         {
             getDataStore().remove(HOLD_COMPOSITION);
             int holdComposition = 0;
@@ -139,16 +196,18 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
         {
             int holdComposition = 0;
             getDataStore().put(HOLD_COMPOSITION,holdComposition);
-        }
+        }*/
+        Composer.setHoldComposition(0);
         //send the message to the synchronizer
-        UpdateTheSynWithSectionInfo(theSection,timeLeft,theIndexSection);
+        //UpdateTheSynWithSectionInfo(theSection,timeLeft,theIndexSection);
+
     }
 
     private void UpdateTheSynWithSectionInfo(char sec, Long time, int Index)
     {
-        char currentSection = sec;
-        Long timeLeft = time;
-        int sIndex = Index;
+         char currentSection = sec;
+         Long timeLeft = time;
+         int sIndex = Index;
         ACLMessage messageForSyn;
         Section section = new Section();
         String theSection = String.valueOf(currentSection);
@@ -211,7 +270,10 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
     {
 
         firstTimeHere++;
-
+        if (transition == 17)
+        {
+            System.out.println("Transition 17 ");
+        }
         return transition;
     }
 

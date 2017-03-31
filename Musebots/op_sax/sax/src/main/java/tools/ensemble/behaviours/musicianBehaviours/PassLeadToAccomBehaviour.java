@@ -61,11 +61,11 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
             case 0:
                 MessageTemplate mt1 = MessageTemplate.and(MessageTemplate.MatchConversationId("I-have-been-playing-enough"),
                         MessageTemplate.MatchPerformative(ACLMessage.INFORM)
-                        );
+                );
                 ACLMessage message = myAgent.receive(mt1);
                 if (message != null)
                 {
-                   state = 2;
+                    state = 2;
 
                 }
                 else
@@ -84,15 +84,18 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
                     //Find a receiver
                     findAllReceivers();
                     constructACLMessage();
-                    myAgent.doWait(5000);
+                    myAgent.doWait(20000);
                     requestSoloNegotiation RequestSolo = new requestSoloNegotiation(myAgent,msg);
                     RequestSolo.setDataStore(getDataStore());
                     myAgent.addBehaviour(RequestSolo);
                     firstTimeHereState2++;
 
                 }
-            break;
+                break;
             case 3:
+                //Im not leader anymore Set the flag to false
+                Musician.setLeader(false);
+                transition = 39;
                 //System.out.println("case 3");
                 break;
             case 4:
@@ -116,7 +119,7 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
     private void constructACLMessage()
     {
 
-         msg = new ACLMessage(ACLMessage.CFP);
+        msg = new ACLMessage(ACLMessage.CFP);
 
         for(int i = 0; i < receivers.size(); i++)
         {
@@ -174,7 +177,7 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
 
         protected void handleRefuse(ACLMessage refuse) {
             System.out.println("Agent "+refuse.getSender().getName()+" refused");
-             nResponders--;
+            nResponders--;
         }
 
         protected void handleFailure(ACLMessage failure) {
@@ -193,47 +196,39 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
 
         protected void handleAllResponses(Vector responses, Vector acceptances)
         {
-                System.out.println(responses.size());
-                if (responses.size() < nResponders) {
-                    // Some responder didn't reply within the specified timeout
-                    System.out.println("Timeout expired: missing " + (nResponders - responses.size()) + " responses");
-                    //Try again from the beginning
-                    if (nResponders < 1)
-                    {
-                        System.out.println("Non responder");
-                        firstTimeHereState2 = 0;
-                        state = 4;
-                    }
-                }
-
-                ACLMessage accept = null;
-                //save the duration from the responder
-                Enumeration e = responses.elements();
-                while (e.hasMoreElements())
+            System.out.println(responses.size());
+            if (responses.size() < nResponders) {
+                // Some responder didn't reply within the specified timeout
+                System.out.println("Timeout expired: missing " + (nResponders - responses.size()) + " responses");
+                //Try again from the beginning
+                if (nResponders < 1)
                 {
-                    ACLMessage ms = (ACLMessage) e.nextElement();
-                    if (ms.getPerformative() == ACLMessage.PROPOSE)
+                    System.out.println("Non responder");
+                    firstTimeHereState2 = 0;
+                    state = 4;
+                }
+            }
+
+            ACLMessage accept = null;
+            //save the duration from the responder
+            Enumeration e = responses.elements();
+            while (e.hasMoreElements())
+            {
+                ACLMessage ms = (ACLMessage) e.nextElement();
+                if (ms.getPerformative() == ACLMessage.PROPOSE)
+                {
+
+                    //increment if when we got a propose performative
+                    ACLMessage reply = ms.createReply();
+                    reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
+                    acceptances.addElement(reply);
+                    //I only need to find one candidate
+                    if (!findMycandidate)
                     {
 
-                        //increment if when we got a propose performative
-                        ACLMessage reply = ms.createReply();
-                        reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
-                        acceptances.addElement(reply);
-                        //I only need to find one candidate
-                        if (!findMycandidate)
+                        if (Musician.lastMusicianIpassedTheLeadership != null && receivers.size() > 1)
                         {
-
-                            if (Musician.lastMusicianIpassedTheLeadership != null && receivers.size() > 1)
-                            {
-                                if(Musician.lastMusicianIpassedTheLeadership != ms.getSender() )
-                                {
-                                    accept = reply;
-                                    Musician.lastMusicianIpassedTheLeadership = ms.getSender();
-                                    responderSelectect = ms.getSender();
-                                    findMycandidate = true;
-                                }
-                            }
-                            else
+                            if(Musician.lastMusicianIpassedTheLeadership != ms.getSender() )
                             {
                                 accept = reply;
                                 Musician.lastMusicianIpassedTheLeadership = ms.getSender();
@@ -241,18 +236,26 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
                                 findMycandidate = true;
                             }
                         }
+                        else
+                        {
+                            accept = reply;
+                            Musician.lastMusicianIpassedTheLeadership = ms.getSender();
+                            responderSelectect = ms.getSender();
+                            findMycandidate = true;
+                        }
                     }
                 }
-                if(accept != null)
-                {
-                    System.out.println("Accepting proposal from responder "+responderSelectect );
-                    accept.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-                }else
-                {
-                    //If there is no good proposal we try again from the beginning.
-                    System.out.println("All Rejected");
-                    state = 4;
-                }
+            }
+            if(accept != null)
+            {
+                System.out.println("Accepting proposal from responder "+responderSelectect );
+                accept.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+            }else
+            {
+                //If there is no good proposal we try again from the beginning.
+                System.out.println("All Rejected");
+                state = 4;
+            }
 
         }
         protected void handleInform(ACLMessage inform) {

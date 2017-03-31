@@ -8,7 +8,6 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.wrapper.ControllerException;
-import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStorteMusicians;
 
 import java.util.Vector;
@@ -25,7 +24,7 @@ public class GetMembers extends OneShotBehaviour implements DataStorteMusicians 
     private boolean accompanient;
     // The Internal Time Manager
     private AID internalTimeManager = new AID();
-    //Internal Composer
+    //The Internal Composer
     private AID internalComposer = new AID();
     //public static final String MUSICIAN_LIST = "musicianList";
     //public static final String FIRST_LEADER = "firstLeader";
@@ -62,15 +61,15 @@ public class GetMembers extends OneShotBehaviour implements DataStorteMusicians 
         DFAgentDescription template_3 = new DFAgentDescription();
         ServiceDescription sd_3 = new ServiceDescription();
         sd_3.setType("InternalComposer");
+
         try{
-            sd_3.setOwnership(agent.getContainerController().getContainerName());
+          sd_3.setOwnership(agent.getContainerController().getContainerName());
         }
         catch(ControllerException e)
         {
             e.printStackTrace();
         }
         template_3.addServices(sd_3);
-
 
         try
         {
@@ -102,7 +101,6 @@ public class GetMembers extends OneShotBehaviour implements DataStorteMusicians 
             for (int i=0; i<resultSearchComposer.length; i++)
             {
                 internalComposer = resultSearchComposer[i].getName();
-                //System.out.println("the internal composer found was "+internalComposer);
             }
             getDataStore().put(INTERNAL_COMPOSER,internalComposer);
 
@@ -117,7 +115,7 @@ public class GetMembers extends OneShotBehaviour implements DataStorteMusicians 
 
 
 
-        if(Musicians.isEmpty() || Musicians.size() < 2) //here was menor que 4
+        if(Musicians.isEmpty() || Musicians.size() < 2)
         {
             transition = 0;
         }
@@ -139,6 +137,7 @@ public class GetMembers extends OneShotBehaviour implements DataStorteMusicians 
         }
         else if(accompanient)
         {
+            //System.out.println("Soy accompanient");
             transition = 2;
         }
 

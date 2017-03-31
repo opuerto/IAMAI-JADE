@@ -14,4 +14,10 @@ public interface DataStoreTimeManager {
 
     public static final String FIRST_TIME_SOLO_IN_SYN = "firstTimeSolo";
 
+    public static final String CURRENT_MESSAGE_FROM_COMPOSER = "currentMessageFromComposer";
+
+
+
+
+
 }

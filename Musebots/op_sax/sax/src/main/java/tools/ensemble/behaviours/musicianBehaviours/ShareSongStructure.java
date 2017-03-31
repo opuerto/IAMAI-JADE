@@ -8,14 +8,11 @@ import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStorteMusicians;
 import tools.ensemble.interfaces.SongStructure;
-import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ChordsAttributes;
 import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ScoreElements;
 
 
-import java.util.Date;
 import java.util.Vector;
 
 /**
@@ -60,13 +57,11 @@ public class ShareSongStructure extends OneShotBehaviour implements SongStructur
                 for(int i=0; i<musicians.size();i++)
                 {
                     if(!musicians.get(i).equals(myAgent.getAID())){musiciansReceivers.add(musicians.get(i));}
-
                 }
-                System.out.println(musiciansReceivers);
+
                 //Get the elements of the song structure
                 if(getDataStore().containsKey(SCORE_ELEMENTS)){scoreElements = (ScoreElements) getDataStore().get(SCORE_ELEMENTS);}
-                System.out.println("Score denominator: "+ Musician.getTimeSignatureDenominator());
-                System.out.println("Score form: "+ Musician.getTuneForm());
+
                 // Send the Inform to all musicians
                 ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
                 msg.setLanguage(codec.getName());
@@ -83,9 +78,6 @@ public class ShareSongStructure extends OneShotBehaviour implements SongStructur
                 }
                 msg.setConversationId("score-elements");
                 msg.setReplyWith("inform"+System.currentTimeMillis());
-
-                msg.setReplyByDate(new Date(System.currentTimeMillis() + 3000));
-                myAgent.doWait(3000);
                 agent.send(msg);
                 // Prepare the template to get proposals
                 mt = MessageTemplate.and(
@@ -103,10 +95,8 @@ public class ShareSongStructure extends OneShotBehaviour implements SongStructur
                     // Reply received
                     if (reply.getPerformative() == ACLMessage.CONFIRM)
                     {
-                        //we add to the counter
+                       //we add to the counter
                         repliesCnt++;
-                        System.out.println(repliesCnt);
-                        System.out.println(reply.getContent()+ " from " + reply.getSender().getLocalName());
                     }
 
                     if(repliesCnt >= musiciansReceivers.size())
@@ -115,21 +105,12 @@ public class ShareSongStructure extends OneShotBehaviour implements SongStructur
                         step = 2;
 
                     }
-
-                    else
-                    {
-
-                        transition = 4;
-
-
-                    }
-
                 }else{block();}
                 transition = 28;
                 break;
             case 2:
                 // we complete the task in this state, now we are ready to go to the next state with transition = 4.
-                transition = 4;
+               transition = 4;
                 break;
         }
 
@@ -139,10 +120,6 @@ public class ShareSongStructure extends OneShotBehaviour implements SongStructur
 
     public int onEnd() {
 
-        if(transition == 28)
-        {
-            block(500);
-        }
         return transition;
     } //Exit with the transition value to the corresponding state.
 

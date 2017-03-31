@@ -42,7 +42,7 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
 
     public LeaderRequestSoloToMyComposer(Agent a)
     {
-         super(a);
+        super(a);
         this.agent = a;
     }
 
@@ -110,8 +110,8 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
 
         public void action()
         {
-           requestMessage.setConversationId("Request-Solo-To-Composer");
-           requestMessage.setReplyWith(agent.getLocalName()+System.currentTimeMillis());
+            requestMessage.setConversationId("Request-Solo-To-Composer");
+            requestMessage.setReplyWith(agent.getLocalName()+System.currentTimeMillis());
             if(getDataStore().containsKey(INTERNAL_COMPOSER))
             {
                 internalComposer = (AID) getDataStore().get(INTERNAL_COMPOSER);
@@ -131,7 +131,6 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
                 Long now = System.currentTimeMillis();
                 long elapsedTime = introStartedAt - now;
                 long timeLeft = introDuration - elapsedTime;
-                System.out.println("time left "+timeLeft);
                 //Wait until the intro has finish before request a solo
                 agent.doWait(timeLeft);
             }

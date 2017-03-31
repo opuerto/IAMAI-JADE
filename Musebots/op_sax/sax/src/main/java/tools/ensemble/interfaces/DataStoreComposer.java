@@ -54,6 +54,9 @@ public interface DataStoreComposer {
     //Save the info about the sections sent by the syn, that we will use to play the solo.
     public static final String SECTION_INSTANCE_FOR_SYN_SOLO = "sectionInstanceForSyncSolo";
 
+ //Save the info about the sections sent by the syn, that we will use to play the accompaniement.
+ public static final String SECTION_INSTANCE_FOR_SYN_ACCOMP = "sectionInstanceForSyncAccom";
+
     //Save the internal Musician ID
     public static final String INTERNAL_MUSICIAN_AID = "internalMusicianID";
 }

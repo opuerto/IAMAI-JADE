@@ -29,5 +29,8 @@ public interface ComposerStatesNames {
     public final static String STATE_CONFIRM_COMPOSIION = "confirmComposition";
     public final static String STATE_COMPOSE_ACCOMP = "composeAccompaniment";
     public final static String STATE_PLAY_ACCOMP = "playAccomp";
+    public final static String STATE_REQUEST_INFO_TO_SYNC = "requestInfoToSync";
+    public final static String STATE_GET_INFO_FROM_SYNC = "getInfoFromSync";
     public final static String STATE_END_ACCOMP = "end";
+
 }

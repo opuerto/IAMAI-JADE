@@ -100,6 +100,21 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
             }
 
             //Play the solo
+            if (Composer.getMeasureCounter() >= Musician.tuneForm.length()*2)
+            {
+                System.out.println("Get Out of here "+Composer.getMeasureCounter());
+                System.out.println("the meassure "+Composer.getMeasureCounter());
+                System.out.println("the tune form lenght "+Musician.tuneForm.length()*2 );
+                Composer.setMeasureCounter(0);
+                stopAndPassLead();
+
+                transition = 17;
+            }
+            else
+            {
+                //Go to compose another section of solo
+                transition = 12;
+            }
 
             play();
             Composer.setHoldSoloPlayback(1);
@@ -121,7 +136,7 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
 
         System.out.println("Im in playing");
         Play.midi(Composer.getSoloPianoScore(),false,false,6,0);
-        View.print(Composer.getSoloPianoScore());
+        Composer.incrementMeasureCounter();
 
 
         sectionStartedAt = new Date();
@@ -146,7 +161,21 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
         Composer.setTimeLeftInCurrentsection(timeLeft);
         //Set the rule to 0 so it can compose the next part of the solo.
         Composer.setHodSoloComposition(0);
-        //UpdateTheSynWithSectionInfo(theSection,timeLeft,theIndexSection);
+
+            UpdateTheSynWithSectionInfo(theSection,timeLeft,theIndexSection);
+
+
+    }
+
+    private void stopAndPassLead()
+    {
+        ACLMessage letKnowTheMusician = new ACLMessage(ACLMessage.INFORM);
+        letKnowTheMusician.setConversationId("I-have-been-playing-enough");
+        letKnowTheMusician.addReceiver((AID) getDataStore().get(INTERNAL_MUSICIAN_AID));
+        myAgent.send(letKnowTheMusician);
+        System.out.println("message sent");
+
+
     }
     private void UpdateTheSynWithSectionInfo(char sec, Long time, int Index)
     {

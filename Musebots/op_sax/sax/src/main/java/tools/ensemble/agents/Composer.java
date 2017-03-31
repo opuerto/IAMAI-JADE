@@ -17,10 +17,7 @@ import jm.music.data.Part;
 import jm.music.data.Phrase;
 import jm.music.data.Score;
 import jm.util.Play;
-import tools.ensemble.behaviours.ComposerBhaviours.accompaniment.ComposeAccompanimentBehaviour;
-import tools.ensemble.behaviours.ComposerBhaviours.accompaniment.ConfirmComposeAccompaniment;
-import tools.ensemble.behaviours.ComposerBhaviours.accompaniment.PlayAccompanimentBehaviour;
-import tools.ensemble.behaviours.ComposerBhaviours.accompaniment.ResponseAccompanimentRequest;
+import tools.ensemble.behaviours.ComposerBhaviours.accompaniment.*;
 import tools.ensemble.behaviours.ComposerBhaviours.intro.ComposeIntro;
 import tools.ensemble.behaviours.ComposerBhaviours.intro.ComposerEndIntro;
 import tools.ensemble.behaviours.ComposerBhaviours.intro.ComposerPlayIntro;
@@ -31,6 +28,7 @@ import tools.ensemble.interfaces.DataStoreComposer;
 import tools.ensemble.interfaces.DataStorteMusicians;
 import tools.ensemble.interfaces.MusicianStates;
 import tools.ensemble.ontologies.composer.ComposerOntology;
+import tools.ensemble.ontologies.composer.vocabulary.actions.PreviousSection;
 import tools.ensemble.ontologies.composer.vocabulary.concepts.AccompanimentConcepts;
 import tools.ensemble.ontologies.composer.vocabulary.concepts.IntroConcepts;
 import tools.ensemble.ontologies.composer.vocabulary.concepts.SoloConcepts;
@@ -189,6 +187,17 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         return accompanimentScore;
     }
 
+    public static PreviousSection previousSection = new PreviousSection();
+    public static synchronized void setPreviousSection(PreviousSection p)
+    {
+        previousSection = p;
+    }
+    public static synchronized PreviousSection getPreviousSection()
+    {
+        return previousSection;
+    }
+
+    public static int firstTime = 0;
 
     //Finite state machines objects declaration
     FSMBehaviour introFSM;
@@ -398,7 +407,7 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_END_SOLO,16);
 
         //example transition
-        soloFSM.registerTransition(STATE_CONFIRM_TO_MUSICIAN,STATE_END_SOLO,17);
+        //soloFSM.registerTransition(STATE_CONFIRM_TO_MUSICIAN,STATE_END_SOLO,17);
 
         // Add the SoloFSM to the agent behaviour
         addBehaviour(soloFSM);
@@ -412,7 +421,7 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         accompaniementFSM.getDataStore().put(ACCOMPANIMENT_COMPOSER_INSTANCE,accConcept);
         accompaniementFSM.getDataStore().put(COMPOSER_MY_INTERNAL_SYNCHRONIZER,internalTimeManager);
         //Instance of the Behaviour
-        ResponseAccompanimentRequest responseAccompanimentRequest = new ResponseAccompanimentRequest(this);
+        ResponseAccompanimentRequest responseAccompanimentRequest = new ResponseAccompanimentRequest(this,introFSM);
         responseAccompanimentRequest.setDataStore(accompaniementFSM.getDataStore());
         accompaniementFSM.registerFirstState(responseAccompanimentRequest,STATE_WAIT_FOR_ACCOMP_REQUEST);
         //Instance confirm composition
@@ -426,12 +435,26 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         PlayAccompanimentBehaviour playAccompanimentBehaviour = new PlayAccompanimentBehaviour(this,timeHandlerOntology,codec);
         playAccompanimentBehaviour.setDataStore(accompaniementFSM.getDataStore());
         accompaniementFSM.registerState(playAccompanimentBehaviour,STATE_PLAY_ACCOMP);
+        //Request Info Section to Sync
+        RequestInfoSectionToSync requestInfoToSync = new RequestInfoSectionToSync(this);
+        requestInfoToSync.setDataStore(accompaniementFSM.getDataStore());
+        accompaniementFSM.registerState(requestInfoToSync,STATE_REQUEST_INFO_TO_SYNC);
+
+        GetInfoSectionFromSync getInfoFromSynC = new GetInfoSectionFromSync(this);
+        getInfoFromSynC.setDataStore(accompaniementFSM.getDataStore());
+        accompaniementFSM.registerState(getInfoFromSynC,STATE_GET_INFO_FROM_SYNC);
+
         accompaniementFSM.registerLastState(new TemporaryBehaviour(),STATE_END_ACCOMP);
+
 
         // Transitions
 
         accompaniementFSM.registerTransition(STATE_WAIT_FOR_ACCOMP_REQUEST,STATE_WAIT_FOR_ACCOMP_REQUEST,0);
         accompaniementFSM.registerTransition(STATE_WAIT_FOR_ACCOMP_REQUEST,STATE_CONFIRM_COMPOSIION,9);
+        accompaniementFSM.registerTransition(STATE_WAIT_FOR_ACCOMP_REQUEST,STATE_REQUEST_INFO_TO_SYNC,12);
+        accompaniementFSM.registerTransition(STATE_REQUEST_INFO_TO_SYNC,STATE_GET_INFO_FROM_SYNC,13);
+        accompaniementFSM.registerTransition(STATE_GET_INFO_FROM_SYNC,STATE_GET_INFO_FROM_SYNC,14);
+        accompaniementFSM.registerTransition(STATE_GET_INFO_FROM_SYNC,STATE_COMPOSE_ACCOMP,15);
         accompaniementFSM.registerTransition(STATE_CONFIRM_COMPOSIION,STATE_CONFIRM_COMPOSIION,8);
         accompaniementFSM.registerTransition(STATE_CONFIRM_COMPOSIION,STATE_COMPOSE_ACCOMP,1);
         //accompaniementFSM.registerTransition(STATE_WAIT_FOR_ACCOMP_REQUEST,STATE_COMPOSE_ACCOMP,1);
@@ -441,7 +464,9 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_PLAY_ACCOMP,5);
         accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_COMPOSE_ACCOMP,6);
         accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_END_ACCOMP,7);
-        ;
+        accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_WAIT_FOR_ACCOMP_REQUEST,11);
+        accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_REQUEST_INFO_TO_SYNC,17);
+
 
 
         //example transition

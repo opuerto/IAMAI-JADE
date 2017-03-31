@@ -48,6 +48,7 @@ public class TimeManager extends Agent implements DataStoreTimeManager, JMC {
     public static Phrase MainPhrase = new Phrase();
     public static Part SAXPART = new Part("SAX PART",SAXOPHONE,5);
     public static long alive = System.currentTimeMillis();
+    public static int step = 0;
 
     protected void setup()
     {
@@ -152,13 +153,14 @@ public class TimeManager extends Agent implements DataStoreTimeManager, JMC {
         //Add the Behaviour
 
         //State machine for Response Info Section
+        RequestToExternalSyn RTES = new RequestToExternalSyn(this,timeHandlerOntology,codec);
         FSMBehaviour responseInfoSection = new FSMBehaviour(this);
         responseInfoSection.setDataStore(pb.getDataStore());
         //create the instance of the first state action
-        ResponseRequestSectionInfo RRSI = new ResponseRequestSectionInfo(this);
+        ResponseRequestSectionInfo RRSI = new ResponseRequestSectionInfo(this,RTES);
         RRSI.setDataStore(responseInfoSection.getDataStore());
         responseInfoSection.registerFirstState(RRSI,"ResponseRequest");
-        RequestToExternalSyn RTES = new RequestToExternalSyn(this,timeHandlerOntology,codec);
+
         RTES.setDataStore(responseInfoSection.getDataStore());
         responseInfoSection.registerState(RTES,"RequestToExternal");
         CheckForInfoInternally CFII = new CheckForInfoInternally(this,timeHandlerOntology,codec);

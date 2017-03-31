@@ -74,7 +74,7 @@ public class GetEveryTimeManager extends Behaviour implements DataStoreTimeManag
     {
         if(externalTimeManagerList.size() == listLength)
         {
-            System.out.println("The external time manager is "+externalTimeManagerList);
+
             return true;
         }
         else
@@ -82,7 +82,6 @@ public class GetEveryTimeManager extends Behaviour implements DataStoreTimeManag
             block(500);
             return false;
         }
-
 
 
 

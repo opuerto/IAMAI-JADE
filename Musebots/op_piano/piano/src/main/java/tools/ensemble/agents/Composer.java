@@ -425,6 +425,7 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         playAccompanimentBehaviour.setDataStore(accompaniementFSM.getDataStore());
         accompaniementFSM.registerState(playAccompanimentBehaviour,STATE_PLAY_ACCOMP);
         accompaniementFSM.registerLastState(new TemporaryBehaviour(),STATE_END_ACCOMP);
+        //Request Info to sync
 
         // Transitions
 

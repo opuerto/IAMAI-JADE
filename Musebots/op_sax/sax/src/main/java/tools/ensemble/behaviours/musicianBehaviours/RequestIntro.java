@@ -11,7 +11,6 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.proto.ContractNetInitiator;
-import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStorteMusicians;
 import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ScoreElements;
 import tools.ensemble.ontologies.musicians.vocabulary.actions.PlayIntroAction;
@@ -36,7 +35,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
     //manage the exit of the state
     private int transition;
     //get the number of measure that will determines the lenght of the intro
-    private int numberOfMeasures = 3;
+    private int numberOfMeasures = 6;
     //Flag that check if was the first time in this state
     private int counter = 0;
     // a class that extend the contract-net initiator
@@ -119,10 +118,6 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
     public int onEnd() {
 
         counter++;
-        if (transition == 29)
-        {
-            block(500);
-        }
         return transition;
     } //Exit with the transition value to the corresponding state.
 
@@ -176,7 +171,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
         //Set the protocol that we gonna use
         msg.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
         //We indicate the deadline of the reply
-        msg.setReplyByDate(new Date(System.currentTimeMillis() + 3000));
+        msg.setReplyByDate(new Date(System.currentTimeMillis() + 30000));
 
 
     }
@@ -188,11 +183,8 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
             scoreElements = (ScoreElements) getDataStore().get(SCORE_ELEMENTS);
             double beatPerMeasure = scoreElements.getNumerator();
             double measures = numberOfMeasures;
-
-            double tempo = Musician.getTempo();
-            System.out.println("Tempo in calculate duration "+tempo);
+            double tempo = scoreElements.getTempo();
             introDuration = (long) ((beatPerMeasure*measures/tempo)*60*1000);
-            System.out.println("Intro duration "+introDuration);
             getDataStore().put(INTRO_DURATION,introDuration);
         }
 
@@ -216,7 +208,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
         }
 
         protected void handlePropose(ACLMessage propose, Vector v) {
-            System.out.println("Agent "+propose.getSender().getName()+" proposed " +propose.getContent());
+            System.out.println("Agent "+propose.getSender().getName()+" proposed ");
         }
 
         protected void handleRefuse(ACLMessage refuse) {
@@ -315,7 +307,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
             getDataStore().put(INTRO_TIMESTAMP,introTimestamp);
             System.out.println("Intro timestamp: "+introTimestamp);
             System.out.println("Agent "+inform.getSender().getName()+" The intro has started to play");
-            //Let know the request solo state that this is the first time that a solo is played in the song. So he will wait until the head is done
+            //Let know to the next state that is gonna be the first solo in the song
             getDataStore().put(FIRST_SOLO,true);
             steps = 1;
             //myAgent.doWait(introDuration);

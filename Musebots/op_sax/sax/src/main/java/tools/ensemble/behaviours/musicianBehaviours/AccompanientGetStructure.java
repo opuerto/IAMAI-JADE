@@ -7,9 +7,11 @@ import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import jade.util.leap.List;
 import tools.ensemble.agents.Musician;
+import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ChordsAttributes;
 import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ScoreElements;
+import jade.util.leap.List;
+import jade.util.leap.ArrayList;
 
 /**
  * Created by OscarAlfonso on 1/31/2017.
@@ -17,7 +19,7 @@ import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ScoreElements
 public class AccompanientGetStructure extends OneShotBehaviour {
 
     Agent agent;
-    int transition;
+    int transition = 32;
     public AccompanientGetStructure (Agent a)
     {
         super(a);
@@ -33,6 +35,10 @@ public class AccompanientGetStructure extends OneShotBehaviour {
 
     public int onEnd()
     {
+        if(transition == 32)
+        {
+            block(500);
+        }
         return transition;
     }
 
@@ -55,20 +61,28 @@ public class AccompanientGetStructure extends OneShotBehaviour {
                     List sectionAchords =  ((ScoreElements) concept).getSectionAchords();
                     List sectionBchords =  ((ScoreElements) concept).getSectionBchords();
                     List sectionCchords = ((ScoreElements) concept).getSectionCchords();
-                    Musician.tempo = tempo;
-                    Musician.timeSignatureNumerator = numerator;
-                    Musician.timeSignatureDenominator = denominaor;
-                    Musician.tuneForm = form;
-                    Musician.sectionAchords = sectionAchords;
-                    Musician.sectionBchords = sectionBchords;
-                    Musician.sectionCchords = sectionCchords;
-                    System.out.println("this is the tempo "+Musician.tempo);
-                    System.out.println("this is the timesignature "+Musician.timeSignatureNumerator);
-                    System.out.println("this is the denominator " +  Musician.timeSignatureDenominator);
-                    System.out.println("this is the structure " +  Musician.tuneForm);
-                    System.out.println("this is section A " +Musician.sectionAchords);
-                    System.out.println("this is section B " +Musician.sectionBchords);
-                    System.out.println("this is section C " +Musician.sectionCchords);
+
+                    //Musician.tempo = tempo;
+                    Musician.setTempo(tempo);
+                    //Musician.timeSignatureNumerator = numerator;
+                    Musician.setTimeSignatureNumerator(numerator);
+                    //Musician.timeSignatureDenominator = denominaor;
+                    Musician.setTimeSignatureDenominator(denominaor);
+                    //Musician.tuneForm = form;
+                    Musician.setTuneForm(form);
+                    //Musician.sectionAchords = sectionAchords;
+                    Musician.setSectionAchords(sectionAchords);
+                    //Musician.sectionBchords = sectionBchords;
+                    Musician.setSectionBchords(sectionBchords);
+                    //Musician.sectionCchords = sectionCchords;
+                    Musician.setSectionCchords(sectionCchords);
+                    System.out.println("this is the tempo "+Musician.getTempo());
+                    System.out.println("this is the timesignature "+Musician.getTimeSignatureNumerator());
+                    System.out.println("this is the denominator " +  Musician.getTimeSignatureDenominator());
+                    System.out.println("this is the structure " +  Musician.getTuneForm());
+                    //System.out.println("this is section A " +Musician.getSectionAchords());
+                    //System.out.println("this is section B " +Musician.getSectionBchords());
+                    //System.out.println("this is section C " +Musician.getSectionCchords());
                     ACLMessage msgConfirm = msg.createReply();
                     msgConfirm.setPerformative(ACLMessage.CONFIRM);
                     msgConfirm.setContent("I got the elements of the score");
@@ -83,7 +97,7 @@ public class AccompanientGetStructure extends OneShotBehaviour {
         }else
         {
             block();
-            transition = 32;
+            //transition = 32;
         }
 
 

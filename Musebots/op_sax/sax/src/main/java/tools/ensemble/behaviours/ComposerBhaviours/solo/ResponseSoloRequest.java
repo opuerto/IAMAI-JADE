@@ -44,6 +44,7 @@ public class ResponseSoloRequest extends OneShotBehaviour implements DataStoreCo
         ACLMessage replyRequest = myAgent.receive(mt1);
         if(replyRequest != null)
         {
+            System.out.println("The " + getBehaviourName() + "is waiting for a message");
             getDataStore().put(INTERNAL_MUSICIAN_AID,replyRequest.getSender());
             System.out.println("I got the request");
             if(getDataStore().containsKey(COMPOSER_MY_INTERNAL_SYNCHRONIZER))
@@ -52,7 +53,7 @@ public class ResponseSoloRequest extends OneShotBehaviour implements DataStoreCo
             }
             //Check if this is the first solo played in the song
             firsTimeSolo = Integer.parseInt(replyRequest.getContent());
-             getDataStore().put(FIRST_TIME_SOLO,firsTimeSolo);
+            getDataStore().put(FIRST_TIME_SOLO,firsTimeSolo);
             ACLMessage replyToMusician = replyRequest.createReply();
             replyToMusician.setPerformative(ACLMessage.AGREE);
             replyToMusician.setConversationId("request-solo-to-composer-agree");
@@ -87,6 +88,4 @@ public class ResponseSoloRequest extends OneShotBehaviour implements DataStoreCo
         }
         return transition;
     }
-
-
 }

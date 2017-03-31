@@ -4,6 +4,7 @@ import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import tools.ensemble.agents.TimeManager;
 import tools.ensemble.interfaces.DataStoreTimeManager;
 
 import java.security.acl.Acl;
@@ -16,14 +17,18 @@ public class ResponseRequestSectionInfo extends OneShotBehaviour implements Data
 
      private int transition = 0;
     private int firtSolo = 0;
+    private OneShotBehaviour nextBehaviour;
      MessageTemplate mt1 = MessageTemplate.and(
              MessageTemplate.MatchConversationId("request-Current-Section-to-Syn"),
              MessageTemplate.MatchPerformative(ACLMessage.REQUEST)
      );
 
-    public ResponseRequestSectionInfo(Agent a)
+
+    public ResponseRequestSectionInfo(Agent a, OneShotBehaviour nextBehavior)
     {
-       super(a);
+
+        super(a);
+        this.nextBehaviour = nextBehavior;
     }
 
     public void action()
@@ -31,12 +36,17 @@ public class ResponseRequestSectionInfo extends OneShotBehaviour implements Data
         ACLMessage replyToComposer = myAgent.receive(mt1);
         if(replyToComposer != null)
         {
+            System.out.println("I got a request from composer");
+
             getDataStore().put(INTERNAL_COMPOSER_IN_SYN,replyToComposer.getSender());
+            getDataStore().put(CURRENT_MESSAGE_FROM_COMPOSER,replyToComposer);
             firtSolo = Integer.parseInt(replyToComposer.getContent());
 
             if (firtSolo != 0)
             {
-                //getDataStore().put(FIRST_TIME_SOLO_IN_SYN,firtSolo);
+                getDataStore().put(FIRST_TIME_SOLO_IN_SYN,firtSolo);
+                System.out.println("Im going to ask externally");
+                TimeManager.step = 0;
                 transition = 1;
             }
             else

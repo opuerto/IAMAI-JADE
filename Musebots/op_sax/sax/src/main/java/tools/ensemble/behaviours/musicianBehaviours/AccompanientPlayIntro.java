@@ -101,6 +101,9 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
     private float duration;
     //length of the intro
     private int lenght;
+    //Block
+    private boolean block = false;
+    private boolean restart = false ;
 
 
     //Only for now will help us to use the composer conversation simulation
@@ -166,6 +169,8 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
                 transition = 7;
                 break;
         }
+
+
     }
 
     public int onEnd()
@@ -175,6 +180,10 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
         {
             agent.removeBehaviour(fsmBehaviour);
             fsmBehaviour = null;
+        }
+        if(transition == 8)
+        {
+            block(500);
         }
         return transition;
     }
@@ -390,7 +399,7 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
 
             playIntroActionObject = new PlayIntroAction();
             //Calculate the duration of the intro based on the song structure and the lenght get from the leader
-            double calculateDuration = ((((double) Musician.timeSignatureNumerator*(double) lenght)/(double) Musician.tempo)*60*1000);
+            double calculateDuration = ((((double) Musician.getTimeSignatureNumerator()*(double) lenght)/(double) Musician.getTempo())*60*1000);
 
             duration = (float) calculateDuration;
             playIntroActionObject.setLenght(lenght);
@@ -549,6 +558,7 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
                 statePassInfo = 1;
                 return true;
             }
+            block(500);
             return false;
         }
     }
@@ -582,7 +592,7 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
         public void action()
         {
             if(count < 1) {
-                System.out.println("Run the simple behaviour " + count);
+                //System.out.println("Run the simple behaviour " + count);
                 FSMBehaviour RIFSM = new FSMBehaviour(myAgent);
                 //Register the estates
                 CFP cfpB = new CFP();
@@ -698,6 +708,10 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
             public int onEnd()
            {
                 firstTime++;
+               if(transition == 2)
+               {
+                   block(500);
+               }
                 return transition;
             }
         }
@@ -740,6 +754,10 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
             public int onEnd()
             {
                 firstTimeHere++;
+                if (confirmTransition == 4)
+                {
+                    block(500);
+                }
                 return confirmTransition;
             }
 
@@ -796,6 +814,10 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
             }
             public int onEnd()
             {
+                if (transition == 6)
+                {
+                    block(500);
+                }
                 return transition;
             }
         }

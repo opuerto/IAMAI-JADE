@@ -1,5 +1,6 @@
 package tools.ensemble.behaviours.ComposerBhaviours.accompaniment;
 
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -32,12 +33,15 @@ public class ConfirmComposeAccompaniment extends OneShotBehaviour implements Dat
             replyConfirmToMusician.setPerformative(ACLMessage.INFORM);
             replyConfirmToMusician.setConversationId("request-accompaniment-conversation-INFORM");
             replyConfirmToMusician.setReplyWith(replyConfirm.getSender().getLocalName()+System.currentTimeMillis());
-            myAgent.send(replyConfirmToMusician);
+            //System.out.println(replyConfirmToMusician);
+            //myAgent.send(replyConfirmToMusician);
             //AccompanimentPianoPart.empty();
             //AccompanimentPhrase.empty();
             //AccompanimentScore.empty();
             //composeChordProgression();
             //getDataStore().put(ACCOMPANIMENT_SCORE,AccompanimentScore);
+             myAgent.send(replyConfirmToMusician);
+
             if(getDataStore().containsKey(FROM_PLAY_TO_COMPOSE))
             {
                 getDataStore().remove(FROM_PLAY_TO_COMPOSE);
@@ -61,12 +65,16 @@ public class ConfirmComposeAccompaniment extends OneShotBehaviour implements Dat
 
             transition = 1;
 
-        }else {block();}
+        }else {block(100);}
 
     }
 
     public int onEnd()
     {
+        if(transition == 8 )
+        {
+            block(1000);
+        }
         return transition;
     }
 }

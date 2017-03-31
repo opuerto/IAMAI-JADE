@@ -18,6 +18,7 @@ import jm.music.data.Part;
 import jm.music.data.Phrase;
 import jm.music.data.Score;
 import jm.util.Play;
+import jm.util.View;
 import tools.ensemble.agents.Composer;
 import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStoreComposer;
@@ -59,9 +60,9 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
 
         }
 
-        if (Composer.holdSoloPlayback < 1)
+        if (Composer.getHoldSoloPlayback() < 1)
         {
-            if (getDataStore().containsKey(SECTION_INSTANCE_FOR_SYN_SOLO) && Composer.timeLeftInCurrentsection == null)
+            if (getDataStore().containsKey(SECTION_INSTANCE_FOR_SYN_SOLO) && Composer.getTimeLeftInCurrentsection() == null)
             {
                 section = (Section) getDataStore().get(SECTION_INSTANCE_FOR_SYN_SOLO);
                 sectionTimeLeft = section.getTimeLeft();
@@ -69,30 +70,43 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
                 Now = System.currentTimeMillis();
                 long timeElapsed = Now - sectionStartedAt.getTime();
                 timeLeft = sectionTimeLeft.getTime() - timeElapsed;
-                System.out.println("The time left for the first time is "+timeLeft);
                 if (timeLeft < 0)
                 {
+                    System.out.println("Ups we didn't have time Please Request the section again");
                     //We didn't have time to play, then go to request the section again.
                     transition = 13;
                 }
+                else
+                {
+                    transition = 12;
+                }
             }else
             {
-                timeLeft = Composer.timeLeftInCurrentsection;
-
+                timeLeft = Composer.getTimeLeftInCurrentsection();
+                if (timeLeft < 0)
+                {
+                    System.out.println("Ups we didn't have time Please Request the section again");
+                    transition = 13;
+                }
+                else
+                {
+                    transition = 12;
+                }
             }
-            theSection = Composer.NextSectionSoloCharacter;
-            theIndexSection = Composer.NextSectionSoloIndex;
+            theSection = Composer.getNextSectionSoloCharacter();
+            theIndexSection = Composer.getNextSectionSoloIndex();
 
-           /* try {
-                Thread.sleep(timeLeft);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }*/
-            myAgent.doWait(timeLeft);
+            if (timeLeft > 0)
+            {
+                myAgent.doWait(timeLeft);
+            }
+
             //Play the solo
-            if (Composer.getMeasureCounter() >= Musician.tuneForm.length())
+            if (Composer.getMeasureCounter() >= Musician.tuneForm.length()*1)
             {
                 System.out.println("Get Out of here "+Composer.getMeasureCounter());
+                System.out.println("the meassure "+Composer.getMeasureCounter());
+                System.out.println("the tune form lenght "+Musician.tuneForm.length()*2 );
                 Composer.setMeasureCounter(0);
                 stopAndPassLead();
                 transition = 17;
@@ -102,10 +116,12 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
                 //Go to compose another section of solo
                 transition = 12;
             }
+
             play();
-            Composer.holdSoloPlayback = 1;
+            Composer.setHoldSoloPlayback(1);
 
-
+            //Go to compose another section of solo
+            //transition = 12;
         }
     }
 
@@ -119,16 +135,18 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
     private void play()
     {
 
-
-        Play.midi(Composer.SoloSaxScore,false,false,1,1);
+        System.out.println("Im in playing");
+        Play.midi(Composer.getSoloScore(),false,false,1,0);
         Composer.incrementMeasureCounter();
+
+
         sectionStartedAt = new Date();
         long timeStartedAt = sectionStartedAt.getTime();
 
         //Calculate the lenght of the solosection
-        double betPerMeasure = Composer.SoloSaxScore.getNumerator();
-        double numberOfMeasure = Composer.SoloSaxScore.getEndTime()/betPerMeasure;
-        double tempo = Composer.SoloSaxScore.getTempo();
+        double betPerMeasure = Composer.getSoloScore().getNumerator();
+        double numberOfMeasure = Composer.getSoloScore().getEndTime()/betPerMeasure;
+        double tempo = Composer.getSoloScore().getTempo();
         double lengthOfSection = (betPerMeasure*numberOfMeasure/tempo)*60*1000;
         long currentTimes = System.currentTimeMillis();
         System.out.println("current Time "+currentTimes);
@@ -137,15 +155,18 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
 
         long timeLeft = (long) (lengthOfSection - transcurrentTime);
         System.out.println("time left: "+timeLeft);
-        System.out.println("the tempo "+ Musician.tempo);
+        System.out.println("the tempo "+ Musician.getTempo());
         System.out.println("playing section "+theSection);
         System.out.println("playing index "+theIndexSection);
         //Update the time left.
-        Composer.timeLeftInCurrentsection = timeLeft;
+        Composer.setTimeLeftInCurrentsection(timeLeft);
         //Set the rule to 0 so it can compose the next part of the solo.
-        Composer.holdSoloComposition = 0;
-        //UpdateTheSynWithSectionInfo(theSection,timeLeft,theIndexSection);
-        //we stop playing after 3 cycles
+        Composer.setHodSoloComposition(0);
+        if (Musician.getLeader())
+        {
+            UpdateTheSynWithSectionInfo(theSection,timeLeft,theIndexSection);
+
+        }
 
     }
 
@@ -155,10 +176,10 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
         letKnowTheMusician.setConversationId("I-have-been-playing-enough");
         letKnowTheMusician.addReceiver((AID) getDataStore().get(INTERNAL_MUSICIAN_AID));
         myAgent.send(letKnowTheMusician);
+        System.out.println("message sent");
 
 
     }
-
     private void UpdateTheSynWithSectionInfo(char sec, Long time, int Index)
     {
         char currentSection = sec;
@@ -220,5 +241,9 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
         }
 
         myAgent.send(messageForSyn);
+        //For some strange reason sending this meessage caused to activate the theard again. so we need to call doWait again here.
+        myAgent.doWait(timeLeft);
     }
+
+
 }

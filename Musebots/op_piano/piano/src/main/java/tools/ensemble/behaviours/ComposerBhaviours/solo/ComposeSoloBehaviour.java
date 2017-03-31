@@ -51,6 +51,8 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
             //We want omit the section that is currently playing and start to soloing from the next section.
             if(Composer.firstTimePlayingSolo > 0)
             {
+                //Reset the measure counter
+                Composer.setMeasureCounter(0);
                 System.out.println("Im first time solo");
                 if (getDataStore().containsKey(SECTION_INSTANCE_FOR_SYN_SOLO))
                 {

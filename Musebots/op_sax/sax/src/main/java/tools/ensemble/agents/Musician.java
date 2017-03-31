@@ -33,6 +33,7 @@ import jade.util.leap.ArrayList;
 public class Musician extends Agent implements MusicianStates,DataStorteMusicians, JMC {
 
     public static boolean leader = true;
+    public static boolean fromSupportToLead = false;
     private boolean acompaniement = false;
     private AID myMusician = new AID();
     //Map<String, String> songStructure = new HashMap<String, String>();
@@ -62,6 +63,16 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
     public static synchronized boolean getLeader() {
         return leader;
     }
+
+    public static synchronized void setFromSupportTolead(boolean t)
+    {
+        fromSupportToLead = t;
+    }
+    public static synchronized boolean getFromSupportTolead()
+    {
+        return fromSupportToLead;
+    }
+
 
     public static synchronized void setTempo(int temp)
     {
@@ -132,7 +143,18 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         return sectionCchords;
     }
 
+    //RULE FROM LEADING TO SUPPORT
+    public static boolean isFromLeadingToSupport = false;
 
+    public static synchronized void setIsFromLeadingToSupport(boolean var)
+    {
+        isFromLeadingToSupport = var;
+    }
+
+    public static synchronized boolean getIsFromLeadingToSupport()
+    {
+        return isFromLeadingToSupport;
+    }
 
 
     protected void setup()
@@ -243,6 +265,8 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         fsm.registerTransition(STATE_REQUEST_SOLO,STATE_REQUEST_SOLO,30);
         fsm.registerTransition(STATE_REQUEST_SOLO,STATE_PASS_LEAD,12);
         fsm.registerTransition(STATE_PASS_LEAD,STATE_PASS_LEAD,34);
+        fsm.registerTransition(STATE_FROM_LEADING_TO_SUPPORT,STATE_FROM_LEADING_TO_SUPPORT,38);
+        fsm.registerTransition(STATE_PASS_LEAD,STATE_FROM_LEADING_TO_SUPPORT,39);
 
         /*fsm.registerTransition(STATE_SHARE_STRUCTURE,STATE_REQUEST_INTRO,4);
         fsm.registerTransition(STATE_REFUSE_INTRO,STATE_LEADER,17);

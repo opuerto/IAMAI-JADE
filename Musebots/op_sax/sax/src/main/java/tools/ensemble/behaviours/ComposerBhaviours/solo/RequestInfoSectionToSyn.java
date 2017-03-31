@@ -42,6 +42,7 @@ public class RequestInfoSectionToSyn extends OneShotBehaviour implements DataSto
                 transition = 3;
                     //System.out.println("receiver "+SynId);
 
+
         }
     }
 
@@ -50,7 +51,7 @@ public class RequestInfoSectionToSyn extends OneShotBehaviour implements DataSto
         firstTimeHere++;
         if(transition == 2)
         {
-            block(1000);
+            block(500);
         }
         return transition;
 

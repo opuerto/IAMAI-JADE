@@ -10,6 +10,7 @@ import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStoreComposer;
 import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Section;
 
@@ -26,6 +27,7 @@ public class GetInfoSectionFromSyn extends OneShotBehaviour implements DataStore
             MessageTemplate.MatchConversationId("Inform-the-composer-the-currentSection"),
             MessageTemplate.MatchPerformative(ACLMessage.CONFIRM)
     );
+    MessageTemplate mt2;
     //store the message that was sent by the musician In the previous state
     ACLMessage previousMusicianMessage;
     //
@@ -46,10 +48,14 @@ public class GetInfoSectionFromSyn extends OneShotBehaviour implements DataStore
             {
                 internalMusician = (AID) getDataStore().get(INTERNAL_MUSICIAN_AID);
             }
+
+            ACLMessage previousmessage = (ACLMessage) getDataStore().get(CURRENT_MESSAGE_FOR_SYN);
+            //System.out.println("previous message reply with solo state "+previousmessage.getReplyWith());
+            mt2 = MessageTemplate.and(mt1,MessageTemplate.MatchInReplyTo(previousmessage.getReplyWith()));
         }
 
-        ACLMessage getInfoSection = myAgent.receive(mt1);
-        if (getInfoSection != null)
+        ACLMessage getInfoSection = myAgent.receive(mt2);
+        if (getInfoSection != null && Musician.getLeader())
         {
 
             ContentElement content = null;
@@ -63,7 +69,8 @@ public class GetInfoSectionFromSyn extends OneShotBehaviour implements DataStore
             Concept concept = ((Action)content).getAction();
             if(concept instanceof Section)
             {
-                System.out.println("Current Section : " +((Section) concept).getAccompanimentCurrentSection());
+                System.out.println("Current Section in  : " +getBehaviourName() +" is " +((Section) concept).getAccompanimentCurrentSection());
+                System.out.println("index in Section   : " +getBehaviourName() +" is " +((Section) concept).getSectionIndex());
                 System.out.println("Time left "+((Section) concept).getTimeLeft().getTime());
                 se.setAccompanimentCurrentSection(((Section) concept).getAccompanimentCurrentSection());
                 se.setSectionStartedAt(((Section) concept).getSectionStartedAt());
@@ -77,8 +84,10 @@ public class GetInfoSectionFromSyn extends OneShotBehaviour implements DataStore
                 {
                     getDataStore().put(SECTION_INSTANCE_FOR_SYN_SOLO,se);
                 }
+
             }
             transition = 5;
+
 
         }else
         {
