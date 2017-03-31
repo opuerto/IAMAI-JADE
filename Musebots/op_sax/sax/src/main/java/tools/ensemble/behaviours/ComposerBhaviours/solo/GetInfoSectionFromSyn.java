@@ -55,7 +55,7 @@ public class GetInfoSectionFromSyn extends OneShotBehaviour implements DataStore
         }
 
         ACLMessage getInfoSection = myAgent.receive(mt2);
-        if (getInfoSection != null && Musician.getLeader())
+        if (getInfoSection != null)
         {
 
             ContentElement content = null;

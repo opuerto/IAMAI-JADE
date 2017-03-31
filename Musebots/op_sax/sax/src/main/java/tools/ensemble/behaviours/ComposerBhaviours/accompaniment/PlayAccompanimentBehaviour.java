@@ -1,5 +1,6 @@
 package tools.ensemble.behaviours.ComposerBhaviours.accompaniment;
 
+import com.sun.org.apache.xerces.internal.util.SymbolHash;
 import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 import jade.content.lang.Codec;
 import jade.content.onto.Ontology;
@@ -71,7 +72,6 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
                         Musician.setIsFromLeadingToSupport(false);
                         if (timeLeft < 0 )
                         {
-                            Musician.setIsFromLeadingToSupport(false);
                             Composer.firstTime = 0;
                             transition = 17;
                         }
@@ -120,29 +120,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
                 //transition = 6;
             }
         }
-       /* else
-        {
-            if(firstTimeHere < 0)
-            {
-                Character section = (Character) getDataStore().get(NEXT_SECTION_TO_PLAY);
-                Integer sIndex = (Integer) getDataStore().get(NEXT_SECTION_INDEX);
-                System.out.println("this is the "+getBehaviourName() +"play!!");
-                if(getDataStore().containsKey(PLAY_TIME_LEFT))
-                {
-                    System.out.println("play after intro");
-
-                }
-
-            }
-
-
-
-        }*/
-
-
-
-
-    }
+         }
 
     private void play()
     {
@@ -177,29 +155,10 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
         //getDataStore().remove(PLAY_TIME_LEFT);
         //getDataStore().put(PLAY_TIME_LEFT,timeLeft);
          Composer.setSectionPlayLeft(timeLeft);
-       /* if(getDataStore().containsKey(FROM_PLAY_TO_COMPOSE))
-        {
-            getDataStore().remove(FROM_PLAY_TO_COMPOSE);
-            getDataStore().put(FROM_PLAY_TO_COMPOSE,true);
-        }else
-        {
-            getDataStore().put(FROM_PLAY_TO_COMPOSE,true);
-        }*/
 
-       /* if(getDataStore().containsKey(HOLD_COMPOSITION))
-        {
-            getDataStore().remove(HOLD_COMPOSITION);
-            int holdComposition = 0;
-            getDataStore().put(HOLD_COMPOSITION,holdComposition);
-        }
-        else
-        {
-            int holdComposition = 0;
-            getDataStore().put(HOLD_COMPOSITION,holdComposition);
-        }*/
         Composer.setHoldComposition(0);
         //send the message to the synchronizer
-        //UpdateTheSynWithSectionInfo(theSection,timeLeft,theIndexSection);
+        UpdateTheSynWithSectionInfo(theSection,timeLeft,theIndexSection);
 
     }
 
@@ -264,6 +223,13 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
         }
 
         myAgent.send(messageForSyn);
+        //For some strange reason sending this meessage caused to activate the theard again. so we need to call doWait again here.
+        long currentTime = System.currentTimeMillis();
+        long timeElapsed = currentTime - sectionStartedAt.getTime();
+        long newTimeLeft = timeLeft - timeElapsed;
+        System.out.println("Elapsed time before send update: "+timeElapsed);
+        System.out.println("timeleft before send update: "+newTimeLeft);
+        myAgent.doWait(timeLeft);
     }
 
     public int onEnd()

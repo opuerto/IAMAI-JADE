@@ -242,7 +242,10 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
 
         myAgent.send(messageForSyn);
         //For some strange reason sending this meessage caused to activate the theard again. so we need to call doWait again here.
-        myAgent.doWait(timeLeft);
+        long currentTime = System.currentTimeMillis();
+        long timeElapsed = currentTime - sectionStartedAt.getTime();
+        long newTimeLeft = timeLeft - timeElapsed;
+         myAgent.doWait(newTimeLeft);
     }
 
 

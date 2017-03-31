@@ -48,7 +48,7 @@ public class TimeManager extends Agent implements DataStoreTimeManager, JMC {
     public static Phrase MainPhrase = new Phrase();
     public static Part SAXPART = new Part("SAX PART",SAXOPHONE,5);
     public static long alive = System.currentTimeMillis();
-    public static int step = 0;
+
 
     protected void setup()
     {

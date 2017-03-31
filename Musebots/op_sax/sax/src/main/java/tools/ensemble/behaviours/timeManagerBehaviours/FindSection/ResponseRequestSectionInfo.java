@@ -46,7 +46,7 @@ public class ResponseRequestSectionInfo extends OneShotBehaviour implements Data
             {
                 getDataStore().put(FIRST_TIME_SOLO_IN_SYN,firtSolo);
                 System.out.println("Im going to ask externally");
-                TimeManager.step = 0;
+                RequestToExternalSyn.setState(0);
                 transition = 1;
             }
             else

@@ -238,5 +238,6 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
         }
 
         myAgent.send(messageForSyn);
+
     }
 }

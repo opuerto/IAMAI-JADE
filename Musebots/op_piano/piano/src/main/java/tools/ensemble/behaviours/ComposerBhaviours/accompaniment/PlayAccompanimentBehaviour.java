@@ -180,6 +180,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
         }
 
         myAgent.send(messageForSyn);
+
     }
 
     public int onEnd()
