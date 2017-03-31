@@ -382,6 +382,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -486,8 +488,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -1069,11 +1069,12 @@
       <workItem from="1490887353093" duration="10705000" />
       <workItem from="1490974152662" duration="9000" />
       <workItem from="1490974376578" duration="35000" />
+      <workItem from="1490975192270" duration="10000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="547045000" />
+    <option name="totallyTimeSpent" value="547055000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="2" width="1604" height="865" extended-state="0" />
