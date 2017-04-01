@@ -391,8 +391,6 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_COMPOSE_SOLO,12);
         soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_REQUEST_INFO_SECTION,13);
         soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_WAIT_FOR_SOLO_REQUEST,17);
-        soloFSM.registerTransition(STATE_COMPOSE_SOLO,STATE_WAIT_FOR_SOLO_REQUEST,14);
-        soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_COMPOSE_SOLO,15);
         soloFSM.registerTransition(STATE_PLAY_SOLO,STATE_END_SOLO,16);
 
         //example transition
