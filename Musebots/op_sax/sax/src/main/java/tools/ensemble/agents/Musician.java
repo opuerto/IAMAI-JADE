@@ -36,8 +36,6 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
     public static boolean fromSupportToLead = false;
     private boolean acompaniement = false;
     private AID myMusician = new AID();
-    //Map<String, String> songStructure = new HashMap<String, String>();
-    //Map<String, AID> musiciansList = new HashMap<String, AID>();
     private Vector Musicians = new Vector();
     private Codec codec = new SLCodec();
     private Ontology ontology = MusicElementsOntology.getInstance();
@@ -170,7 +168,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         fsm.registerFirstState(new StartBehaviour(this), STATE_START);
         fsm.registerState(new RegisterMusician(this),STATE_REGISTER);
         //Create an instance of the GetMembers class behaviour so we are allowed to use the Data Store
-        Behaviour getMembers = new GetMembers(this,leader,acompaniement);
+        Behaviour getMembers = new GetMembers(this,getLeader(),acompaniement);
         //We share the Final State Machine Data Store with the Behaviour GetMembers
         getMembers.setDataStore(fsm.getDataStore());
         //Add register the state Get_Members and pass the instance of the class as the first parameter.
@@ -199,7 +197,6 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         requestIntro.setDataStore(fsm.getDataStore());
         //Register the state RequestINTRO To the FSM
         fsm.registerState(requestIntro,STATE_REQUEST_INTRO);
-
         //State Request Solo
         //Get the instance of the behaviour
         LeaderRequestSoloToMyComposer LRSTC = new LeaderRequestSoloToMyComposer(this);
@@ -207,142 +204,86 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         LRSTC.setDataStore(fsm.getDataStore());
         fsm.registerState(LRSTC,STATE_REQUEST_SOLO);
 
+        //Pass Lead to accompaniement
         PassLeadToAccomBehaviour passLead = new PassLeadToAccomBehaviour(this);
         passLead.setDataStore(fsm.getDataStore());
         fsm.registerState(passLead,STATE_PASS_LEAD);
 
-        //State from leading to support This state will request to play section in order to suppor the new leader
+        //Register Accompaniest state
+        fsm.registerState(new TemporaryBehaviour(),STATE_ACCOMPANIST);
+        //Get the instance of the get structure of the song behaviour
+        AccompanientGetStructure accompanientGetStructure = new AccompanientGetStructure(this);
+        //Share the DataStore with the behaviour
+        accompanientGetStructure.setDataStore(fsm.getDataStore());
+        //Register the behaviour of the state get structure
+        fsm.registerState(accompanientGetStructure,STATE_GET_STRUCTURE);
+        //Get the instance of the Play intro
+        AccompanientPlayIntro accompanientPlayIntro = new AccompanientPlayIntro(this,codec,musicianOntology,timeHandlerOntology,composerOntology);
+        //Share the data store
+        accompanientPlayIntro.setDataStore(fsm.getDataStore());
+        //Register the behaviour in the state intro
+        fsm.registerState(accompanientPlayIntro,STATE_INTRO);
+        //Create instance of the play Head behaviour
+        AccompanientPlaySections playSections = new AccompanientPlaySections(this, codec,musicianOntology,timeHandlerOntology);
+        //Share the data Store
+        playSections.setDataStore(fsm.getDataStore());
+        //Register the state
+        fsm.registerState(playSections, STATE_PLAY_SECTIONS);
+         //State from leading to support This state will request to play section in order to suppor the new leader
         //We implement this state because the state STATE_PLAY_SECTIONS have some functions related with the intro
         //such functions are not needed when the agent is coming from being a leader.
         FromLeadingToSupportPlaySection fromleaderToSupport = new FromLeadingToSupportPlaySection(this);
         fromleaderToSupport.setDataStore(fsm.getDataStore());
         fsm.registerState(fromleaderToSupport,STATE_FROM_LEADING_TO_SUPPORT);
+        //Wait to lead
+        WaitToGetLead getLead = new WaitToGetLead(this);
+        getLead.setDataStore(fsm.getDataStore());
+        fsm.registerState(getLead,STATE_WAITING_LEADERSHIP);
 
-        fsm.registerLastState(new TemporaryBehaviour(),STATE_SILENT);
+        //Transition
 
-        //Temporal Transition
-        fsm.registerTransition(STATE_REQUEST_SOLO,STATE_SILENT,80);
-
-       /* fsm.registerState(new TemporaryBehaviour(),STATE_LEADER);
-        fsm.registerState(new TemporaryBehaviour(),STATE_REQUEST_SOLO);
-        fsm.registerState(new TemporaryBehaviour(),STATE_PASS_LEAD);
-        fsm.registerState(new TemporaryBehaviour(),STATE_SHARE_STRUCTURE);
-        fsm.registerState(new TemporaryBehaviour(),STATE_REQUEST_INTRO);
-        fsm.registerState(new TemporaryBehaviour(),STATE_REQUEST_END);
-        fsm.registerLastState(new TemporaryBehaviour(),STATE_END);
-        fsm.registerState(new TemporaryBehaviour(),STATE_SILENT);
-        fsm.registerState(new TemporaryBehaviour(),STATE_ACCOMPANIST);
-        fsm.registerState(new TemporaryBehaviour(),STATE_GET_STRUCTURE);
-        fsm.registerState(new TemporaryBehaviour(),STATE_INTRO);
-        fsm.registerState(new TemporaryBehaviour(),STATE_ACCEPT_INTRO);
-        fsm.registerState(new TemporaryBehaviour(),STATE_REFUSE_INTRO);
-        fsm.registerState(new TemporaryBehaviour(),STATE_ACCEPT_ACCOMPANIMENT);
-        fsm.registerState(new TemporaryBehaviour(),STATE_REQUEST_ACCOMPANIMENT);
-        fsm.registerState(new TemporaryBehaviour(),STATE_WAITING_LEADERSHIP);
-        fsm.registerState(new TemporaryBehaviour(),STATE_ACCOMPANIENT_SILENT);
-        fsm.registerState(new TemporaryBehaviour(),STATE_ACCEPT_ENDING);*/
-
-       // fsm.registerState(new LeadingBehaviour(),STATE_LEADING);
-       // fsm.registerState(new AccompanimentBehaviour(),STATE_ACCOMPANIMENT);
-       // fsm.registerState(new GetMusicianList(),STATE_GETMUSICIANSLIST);
-       // fsm.registerLastState(new ShareSongStructure(),STATE_SHARESONGSTRUCTURE);
-
-        //Register transitions
+        //Independent transitions
         fsm.registerDefaultTransition(STATE_START,STATE_REGISTER);
         fsm.registerDefaultTransition(STATE_REGISTER,STATE_GET_MEMBERS);
         fsm.registerTransition(STATE_GET_MEMBERS,STATE_GET_MEMBERS,0);
+
+        //Leader Transitions
         fsm.registerTransition(STATE_GET_MEMBERS,STATE_LEADER,1);
-        fsm.registerTransition(STATE_GET_MEMBERS,STATE_ACCOMPANIST,2);
         fsm.registerTransition(STATE_LEADER,STATE_LEADER_GET_SONG_STRUCTURE,3);
-        fsm.registerTransition(STATE_LEADER,STATE_SILENT,15);
         fsm.registerDefaultTransition(STATE_LEADER_GET_SONG_STRUCTURE,STATE_SHARE_STRUCTURE);
-        fsm.registerTransition(STATE_SHARE_STRUCTURE,STATE_REQUEST_INTRO,4);
         fsm.registerTransition(STATE_SHARE_STRUCTURE,STATE_SHARE_STRUCTURE,28);
+        fsm.registerTransition(STATE_SHARE_STRUCTURE,STATE_REQUEST_INTRO,4);
         fsm.registerTransition(STATE_REQUEST_INTRO,STATE_REQUEST_INTRO,29);
         fsm.registerTransition(STATE_REQUEST_INTRO,STATE_LEADER,17);
-        //Transition to request the solo
         fsm.registerTransition(STATE_LEADER,STATE_REQUEST_SOLO,11);
         fsm.registerTransition(STATE_REQUEST_SOLO,STATE_REQUEST_SOLO,30);
         fsm.registerTransition(STATE_REQUEST_SOLO,STATE_PASS_LEAD,12);
         fsm.registerTransition(STATE_PASS_LEAD,STATE_PASS_LEAD,34);
-        fsm.registerTransition(STATE_FROM_LEADING_TO_SUPPORT,STATE_FROM_LEADING_TO_SUPPORT,38);
-        fsm.registerTransition(STATE_PASS_LEAD,STATE_FROM_LEADING_TO_SUPPORT,39);
 
-        /*fsm.registerTransition(STATE_SHARE_STRUCTURE,STATE_REQUEST_INTRO,4);
-        fsm.registerTransition(STATE_REFUSE_INTRO,STATE_LEADER,17);
-        fsm.registerTransition(STATE_LEADER,STATE_REQUEST_SOLO,11);
-        fsm.registerTransition(STATE_REQUEST_SOLO,STATE_LEADER,10);
-        fsm.registerTransition(STATE_REQUEST_SOLO,STATE_PASS_LEAD,12);
-        fsm.registerTransition(STATE_PASS_LEAD,STATE_WAITING_LEADERSHIP,13);
-        fsm.registerTransition(STATE_LEADER,STATE_REQUEST_END,19);
-        fsm.registerTransition(STATE_REQUEST_END,STATE_END,21);
-        fsm.registerTransition(STATE_LEADER,STATE_SILENT,15);
-        fsm.registerTransition(STATE_SILENT,STATE_LEADER,16);
-        fsm.registerTransition(STATE_ACCOMPANIST,STATE_GET_STRUCTURE,5);
+
+        //Accompaniment Transitions
+        fsm.registerTransition(STATE_GET_MEMBERS,STATE_ACCOMPANIST,2);
+        fsm.registerDefaultTransition(STATE_ACCOMPANIST,STATE_GET_STRUCTURE);
+        fsm.registerTransition(STATE_GET_STRUCTURE,STATE_GET_STRUCTURE,21);
         fsm.registerTransition(STATE_GET_STRUCTURE,STATE_INTRO,6);
-        fsm.registerTransition(STATE_INTRO,STATE_ACCEPT_INTRO,7);
-        fsm.registerTransition(STATE_INTRO,STATE_REFUSE_INTRO,18);
-        fsm.registerTransition(STATE_ACCEPT_INTRO,STATE_ACCEPT_ACCOMPANIMENT,8);
-        fsm.registerDefaultTransition(STATE_REFUSE_INTRO,STATE_ACCEPT_ACCOMPANIMENT);
-        fsm.registerTransition(STATE_ACCEPT_ACCOMPANIMENT,STATE_REQUEST_ACCOMPANIMENT,9);
-        fsm.registerTransition(STATE_REQUEST_ACCOMPANIMENT,STATE_WAITING_LEADERSHIP,20);
-        fsm.registerTransition(STATE_WAITING_LEADERSHIP,STATE_REQUEST_ACCOMPANIMENT,26);
-        fsm.registerTransition(STATE_REQUEST_ACCOMPANIMENT,STATE_ACCOMPANIENT_SILENT,22);
-        fsm.registerTransition(STATE_ACCOMPANIENT_SILENT,STATE_REQUEST_ACCOMPANIMENT,23);
-        fsm.registerTransition(STATE_WAITING_LEADERSHIP,STATE_LEADER,14);
-        fsm.registerTransition(STATE_WAITING_LEADERSHIP,STATE_ACCEPT_ENDING,27);
-        fsm.registerTransition(STATE_ACCEPT_ENDING,STATE_END,25);
-      //  fsm.registerTransition(STATE_START,STATE_LEADING,0);*/
-      //  fsm.registerTransition(STATE_START,STATE_ACCOMPANIMENT,1);
-      //  fsm.registerDefaultTransition(STATE_LEADING,STATE_GETMUSICIANSLIST);
-      //  fsm.registerTransition(STATE_GETMUSICIANSLIST,STATE_GETMUSICIANSLIST,3);
-      //  fsm.registerTransition(STATE_GETMUSICIANSLIST,STATE_SHARESONGSTRUCTURE,2);
+        fsm.registerTransition(STATE_INTRO,STATE_INTRO,8);
+        fsm.registerTransition(STATE_INTRO,STATE_PLAY_SECTIONS,7);
+        fsm.registerTransition(STATE_PLAY_SECTIONS,STATE_PLAY_SECTIONS,40);
+        fsm.registerTransition(STATE_FROM_LEADING_TO_SUPPORT,STATE_WAITING_LEADERSHIP,80);
+        fsm.registerTransition(STATE_FROM_LEADING_TO_SUPPORT,STATE_FROM_LEADING_TO_SUPPORT,38);
+        fsm.registerTransition(STATE_PLAY_SECTIONS,STATE_WAITING_LEADERSHIP,20);
+        fsm.registerTransition(STATE_WAITING_LEADERSHIP,STATE_WAITING_LEADERSHIP,37);
+
+        //INTERCHANGEBLE
+        fsm.registerTransition(STATE_WAITING_LEADERSHIP,STATE_REQUEST_SOLO,14);
+        fsm.registerTransition(STATE_PASS_LEAD,STATE_FROM_LEADING_TO_SUPPORT,39);
 
         //Add the Behaviour
         addBehaviour(fsm);
 
 
 
-        /*addBehaviour(new TickerBehaviour(this,6000) {
-            @Override
-            protected void onTick() {
-               // System.out.println("Hello");
-                DFAgentDescription template = new DFAgentDescription();
-                ServiceDescription sd = new ServiceDescription();
-                sd.setType("Accompaniment");
-                template.addServices(sd);
-                try {
-                    DFAgentDescription[] result = DFService.search(myAgent,template);
-                    Musicians.clear();
-                    for (int i=0; i<result.length; i++)
-                    {
-                      Musicians.add(result[i].getName());
-                    }
 
-                }
-                catch (FIPAException fe)
-                {
-                    fe.printStackTrace();
-                }
-            }
-        });*/
-
-        /*addBehaviour(new TickerBehaviour(this,2000) {
-            @Override
-            protected void onTick() {
-                Iterator it = Musicians.iterator();
-                if(!Musicians.isEmpty())
-                {
-
-                   for(int i=0; i < Musicians.size(); i++)
-                    {
-                        System.out.println(Musicians.elementAt(i));
-
-
-                    }
-                }
-            }
-        });*/
 
 
 
