@@ -36,7 +36,7 @@ public class FromLeadingToSupportPlaySection extends OneShotBehaviour implements
 
     public void action()
     {
-        if (firstTimeHere < 1)
+      /*  if (firstTimeHere < 1)
         {
             FSMBehaviour requestAccompaniment = new FSMBehaviour(agent);
             RequestInternalStatePlayBehaviour requestPlayBehaviour = new RequestInternalStatePlayBehaviour();
@@ -66,7 +66,7 @@ public class FromLeadingToSupportPlaySection extends OneShotBehaviour implements
 
             agent.addBehaviour(requestAccompaniment);
 
-        }
+        }*/
     }
 
     public int onEnd()
