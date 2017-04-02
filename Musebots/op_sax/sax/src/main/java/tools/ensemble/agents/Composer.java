@@ -444,31 +444,30 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
 
         accompaniementFSM.registerLastState(new TemporaryBehaviour(),STATE_END_ACCOMP);
 
-
         // Transitions
-
         accompaniementFSM.registerTransition(STATE_WAIT_FOR_ACCOMP_REQUEST,STATE_WAIT_FOR_ACCOMP_REQUEST,0);
         accompaniementFSM.registerTransition(STATE_WAIT_FOR_ACCOMP_REQUEST,STATE_CONFIRM_COMPOSIION,9);
-        accompaniementFSM.registerTransition(STATE_WAIT_FOR_ACCOMP_REQUEST,STATE_REQUEST_INFO_TO_SYNC,12);
-        accompaniementFSM.registerTransition(STATE_REQUEST_INFO_TO_SYNC,STATE_GET_INFO_FROM_SYNC,13);
-        accompaniementFSM.registerTransition(STATE_GET_INFO_FROM_SYNC,STATE_GET_INFO_FROM_SYNC,14);
-        accompaniementFSM.registerTransition(STATE_GET_INFO_FROM_SYNC,STATE_COMPOSE_ACCOMP,15);
         accompaniementFSM.registerTransition(STATE_CONFIRM_COMPOSIION,STATE_CONFIRM_COMPOSIION,8);
-        accompaniementFSM.registerTransition(STATE_CONFIRM_COMPOSIION,STATE_COMPOSE_ACCOMP,1);
-        //accompaniementFSM.registerTransition(STATE_WAIT_FOR_ACCOMP_REQUEST,STATE_COMPOSE_ACCOMP,1);
+        accompaniementFSM.registerTransition(STATE_CONFIRM_COMPOSIION,STATE_COMPOSE_ACCOMP,1,new String[]{STATE_WAIT_FOR_ACCOMP_REQUEST,
+                STATE_CONFIRM_COMPOSIION});
         accompaniementFSM.registerTransition(STATE_COMPOSE_ACCOMP,STATE_COMPOSE_ACCOMP,2);
-        accompaniementFSM.registerTransition(STATE_COMPOSE_ACCOMP,STATE_WAIT_FOR_ACCOMP_REQUEST,3);
+        accompaniementFSM.registerTransition(STATE_COMPOSE_ACCOMP,STATE_WAIT_FOR_ACCOMP_REQUEST,3,new String[]{STATE_CONFIRM_COMPOSIION,
+                STATE_COMPOSE_ACCOMP});
         accompaniementFSM.registerTransition(STATE_COMPOSE_ACCOMP,STATE_PLAY_ACCOMP,4);
-        accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_PLAY_ACCOMP,5);
         accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_COMPOSE_ACCOMP,6);
+        accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_PLAY_ACCOMP,5);
         accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_END_ACCOMP,7);
-        accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_WAIT_FOR_ACCOMP_REQUEST,11);
-        accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_REQUEST_INFO_TO_SYNC,17);
-
-
-
-        //example transition
-        accompaniementFSM.registerTransition(STATE_COMPOSE_ACCOMP,STATE_END_ACCOMP,10);
+        accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_WAIT_FOR_ACCOMP_REQUEST,11,new String[]{STATE_CONFIRM_COMPOSIION,
+                STATE_PLAY_ACCOMP});
+        accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_REQUEST_INFO_TO_SYNC,17,new String[]{STATE_GET_INFO_FROM_SYNC,
+                STATE_PLAY_ACCOMP});
+        accompaniementFSM.registerTransition(STATE_WAIT_FOR_ACCOMP_REQUEST,STATE_REQUEST_INFO_TO_SYNC,12,new String[]{STATE_GET_INFO_FROM_SYNC,
+                STATE_WAIT_FOR_ACCOMP_REQUEST});
+        accompaniementFSM.registerTransition(STATE_REQUEST_INFO_TO_SYNC,STATE_GET_INFO_FROM_SYNC,14,new String[]{STATE_WAIT_FOR_ACCOMP_REQUEST,
+                STATE_REQUEST_INFO_TO_SYNC});
+        accompaniementFSM.registerTransition(STATE_GET_INFO_FROM_SYNC,STATE_GET_INFO_FROM_SYNC,13);
+        accompaniementFSM.registerTransition(STATE_GET_INFO_FROM_SYNC,STATE_COMPOSE_ACCOMP,15,new String[]{STATE_REQUEST_INFO_TO_SYNC,
+                STATE_GET_INFO_FROM_SYNC});
 
         //Add the AccompaniementFSM to the agent behaviour
         addBehaviour(accompaniementFSM);
