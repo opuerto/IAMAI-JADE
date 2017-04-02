@@ -42,7 +42,7 @@ public class GetInfoSectionFromSyn extends OneShotBehaviour implements DataStore
     public void onStart()
     {
         transition = 4;
-        System.out.println("Get info section for solo synch");
+
         if (getDataStore().containsKey(INTERNAL_MUSICIAN_AID))
         {
             internalMusician = (AID) getDataStore().get(INTERNAL_MUSICIAN_AID);

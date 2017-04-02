@@ -12,6 +12,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import tools.ensemble.agents.Musician;
+import tools.ensemble.agents.TimeManager;
 import tools.ensemble.interfaces.DataStoreTimeManager;
 import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Section;
 
@@ -25,7 +26,7 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
 
     private int transition = 3;
     private int firstTimeHere = 0;
-    private int state = 0;
+    private ACLMessage handleCurrentMessageFromComposer;
     private int ReceiversNo;
     private String form;
     private Ontology SynOnto;
@@ -34,10 +35,14 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
     private int sectionIndex;
     private String CurrentSection;
     private Date timeLeft;
-
+    private Date sectionStartedAt;
     private ACLMessage findSection = new ACLMessage(ACLMessage.REQUEST);
     Vector timeManagerList = new Vector();
     AID internalComposer;
+
+    private int state = 0;
+
+
     public RequestToExternalSyn(Agent a, Ontology ont, Codec lan)
     {
         super(a);
@@ -45,14 +50,23 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
         this.language = lan;
     }
 
+    public void onStart()
+    {
+        transition = 3;
+        firstTimeHere = 0;
+        state = 0;
+    }
+
     public void action()
     {
+
 
         switch (state)
         {
             case 0:
                 if (firstTimeHere < 1)
                 {
+                    System.out.println("Im in case 0 in request exernaly state");
                     form = Musician.tuneForm;
                     if (getDataStore().containsKey(FIRST_TIME_SOLO_IN_SYN))
                     {
@@ -77,13 +91,15 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
                     {
                         findSection.addReceiver((AID) timeManagerList.get(i));
                     }
+                    System.out.println("Receiver: "+timeManagerList);
                     myAgent.send(findSection);
                     state = 1;
+
                 }
 
                 break;
             case 1:
-                         MessageTemplate mt1 = MessageTemplate.and(
+                MessageTemplate mt1 = MessageTemplate.and(
                         MessageTemplate.MatchConversationId("Get-Section-From-External-Syn"),
                         MessageTemplate.MatchPerformative(ACLMessage.INFORM)
                 );
@@ -107,9 +123,16 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
                         sectionIndex = ((Section) concept).getSectionIndex();
                         CurrentSection = ((Section) concept).getAccompanimentCurrentSection();
                         timeLeft = ((Section) concept).getTimeLeft();
+                        sectionStartedAt = ((Section) concept).getSectionStartedAt();
+                        System.out.println("Info from my section in external syn");
+                        System.out.println("section index "+sectionIndex);
+                        System.out.println("Section current section " + CurrentSection);
+                        System.out.println("Section time left"+timeLeft);
                     }
+                    state = 2;
 
-                    if(firsSolo == 1)
+
+                   /* if(firsSolo == 1)
                     {
                         //Check if the song is in the last section of the structure so we can start right at the beginning
                         int lastSectionIndex = form.length()-1;
@@ -130,7 +153,7 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
                     else // If is not the first solo to be play in the song then send the composer whatever it got from the external synchronizer
                     {
                         state = 2;
-                    }
+                    }*/
 
 
                 }else
@@ -139,8 +162,11 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
                 }
                 break;
             case 2:
+                //Set the reply with from the original message
+                handleCurrentMessageFromComposer = (ACLMessage) getDataStore().get(CURRENT_MESSAGE_FROM_COMPOSER);
                 ACLMessage sendInfoToComposer = new ACLMessage(ACLMessage.CONFIRM);
                 sendInfoToComposer.setConversationId("Inform-the-composer-the-currentSection");
+                sendInfoToComposer.setInReplyTo(handleCurrentMessageFromComposer.getReplyWith());
                 sendInfoToComposer.setReplyWith(myAgent.getLocalName()+System.currentTimeMillis());
                 sendInfoToComposer.setOntology(SynOnto.getName());
                 sendInfoToComposer.setLanguage(language.getName());
@@ -148,6 +174,7 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
                 se.setSectionIndex(sectionIndex);
                 se.setAccompanimentCurrentSection(CurrentSection);
                 se.setTimeLeft(timeLeft);
+                se.setSectionStartedAt(sectionStartedAt);
                 try
                 {
                     //fill the content using the Ontology concept
@@ -166,6 +193,10 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
         if (transition == 3)
         {
             block(500);
+        }
+        if (transition == 4)
+        {
+            firstTimeHere = 0;
         }
         return transition;
     }

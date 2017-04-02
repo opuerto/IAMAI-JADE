@@ -33,6 +33,9 @@ public class WaitToGetLead extends OneShotBehaviour {
 
     public void onStart()
     {
+        transition = 37;
+        state = 0;
+        informToLeader = null;
         System.out.println("Wait For lead ");
         ResponseRequestSoloNegotiation responseTorequest = new ResponseRequestSoloNegotiation(myAgent,mt1Andmt2);
         responseTorequest.setDataStore(getDataStore());

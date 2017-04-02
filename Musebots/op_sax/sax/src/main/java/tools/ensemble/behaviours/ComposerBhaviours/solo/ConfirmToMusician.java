@@ -23,6 +23,7 @@ public class ConfirmToMusician extends OneShotBehaviour implements DataStoreComp
     public void onStart()
     {
         transition = 6;
+        holdComposition = 0;
         internalMusician = (AID) getDataStore().get(INTERNAL_MUSICIAN_AID);
         System.out.println("the internal composer "+internalMusician);
         //from support to lead is the first time playing solo again

@@ -245,7 +245,7 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
         long currentTime = System.currentTimeMillis();
         long timeElapsed = currentTime - sectionStartedAt.getTime();
         long newTimeLeft = timeLeft - timeElapsed;
-         myAgent.doWait(newTimeLeft);
+        // myAgent.doWait(newTimeLeft);
     }
 
 

@@ -27,7 +27,6 @@ public class RequestInfoSectionToSyn extends OneShotBehaviour implements DataSto
     public void onStart()
     {
         transition = 2;
-        System.out.println("REquest Section to syn in solo");
         ACLMessage requestInfo = new ACLMessage(ACLMessage.REQUEST);
         requestInfo.setConversationId("request-Current-Section-to-Syn");
         requestInfo.setReplyWith(myAgent.getLocalName() + System.currentTimeMillis());
@@ -41,7 +40,7 @@ public class RequestInfoSectionToSyn extends OneShotBehaviour implements DataSto
         getDataStore().put(CURRENT_MESSAGE_FOR_SYN, requestInfo);
         myAgent.send(requestInfo);
         transition = 3;
-        System.out.println("I just requested transition = "+transition);
+
     }
 
     public void action() {

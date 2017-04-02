@@ -48,6 +48,7 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
 
     public void onStart()
     {
+        transitionParentBehaviour = 30;
         if(getDataStore().containsKey(FIRST_SOLO))
         {
             firstTimeSolo = 1;

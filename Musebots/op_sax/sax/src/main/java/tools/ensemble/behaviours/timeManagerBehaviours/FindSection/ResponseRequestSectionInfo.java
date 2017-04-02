@@ -17,18 +17,26 @@ public class ResponseRequestSectionInfo extends OneShotBehaviour implements Data
 
      private int transition = 0;
     private int firtSolo = 0;
-    private OneShotBehaviour nextBehaviour;
+
      MessageTemplate mt1 = MessageTemplate.and(
              MessageTemplate.MatchConversationId("request-Current-Section-to-Syn"),
              MessageTemplate.MatchPerformative(ACLMessage.REQUEST)
      );
 
 
-    public ResponseRequestSectionInfo(Agent a, OneShotBehaviour nextBehavior)
+    public ResponseRequestSectionInfo(Agent a)
     {
 
         super(a);
-        this.nextBehaviour = nextBehavior;
+
+    }
+
+    public void onStart()
+    {
+
+        transition = 0;
+        firtSolo = 0;
+
     }
 
     public void action()
@@ -46,7 +54,7 @@ public class ResponseRequestSectionInfo extends OneShotBehaviour implements Data
             {
                 getDataStore().put(FIRST_TIME_SOLO_IN_SYN,firtSolo);
                 System.out.println("Im going to ask externally");
-                RequestToExternalSyn.setState(0);
+
                 transition = 1;
             }
             else

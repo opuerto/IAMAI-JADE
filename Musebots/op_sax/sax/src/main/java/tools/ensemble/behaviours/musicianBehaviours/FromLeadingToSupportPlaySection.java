@@ -36,6 +36,7 @@ public class FromLeadingToSupportPlaySection extends OneShotBehaviour implements
 
     public void onStart()
     {
+        transition = 38;
         FSMBehaviour requestAccompaniment = new FSMBehaviour(agent);
         RequestInternalStatePlayBehaviour requestPlayBehaviour = new RequestInternalStatePlayBehaviour();
         requestPlayBehaviour.setDataStore(getDataStore());
