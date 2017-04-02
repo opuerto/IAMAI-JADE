@@ -48,6 +48,10 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
 
     public void onStart()
     {
+        transition = 34;
+        firstTimeHereState2 = 0;
+        nResponders = 0;
+        state = 0;
         System.out.println("Pass Lead To accompaniment");
     }
 
@@ -82,7 +86,7 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
                     //Find a receiver
                     findAllReceivers();
                     constructACLMessage();
-                    myAgent.doWait(20000);
+                    myAgent.doWait(5000);
                     requestSoloNegotiation RequestSolo = new requestSoloNegotiation(myAgent,msg);
                     RequestSolo.setDataStore(getDataStore());
                     myAgent.addBehaviour(RequestSolo);

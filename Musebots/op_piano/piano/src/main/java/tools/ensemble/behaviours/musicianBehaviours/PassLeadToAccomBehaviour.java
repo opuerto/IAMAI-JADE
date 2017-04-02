@@ -48,6 +48,10 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
 
     public void onStart()
     {
+        transition = 34;
+        firstTimeHereState2 = 0;
+        nResponders = 0;
+        state = 0;
         System.out.println("Pass Lead To accompaniment");
     }
 

@@ -20,6 +20,14 @@ public class ConfirmToMusician extends OneShotBehaviour implements DataStoreComp
         super(a);
     }
 
+
+    public void onStart()
+    {
+        transition = 6;
+        firstTimeHere = 0;
+        holdComposition = 0;
+    }
+
     public void action()
     {
         if (firstTimeHere < 1)

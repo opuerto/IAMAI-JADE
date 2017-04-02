@@ -37,7 +37,7 @@ public class ResponseSoloRequest extends OneShotBehaviour implements DataStoreCo
     {
         transition = 0;
         System.out.println("Response to the solo request in composer");
-        System.out.println("transition is"+transition);
+
     }
     public void action()
     {
@@ -46,9 +46,7 @@ public class ResponseSoloRequest extends OneShotBehaviour implements DataStoreCo
         if(replyRequest != null)
         {
             System.out.println("We got the message in composer is "+replyRequest);
-            System.out.println("The " + getBehaviourName() + "is waiting for a message");
             getDataStore().put(INTERNAL_MUSICIAN_AID,replyRequest.getSender());
-            System.out.println("I got the request");
             if(getDataStore().containsKey(COMPOSER_MY_INTERNAL_SYNCHRONIZER))
             {
                 internalTimeManager = (AID) getDataStore().get(COMPOSER_MY_INTERNAL_SYNCHRONIZER);
@@ -71,7 +69,7 @@ public class ResponseSoloRequest extends OneShotBehaviour implements DataStoreCo
                 getDataStore().put(CURRENT_MESSAGE_FOR_MUSICIAN,replyRequest);
             }
             transition = 1;
-            System.out.println("transition going to request is"+transition);
+
 
         }else
         {

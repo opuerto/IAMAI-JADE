@@ -17,7 +17,6 @@ import tools.ensemble.interfaces.DataStoreTimeManager;
 public class ResponseSoloRequest extends OneShotBehaviour implements DataStoreComposer,DataStoreTimeManager  {
 
     int transition = 0;
-    int firstTimeHere = 0;
     int firsTimeSolo;
     Ontology SynOntology;
     Codec codec;
@@ -33,7 +32,12 @@ public class ResponseSoloRequest extends OneShotBehaviour implements DataStoreCo
         this.codec = codec;
 
     }
+    public void onStart()
+    {
+        transition = 0;
+        System.out.println("Response to the solo request in composer");
 
+    }
     public void action()
     {
 
@@ -77,7 +81,7 @@ public class ResponseSoloRequest extends OneShotBehaviour implements DataStoreCo
 
     public int onEnd()
     {
-        firstTimeHere++;
+
         if (transition == 0)
         {
             block(500);

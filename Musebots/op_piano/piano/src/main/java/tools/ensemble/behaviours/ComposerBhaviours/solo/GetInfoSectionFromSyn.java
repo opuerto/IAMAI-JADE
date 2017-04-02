@@ -37,6 +37,11 @@ public class GetInfoSectionFromSyn extends OneShotBehaviour implements DataStore
     {
         super(a);
     }
+    public void onStart()
+    {
+        transition = 4;
+        firstTimeHere = 0;
+    }
 
     public void action()
     {

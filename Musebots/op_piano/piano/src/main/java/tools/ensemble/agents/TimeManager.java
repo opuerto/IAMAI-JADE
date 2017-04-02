@@ -145,12 +145,16 @@ public class TimeManager extends Agent implements DataStoreTimeManager {
         },"lastState");
 
         responseInfoSection.registerTransition("ResponseRequest","ResponseRequest",0);
-        responseInfoSection.registerTransition("ResponseRequest","RequestToExternal",1);
-        responseInfoSection.registerTransition("ResponseRequest","CheckInfoInternally",2);
+        responseInfoSection.registerTransition("ResponseRequest","RequestToExternal",1,new String[]{"RequestToExternal",
+                "ResponseRequest"});
+        responseInfoSection.registerTransition("ResponseRequest","CheckInfoInternally",2,new String[]{"CheckInfoInternally",
+                "ResponseRequest"});
         responseInfoSection.registerTransition("RequestToExternal","RequestToExternal",3);
-        responseInfoSection.registerTransition("RequestToExternal","ResponseRequest",4);
+        responseInfoSection.registerTransition("RequestToExternal","ResponseRequest",4,new String[]{"ResponseRequest",
+                "RequestToExternal"});
         responseInfoSection.registerTransition("CheckInfoInternally","CheckInfoInternally",5);
-        responseInfoSection.registerTransition("CheckInfoInternally","ResponseRequest",6);
+        responseInfoSection.registerTransition("CheckInfoInternally","ResponseRequest",6,new String[]{"ResponseRequest",
+                "CheckInfoInternally"});
         responseInfoSection.registerTransition("CheckInfoInternally","RequestToExternal",7);
         responseInfoSection.registerTransition("ResponseRequest","lastState",8);
 

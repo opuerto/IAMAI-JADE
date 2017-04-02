@@ -158,7 +158,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
 
         Composer.setHoldComposition(0);
         //send the message to the synchronizer
-        //UpdateTheSynWithSectionInfo(theSection,timeLeft,theIndexSection);
+        UpdateTheSynWithSectionInfo(theSection,timeLeft,theIndexSection);
 
     }
 
@@ -229,7 +229,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
         long newTimeLeft = timeLeft - timeElapsed;
         System.out.println("Elapsed time before send update: "+timeElapsed);
         System.out.println("timeleft before send update: "+newTimeLeft);
-        myAgent.doWait(timeLeft);
+        //myAgent.doWait(timeLeft);
     }
 
     public int onEnd()

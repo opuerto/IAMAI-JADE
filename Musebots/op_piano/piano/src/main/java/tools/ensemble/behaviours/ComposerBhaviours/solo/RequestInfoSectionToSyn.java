@@ -16,7 +16,6 @@ import tools.ensemble.interfaces.DataStoreComposer;
 public class RequestInfoSectionToSyn extends OneShotBehaviour implements DataStoreComposer {
 
     private int transition = 2;
-    private int firstTimeHere = 0;
     private AID SynId;
     public RequestInfoSectionToSyn(Agent a)
     {
@@ -26,6 +25,7 @@ public class RequestInfoSectionToSyn extends OneShotBehaviour implements DataSto
 
     public void onStart()
     {
+        transition = 2;
         ACLMessage requestInfo = new ACLMessage(ACLMessage.REQUEST);
         requestInfo.setConversationId("request-Current-Section-to-Syn");
         requestInfo.setReplyWith(myAgent.getLocalName() + System.currentTimeMillis());

@@ -40,16 +40,8 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
     Vector timeManagerList = new Vector();
     AID internalComposer;
 
-    public static int state = 0;
-    public static synchronized void setState(int var1)
-    {
-        state = var1;
-    }
+    private int state = 0;
 
-    public static synchronized int getState()
-    {
-        return state;
-    }
 
     public RequestToExternalSyn(Agent a, Ontology ont, Codec lan)
     {
@@ -58,11 +50,20 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
         this.language = lan;
     }
 
+    public void onStart()
+    {
+
+        transition = 3;
+        firstTimeHere = 0;
+        state = 0;
+
+    }
+
     public void action()
     {
 
 
-        switch (getState())
+        switch (state)
         {
             case 0:
                 if (firstTimeHere < 1)
@@ -94,8 +95,8 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
                     }
                     System.out.println("Receiver: "+timeManagerList);
                     myAgent.send(findSection);
-                    //state = 1;
-                    RequestToExternalSyn.setState(1);
+                    state = 1;
+
                 }
 
                 break;
@@ -130,9 +131,9 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
                         System.out.println("Section current section " + CurrentSection);
                         System.out.println("Section time left"+timeLeft);
                     }
-                        //state = 2;
+                        state = 2;
 
-                        RequestToExternalSyn.setState(2);
+
                    /* if(firsSolo == 1)
                     {
                         //Check if the song is in the last section of the structure so we can start right at the beginning
