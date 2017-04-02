@@ -450,12 +450,12 @@
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/RequestInfoSectionToSyn.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/GetInfoSectionFromSyn.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/PassLeadToAccomBehaviour.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/agents/TimeManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/PlaySoloBehaviour.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/PlayAccompanimentBehaviour.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/timeManagerBehaviours/FindSection/RequestToExternalSyn.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/timeManagerBehaviours/FindSection/CheckForInfoInternally.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/timeManagerBehaviours/FindSection/ResponseRequestSectionInfo.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/agents/TimeManager.java" />
       </list>
     </option>
   </component>
@@ -1528,16 +1528,16 @@
       <workItem from="1490978086800" duration="611000" />
       <workItem from="1490998677717" duration="156000" />
       <workItem from="1491041089579" duration="5848000" />
-      <workItem from="1491057698587" duration="30739000" />
+      <workItem from="1491057698587" duration="31028000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="761674000" />
+    <option name="totallyTimeSpent" value="761963000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1592" y="-8" width="1296" height="1000" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
