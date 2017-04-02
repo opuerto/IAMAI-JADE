@@ -135,7 +135,7 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
     {
 
         System.out.println("Im in playing");
-        Play.midi(Composer.getSoloPianoScore(),false,false,6,0);
+        Play.midi(Composer.getSoloScore(),false,false,6,0);
         Composer.incrementMeasureCounter();
 
 
@@ -143,9 +143,9 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
         long timeStartedAt = sectionStartedAt.getTime();
 
         //Calculate the lenght of the solosection
-        double betPerMeasure = Composer.getSoloPianoScore().getNumerator();
-        double numberOfMeasure = Composer.getSoloPianoScore().getEndTime()/betPerMeasure;
-        double tempo = Composer.getSoloPianoScore().getTempo();
+        double betPerMeasure = Composer.getSoloScore().getNumerator();
+        double numberOfMeasure = Composer.getSoloScore().getEndTime()/betPerMeasure;
+        double tempo = Composer.getSoloScore().getTempo();
         double lengthOfSection = (betPerMeasure*numberOfMeasure/tempo)*60*1000;
         long currentTimes = System.currentTimeMillis();
         System.out.println("current Time "+currentTimes);
@@ -162,7 +162,7 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
         //Set the rule to 0 so it can compose the next part of the solo.
         Composer.setHodSoloComposition(0);
 
-            UpdateTheSynWithSectionInfo(theSection,timeLeft,theIndexSection);
+        UpdateTheSynWithSectionInfo(theSection,timeLeft,theIndexSection);
 
 
     }

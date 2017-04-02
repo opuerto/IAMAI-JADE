@@ -39,25 +39,28 @@ public class GetInfoSectionFromSyn extends OneShotBehaviour implements DataStore
     {
         super(a);
     }
+    public void onStart()
+    {
+        transition = 4;
+        System.out.println("Get info section for solo synch");
+        if (getDataStore().containsKey(INTERNAL_MUSICIAN_AID))
+        {
+            internalMusician = (AID) getDataStore().get(INTERNAL_MUSICIAN_AID);
+        }
+
+        ACLMessage previousmessage = (ACLMessage) getDataStore().get(CURRENT_MESSAGE_FOR_SYN);
+        //System.out.println("previous message reply with solo state "+previousmessage.getReplyWith());
+        mt2 = MessageTemplate.and(mt1,MessageTemplate.MatchInReplyTo(previousmessage.getReplyWith()));
+    }
 
     public void action()
     {
-        if (firstTimeHere < 1)
-        {
-            if (getDataStore().containsKey(INTERNAL_MUSICIAN_AID))
-            {
-                internalMusician = (AID) getDataStore().get(INTERNAL_MUSICIAN_AID);
-            }
 
-            ACLMessage previousmessage = (ACLMessage) getDataStore().get(CURRENT_MESSAGE_FOR_SYN);
-            //System.out.println("previous message reply with solo state "+previousmessage.getReplyWith());
-            mt2 = MessageTemplate.and(mt1,MessageTemplate.MatchInReplyTo(previousmessage.getReplyWith()));
-        }
 
         ACLMessage getInfoSection = myAgent.receive(mt2);
         if (getInfoSection != null)
         {
-
+            System.out.println("The message we got was "+getInfoSection);
             ContentElement content = null;
             try {
                 content = myAgent.getContentManager().extractContent(getInfoSection);
@@ -101,7 +104,7 @@ public class GetInfoSectionFromSyn extends OneShotBehaviour implements DataStore
         {
             block(500);
         }
-        firstTimeHere++;
+        //firstTimeHere++;
         return transition;
     }
 }

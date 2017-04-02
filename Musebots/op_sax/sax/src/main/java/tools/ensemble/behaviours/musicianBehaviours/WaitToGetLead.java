@@ -31,15 +31,16 @@ public class WaitToGetLead extends OneShotBehaviour {
         super(a);
     }
 
+    public void onStart()
+    {
+        System.out.println("Wait For lead ");
+        ResponseRequestSoloNegotiation responseTorequest = new ResponseRequestSoloNegotiation(myAgent,mt1Andmt2);
+        responseTorequest.setDataStore(getDataStore());
+        myAgent.addBehaviour(responseTorequest);
+    }
+
     public void action()
     {
-        if(firstTimeHere < 1)
-        {
-            System.out.println("Wait For lead ");
-            ResponseRequestSoloNegotiation responseTorequest = new ResponseRequestSoloNegotiation(myAgent,mt1Andmt2);
-            responseTorequest.setDataStore(getDataStore());
-            myAgent.addBehaviour(responseTorequest);
-        }
 
         switch (state)
         {
@@ -57,7 +58,7 @@ public class WaitToGetLead extends OneShotBehaviour {
 
     public int onEnd()
     {
-        firstTimeHere++;
+
         if (transition == 37)
         {
             block(500);

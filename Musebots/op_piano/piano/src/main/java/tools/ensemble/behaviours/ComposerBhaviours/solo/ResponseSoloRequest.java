@@ -36,14 +36,11 @@ public class ResponseSoloRequest extends OneShotBehaviour implements DataStoreCo
 
     public void action()
     {
-        if(firstTimeHere < 0)
-        {
 
-
-        }
         ACLMessage replyRequest = myAgent.receive(mt1);
         if(replyRequest != null)
         {
+            System.out.println("The " + getBehaviourName() + "is waiting for a message");
             getDataStore().put(INTERNAL_MUSICIAN_AID,replyRequest.getSender());
             System.out.println("I got the request");
             if(getDataStore().containsKey(COMPOSER_MY_INTERNAL_SYNCHRONIZER))

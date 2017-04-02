@@ -33,17 +33,19 @@ public class ResponseSoloRequest extends OneShotBehaviour implements DataStoreCo
         this.codec = codec;
 
     }
-
+    public void onStart()
+    {
+        transition = 0;
+        System.out.println("Response to the solo request in composer");
+        System.out.println("transition is"+transition);
+    }
     public void action()
     {
-        if(firstTimeHere < 0)
-        {
 
-
-        }
         ACLMessage replyRequest = myAgent.receive(mt1);
         if(replyRequest != null)
         {
+            System.out.println("We got the message in composer is "+replyRequest);
             System.out.println("The " + getBehaviourName() + "is waiting for a message");
             getDataStore().put(INTERNAL_MUSICIAN_AID,replyRequest.getSender());
             System.out.println("I got the request");
@@ -69,6 +71,7 @@ public class ResponseSoloRequest extends OneShotBehaviour implements DataStoreCo
                 getDataStore().put(CURRENT_MESSAGE_FOR_MUSICIAN,replyRequest);
             }
             transition = 1;
+            System.out.println("transition going to request is"+transition);
 
         }else
         {

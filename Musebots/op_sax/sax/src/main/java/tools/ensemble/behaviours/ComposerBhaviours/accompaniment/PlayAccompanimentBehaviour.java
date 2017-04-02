@@ -158,7 +158,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
 
         Composer.setHoldComposition(0);
         //send the message to the synchronizer
-        UpdateTheSynWithSectionInfo(theSection,timeLeft,theIndexSection);
+        //UpdateTheSynWithSectionInfo(theSection,timeLeft,theIndexSection);
 
     }
 

@@ -34,39 +34,40 @@ public class FromLeadingToSupportPlaySection extends OneShotBehaviour implements
         agent = a;
     }
 
+    public void onStart()
+    {
+        FSMBehaviour requestAccompaniment = new FSMBehaviour(agent);
+        RequestInternalStatePlayBehaviour requestPlayBehaviour = new RequestInternalStatePlayBehaviour();
+        requestPlayBehaviour.setDataStore(getDataStore());
+        requestAccompaniment.registerFirstState(requestPlayBehaviour,REQUEST_PLAY);
+        HandleAgreeInternalStateBehaviour handleAgreeBehaviour = new HandleAgreeInternalStateBehaviour();
+        handleAgreeBehaviour.setDataStore(getDataStore());
+        requestAccompaniment.registerState(handleAgreeBehaviour,HANDLE_AGREE);
+
+        requestInternalStateHandleConfirm HandleConfirm = new requestInternalStateHandleConfirm();
+        HandleConfirm.setDataStore(getDataStore());
+        requestAccompaniment.registerState(HandleConfirm,HANDLE_CONFIRM);
+        requestAccompaniment.registerLastState(new OneShotBehaviour() {
+            @Override
+            public void action() {
+                System.out.println("Last State ");
+            }
+        },"LastState");
+
+        //Register the transitions
+        requestAccompaniment.registerTransition(REQUEST_PLAY,HANDLE_AGREE,0);
+        requestAccompaniment.registerTransition(HANDLE_AGREE,HANDLE_AGREE,2);
+        requestAccompaniment.registerTransition(HANDLE_AGREE,HANDLE_CONFIRM,3);
+        requestAccompaniment.registerTransition(HANDLE_CONFIRM,HANDLE_CONFIRM,4);
+        requestAccompaniment.registerTransition(HANDLE_CONFIRM,"LastState",5);
+
+
+        agent.addBehaviour(requestAccompaniment);
+    }
+
     public void action()
     {
-      /*  if (firstTimeHere < 1)
-        {
-            FSMBehaviour requestAccompaniment = new FSMBehaviour(agent);
-            RequestInternalStatePlayBehaviour requestPlayBehaviour = new RequestInternalStatePlayBehaviour();
-            requestPlayBehaviour.setDataStore(getDataStore());
-            requestAccompaniment.registerFirstState(requestPlayBehaviour,REQUEST_PLAY);
-            HandleAgreeInternalStateBehaviour handleAgreeBehaviour = new HandleAgreeInternalStateBehaviour();
-            handleAgreeBehaviour.setDataStore(getDataStore());
-            requestAccompaniment.registerState(handleAgreeBehaviour,HANDLE_AGREE);
 
-            requestInternalStateHandleConfirm HandleConfirm = new requestInternalStateHandleConfirm();
-            HandleConfirm.setDataStore(getDataStore());
-            requestAccompaniment.registerState(HandleConfirm,HANDLE_CONFIRM);
-            requestAccompaniment.registerLastState(new OneShotBehaviour() {
-                @Override
-                public void action() {
-                    System.out.println("Last State ");
-                }
-            },"LastState");
-
-            //Register the transitions
-            requestAccompaniment.registerTransition(REQUEST_PLAY,HANDLE_AGREE,0);
-            requestAccompaniment.registerTransition(HANDLE_AGREE,HANDLE_AGREE,2);
-            requestAccompaniment.registerTransition(HANDLE_AGREE,HANDLE_CONFIRM,3);
-            requestAccompaniment.registerTransition(HANDLE_CONFIRM,HANDLE_CONFIRM,4);
-            requestAccompaniment.registerTransition(HANDLE_CONFIRM,"LastState",5);
-
-
-            agent.addBehaviour(requestAccompaniment);
-
-        }*/
     }
 
     public int onEnd()
@@ -76,7 +77,7 @@ public class FromLeadingToSupportPlaySection extends OneShotBehaviour implements
             block(500);
         }
 
-        firstTimeHere++;
+        //firstTimeHere++;
         return transition;
     }
 
@@ -188,7 +189,7 @@ public class FromLeadingToSupportPlaySection extends OneShotBehaviour implements
             {
                 System.out.println("The agent informed it will play the solo");
                 //Send the state compose of the FSM inside the accompanimentPlaySection to the end state.
-               // transitionParentBehaviour = 12;
+                // transitionParentBehaviour = 12;
                 //Stop the simple behaviour that is the parent of this fsm
 
             }else{block();}
