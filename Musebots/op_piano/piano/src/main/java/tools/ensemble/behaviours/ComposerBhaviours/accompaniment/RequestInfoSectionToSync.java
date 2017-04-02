@@ -20,33 +20,32 @@ public class RequestInfoSectionToSync extends OneShotBehaviour implements DataSt
         super(a);
     }
 
-    public void action() {
-        if (Composer.firstTime < 1){
-
-            ACLMessage requestInfo = new ACLMessage(ACLMessage.REQUEST);
-            requestInfo.setConversationId("request-Current-Section-to-Syn");
-            requestInfo.setReplyWith(myAgent.getLocalName() + System.currentTimeMillis());
-            int firstimeAccompaniement = 1;
-            requestInfo.setContent(String.valueOf(firstimeAccompaniement));
-            if (getDataStore().containsKey(COMPOSER_MY_INTERNAL_SYNCHRONIZER)) {
-                SynId = (AID) getDataStore().get(COMPOSER_MY_INTERNAL_SYNCHRONIZER);
-                System.out.println(SynId);
-            }
-
-            requestInfo.addReceiver(SynId);
-            getDataStore().put(CURRENT_MESSAGE_FOR_SYN, requestInfo);
-            myAgent.send(requestInfo);
-            transition = 13;
-            System.out.println("receiver "+SynId);
-
-
+    public void onStart()
+    {
+        ACLMessage requestInfo = new ACLMessage(ACLMessage.REQUEST);
+        requestInfo.setConversationId("request-Current-Section-to-Syn");
+        requestInfo.setReplyWith(myAgent.getLocalName() + System.currentTimeMillis());
+        int firstimeAccompaniement = 1;
+        requestInfo.setContent(String.valueOf(firstimeAccompaniement));
+        if (getDataStore().containsKey(COMPOSER_MY_INTERNAL_SYNCHRONIZER)) {
+            SynId = (AID) getDataStore().get(COMPOSER_MY_INTERNAL_SYNCHRONIZER);
+            System.out.println(SynId);
         }
+
+        requestInfo.addReceiver(SynId);
+        getDataStore().put(CURRENT_MESSAGE_FOR_SYN, requestInfo);
+        myAgent.send(requestInfo);
+        transition = 13;
+        System.out.println("receiver "+SynId);
+    }
+    public void action() {
+
     }
 
     public int onEnd()
     {
         //firstTimeHere++;
-        Composer.firstTime++;
+        //Composer.firstTime++;
         if(transition == 2)
         {
             block(1000);

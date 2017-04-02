@@ -57,6 +57,9 @@ public interface DataStoreComposer {
  //Store current message from musician
  public static final String CURRENT_MESSAGE_FOR_SYN = "currentMessageFromSyn";
 
+ //Save the info about the sections sent by the syn, that we will use to play the accompaniement.
+ public static final String SECTION_INSTANCE_FOR_SYN_ACCOMP = "sectionInstanceForSyncAccom";
+
 
 
 }
