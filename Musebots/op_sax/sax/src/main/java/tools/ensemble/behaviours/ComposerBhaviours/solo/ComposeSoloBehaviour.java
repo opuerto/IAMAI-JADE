@@ -37,73 +37,72 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
         super(a);
     }
 
-    public void action()
+    public void onStart()
     {
-        if (firstTimeHere < 1)
+        if(getDataStore().containsKey(FIRST_TIME_SOLO))
         {
+            Composer.setFirstTimePlayingSolo((Integer) getDataStore().get(FIRST_TIME_SOLO));
+        }
+        form = Musician.getTuneForm();
 
-            if(getDataStore().containsKey(FIRST_TIME_SOLO))
+        //We want omit the section that is currently playing and start to soloing from the next section.
+        if(Composer.getFirstTimePlayingSolo() > 0)
+        {
+            //Reset the measure counter
+            Composer.setMeasureCounter(0);
+            System.out.println("Im first time solo");
+            if (getDataStore().containsKey(SECTION_INSTANCE_FOR_SYN_SOLO))
             {
-                Composer.firstTimePlayingSolo = (Integer) getDataStore().get(FIRST_TIME_SOLO);
+                sectionInfo = (Section) getDataStore().get(SECTION_INSTANCE_FOR_SYN_SOLO);
             }
-            form = Musician.tuneForm;
-
-            //We want omit the section that is currently playing and start to soloing from the next section.
-            if(Composer.firstTimePlayingSolo > 0)
+            for (int i = 0; i<form.length(); i++)
             {
-                //Reset the measure counter
-                Composer.setMeasureCounter(0);
-                System.out.println("Im first time solo");
-                if (getDataStore().containsKey(SECTION_INSTANCE_FOR_SYN_SOLO))
-                {
-                    sectionInfo = (Section) getDataStore().get(SECTION_INSTANCE_FOR_SYN_SOLO);
-                }
-                for (int i = 0; i<form.length(); i++)
-                {
-                    if(i > sectionInfo.getSectionIndex())
-                    {
-                        queueSections.add(form.charAt(i));
-                        queueSectionIndex.add(i);
-                    }
-
-                }
-                System.out.println("Original queueSection "+queueSections);
-                System.out.println("Original queueIndex "+queueSectionIndex);
-                Composer.firstTimePlayingSolo = 0;
-
-            }
-            else
-            {
-                System.out.println("Im not first time playing any more");
-
-                for (int i = 0; i<form.length(); i++)
+                if(i > sectionInfo.getSectionIndex())
                 {
                     queueSections.add(form.charAt(i));
                     queueSectionIndex.add(i);
                 }
-                System.out.println("Original queueSection in compose "+queueSections);
-                System.out.println("Original queueIndex in compose"+queueSectionIndex);
 
             }
+            System.out.println("Original queueSection "+queueSections);
+            System.out.println("Original queueIndex "+queueSectionIndex);
+            Composer.setFirstTimePlayingSolo(0);
 
+        }
+        else
+        {
+            System.out.println("Im not first time playing any more");
 
+            for (int i = 0; i<form.length(); i++)
+            {
+                queueSections.add(form.charAt(i));
+                queueSectionIndex.add(i);
+            }
+            System.out.println("Original queueSection in compose "+queueSections);
+            System.out.println("Original queueIndex in compose"+queueSectionIndex);
 
         }
 
-        if(Composer.holdSoloComposition < 1)
+
+    }
+
+    public void action()
+    {
+
+        if(Composer.getHoldSoloComposition() < 1)
         {
-            Composer.holdSoloPlayback = 0;
+            Composer.setHoldSoloPlayback(0);
             if(!queueSections.isEmpty())
             {
-                Composer.NextSectionSoloCharacter = queueSections.remove();
-                Composer.NextSectionSoloIndex = queueSectionIndex.remove();
-                System.out.println("the section is in compose state " +  Composer.NextSectionSoloCharacter);
-                System.out.println("the index is in compose" + Composer.NextSectionSoloIndex);
+                Composer.setNextSectionSoloCharacter(queueSections.remove());
+                Composer.setNextSectionSoloIndex(queueSectionIndex.remove());
+                System.out.println("the section is in compose state " +  Composer.getNextsectionCharacter());
+                System.out.println("the index is in compose" + Composer.getNextSectionSoloIndex());
                 System.out.println("the reminder in section"  +queueSections);
 
                 Composer.getSoloScore().empty();
                 saxPart.empty();
-                switch (Composer.NextSectionSoloCharacter)
+                switch (Composer.getNextSectionSoloCharacter())
                 {
                     case 'A':
                         Composer.getSoloScore().setTempo(Musician.getTempo());
@@ -127,13 +126,13 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
                 System.out.println("fill it again");
                 System.out.println("Original queueSection "+queueSections);
                 System.out.println("Original queueIndex "+queueSectionIndex);
-                Composer.NextSectionSoloCharacter = queueSections.remove();
-                Composer.NextSectionSoloIndex = queueSectionIndex.remove();
-                System.out.println("the section is " +  Composer.NextSectionSoloCharacter);
-                System.out.println("the index is " + Composer.NextSectionSoloIndex);
+                Composer.setNextsectionCharacter(queueSections.remove());
+                Composer.setNextSectionSoloIndex(queueSectionIndex.remove());
+                System.out.println("the section is " +  Composer.getNextsectionCharacter());
+                System.out.println("the index is " + Composer.getNextSectionSoloIndex());
                 Composer.getSoloScore().empty();
                 saxPart.empty();
-                switch (Composer.NextSectionSoloCharacter)
+                switch (Composer.getNextsectionCharacter())
                 {
                     case 'A':
                         Composer.getSoloScore().setTempo(Musician.getTempo());
@@ -147,7 +146,7 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
 
             }
 
-            Composer.holdSoloComposition = 1;
+            Composer.setHoldComposition(1);
             if( !Musician.getLeader())
             {
                 transition = 18;
@@ -164,7 +163,7 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
 
     public int onEnd()
     {
-        firstTimeHere++;
+        //firstTimeHere++;
         return transition;
     }
 

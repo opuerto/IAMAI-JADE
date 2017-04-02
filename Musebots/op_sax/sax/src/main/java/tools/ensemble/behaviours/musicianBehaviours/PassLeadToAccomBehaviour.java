@@ -46,15 +46,13 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
         super(a);
     }
 
+    public void onStart()
+    {
+        System.out.println("Pass Lead To accompaniment");
+    }
+
     public void action()
     {
-
-
-
-        if (firstTimeHere < 1)
-        {
-            System.out.println("Pass Lead To accompaniment");
-        }
 
         switch (state)
         {
@@ -200,7 +198,7 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
             if (responses.size() < nResponders) {
                 // Some responder didn't reply within the specified timeout
                 System.out.println("Timeout expired: missing " + (nResponders - responses.size()) + " responses");
-                //Try again from the beginning
+                //Try firstTimeHere from the beginning
                 if (nResponders < 1)
                 {
                     System.out.println("Non responder");
@@ -252,7 +250,7 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
                 accept.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
             }else
             {
-                //If there is no good proposal we try again from the beginning.
+                //If there is no good proposal we try firstTimeHere from the beginning.
                 System.out.println("All Rejected");
                 state = 4;
             }

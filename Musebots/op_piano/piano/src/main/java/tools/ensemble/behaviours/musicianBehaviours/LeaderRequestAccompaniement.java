@@ -66,11 +66,6 @@ public class LeaderRequestAccompaniement extends OneShotBehaviour implements Dat
     {
 
 
-        /*if(firstTime < 1)
-        {
-            getIntroTimestamp();
-            findAllReceivers();
-        }*/
         switch (step)
         {
             case 0:
@@ -87,14 +82,7 @@ public class LeaderRequestAccompaniement extends OneShotBehaviour implements Dat
                 break;
         }
 
-        /*System.out.println("The current timestamp: "+currentTime);
-        System.out.println("The Intro started at : "+IntroStartedAt);
-        long transcurrent =  IntroStartedAt - currentTime;
-        double time = (transcurrent/60)/1000;
-        System.out.println("Time that hast transcurrent since: "+transcurrent);
-        System.out.println("transcurrent time in minutes: "+time);
-        System.out.println(getBehaviourName());
-        transition = 31;*/
+
     }
 
     public int onEnd() {
@@ -159,7 +147,7 @@ public class LeaderRequestAccompaniement extends OneShotBehaviour implements Dat
         {
             try
             {
-                           //fill the content using the Ontology concept
+                //fill the content using the Ontology concept
                 myAgent.getContentManager().fillContent(requestAccompanientMSG,new Action((AID) receivers.elementAt(i),playAccompaAction));
             }catch (Exception ex) { ex.printStackTrace(); }
             requestAccompanientMSG.addReceiver((AID)receivers.elementAt(i));

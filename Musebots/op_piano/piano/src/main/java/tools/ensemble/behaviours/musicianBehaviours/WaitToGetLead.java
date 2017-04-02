@@ -1,15 +1,15 @@
 package tools.ensemble.behaviours.musicianBehaviours;
 
-import jade.core.Agent;
-import jade.core.behaviours.OneShotBehaviour;
-import jade.domain.FIPAAgentManagement.FailureException;
-import jade.domain.FIPAAgentManagement.NotUnderstoodException;
-import jade.domain.FIPAAgentManagement.RefuseException;
-import jade.domain.FIPANames;
-import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
-import jade.proto.ContractNetResponder;
-import tools.ensemble.agents.Musician;
+        import jade.core.Agent;
+        import jade.core.behaviours.OneShotBehaviour;
+        import jade.domain.FIPAAgentManagement.FailureException;
+        import jade.domain.FIPAAgentManagement.NotUnderstoodException;
+        import jade.domain.FIPAAgentManagement.RefuseException;
+        import jade.domain.FIPANames;
+        import jade.lang.acl.ACLMessage;
+        import jade.lang.acl.MessageTemplate;
+        import jade.proto.ContractNetResponder;
+        import tools.ensemble.agents.Musician;
 
 /**
  * Created by OscarAlfonso on 3/27/2017.
@@ -31,15 +31,16 @@ public class WaitToGetLead extends OneShotBehaviour {
         super(a);
     }
 
+    public void onStart()
+    {
+        System.out.println("Wait For lead ");
+        ResponseRequestSoloNegotiation responseTorequest = new ResponseRequestSoloNegotiation(myAgent,mt1Andmt2);
+        responseTorequest.setDataStore(getDataStore());
+        myAgent.addBehaviour(responseTorequest);
+    }
+
     public void action()
     {
-        if(firstTimeHere < 1)
-        {
-            System.out.println("Wait For lead ");
-            ResponseRequestSoloNegotiation responseTorequest = new ResponseRequestSoloNegotiation(myAgent,mt1Andmt2);
-            responseTorequest.setDataStore(getDataStore());
-            myAgent.addBehaviour(responseTorequest);
-        }
 
         switch (state)
         {
@@ -57,7 +58,7 @@ public class WaitToGetLead extends OneShotBehaviour {
 
     public int onEnd()
     {
-        firstTimeHere++;
+
         if (transition == 37)
         {
             block(500);

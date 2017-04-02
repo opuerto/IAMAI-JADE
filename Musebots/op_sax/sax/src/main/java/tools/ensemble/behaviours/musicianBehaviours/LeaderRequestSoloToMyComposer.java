@@ -46,53 +46,54 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
         this.agent = a;
     }
 
+    public void onStart()
+    {
+        if(getDataStore().containsKey(FIRST_SOLO))
+        {
+            firstTimeSolo = 1;
+        }
+        else
+        {
+            firstTimeSolo = 0;
+        }
+
+        FSMBehaviour requestSolo = new FSMBehaviour(agent);
+        RequestPlayBehaviour requestPlayBehaviour = new RequestPlayBehaviour();
+        requestPlayBehaviour.setDataStore(getDataStore());
+        requestSolo.registerFirstState(requestPlayBehaviour,REQUEST_PLAY);
+        HandleAgreeBehaviour handleAgreeBehaviour = new HandleAgreeBehaviour();
+        handleAgreeBehaviour.setDataStore(getDataStore());
+        requestSolo.registerState(handleAgreeBehaviour,HANDLE_AGREE);
+
+        requestHandleConfirm HandleConfirm = new requestHandleConfirm();
+        HandleConfirm.setDataStore(getDataStore());
+        requestSolo.registerState(HandleConfirm,HANDLE_CONFIRM);
+        requestSolo.registerLastState(new OneShotBehaviour() {
+            @Override
+            public void action() {
+                System.out.println("Last State in requestSolo State machine");
+            }
+        },"LastState");
+
+        //Register the transitions
+        requestSolo.registerTransition(REQUEST_PLAY,HANDLE_AGREE,0);
+        requestSolo.registerTransition(HANDLE_AGREE,HANDLE_AGREE,2);
+        requestSolo.registerTransition(HANDLE_AGREE,HANDLE_CONFIRM,3);
+        requestSolo.registerTransition(HANDLE_CONFIRM,HANDLE_CONFIRM,4);
+        requestSolo.registerTransition(HANDLE_CONFIRM,"LastState",5);
+
+
+        agent.addBehaviour(requestSolo);
+    }
+
     public void action()
     {
-        if(firstTimeHere < 1)
-        {
-            if(getDataStore().containsKey(FIRST_SOLO))
-            {
-                firstTimeSolo = 1;
-            }
-            else
-            {
-                firstTimeSolo = 0;
-            }
 
-            FSMBehaviour requestSolo = new FSMBehaviour(agent);
-            RequestPlayBehaviour requestPlayBehaviour = new RequestPlayBehaviour();
-            requestPlayBehaviour.setDataStore(getDataStore());
-            requestSolo.registerFirstState(requestPlayBehaviour,REQUEST_PLAY);
-            HandleAgreeBehaviour handleAgreeBehaviour = new HandleAgreeBehaviour();
-            handleAgreeBehaviour.setDataStore(getDataStore());
-            requestSolo.registerState(handleAgreeBehaviour,HANDLE_AGREE);
-
-            requestHandleConfirm HandleConfirm = new requestHandleConfirm();
-            HandleConfirm.setDataStore(getDataStore());
-            requestSolo.registerState(HandleConfirm,HANDLE_CONFIRM);
-            requestSolo.registerLastState(new OneShotBehaviour() {
-                @Override
-                public void action() {
-                    System.out.println("Last State in requestSolo State machine");
-                }
-            },"LastState");
-
-            //Register the transitions
-            requestSolo.registerTransition(REQUEST_PLAY,HANDLE_AGREE,0);
-            requestSolo.registerTransition(HANDLE_AGREE,HANDLE_AGREE,2);
-            requestSolo.registerTransition(HANDLE_AGREE,HANDLE_CONFIRM,3);
-            requestSolo.registerTransition(HANDLE_CONFIRM,HANDLE_CONFIRM,4);
-            requestSolo.registerTransition(HANDLE_CONFIRM,"LastState",5);
-
-
-            agent.addBehaviour(requestSolo);
-
-        }
     }
 
     public int onEnd()
     {
-        firstTimeHere++;
+        //firstTimeHere++;
         if(transitionParentBehaviour == 30)
         {
             block(500);
@@ -241,11 +242,5 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
 
     }
 
-    private class tempClass extends OneShotBehaviour
-    {
-        public void action()
-        {
-            System.out.println("Action");
-        }
-    }
+
 }

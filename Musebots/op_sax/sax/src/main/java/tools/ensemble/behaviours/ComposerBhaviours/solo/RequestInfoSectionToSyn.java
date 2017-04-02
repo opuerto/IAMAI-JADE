@@ -24,31 +24,33 @@ public class RequestInfoSectionToSyn extends OneShotBehaviour implements DataSto
 
     }
 
-    public void action() {
-            if (firstTimeHere < 1){
-
-                ACLMessage requestInfo = new ACLMessage(ACLMessage.REQUEST);
-                requestInfo.setConversationId("request-Current-Section-to-Syn");
-                requestInfo.setReplyWith(myAgent.getLocalName() + System.currentTimeMillis());
-                int firtimeSolo = (Integer) getDataStore().get(FIRST_TIME_SOLO);
-                requestInfo.setContent(String.valueOf(firtimeSolo));
-                if (getDataStore().containsKey(COMPOSER_MY_INTERNAL_SYNCHRONIZER)) {
-                    SynId = (AID) getDataStore().get(COMPOSER_MY_INTERNAL_SYNCHRONIZER);
-                }
-
-                requestInfo.addReceiver(SynId);
-                getDataStore().put(CURRENT_MESSAGE_FOR_SYN, requestInfo);
-                myAgent.send(requestInfo);
-                transition = 3;
-                    //System.out.println("receiver "+SynId);
-
-
+    public void onStart()
+    {
+        transition = 2;
+        System.out.println("REquest Section to syn in solo");
+        ACLMessage requestInfo = new ACLMessage(ACLMessage.REQUEST);
+        requestInfo.setConversationId("request-Current-Section-to-Syn");
+        requestInfo.setReplyWith(myAgent.getLocalName() + System.currentTimeMillis());
+        int firtimeSolo = (Integer) getDataStore().get(FIRST_TIME_SOLO);
+        requestInfo.setContent(String.valueOf(firtimeSolo));
+        if (getDataStore().containsKey(COMPOSER_MY_INTERNAL_SYNCHRONIZER)) {
+            SynId = (AID) getDataStore().get(COMPOSER_MY_INTERNAL_SYNCHRONIZER);
         }
+
+        requestInfo.addReceiver(SynId);
+        getDataStore().put(CURRENT_MESSAGE_FOR_SYN, requestInfo);
+        myAgent.send(requestInfo);
+        transition = 3;
+        System.out.println("I just requested transition = "+transition);
+    }
+
+    public void action() {
+
     }
 
     public int onEnd()
     {
-        firstTimeHere++;
+        //firstTimeHere++;
         if(transition == 2)
         {
             block(500);

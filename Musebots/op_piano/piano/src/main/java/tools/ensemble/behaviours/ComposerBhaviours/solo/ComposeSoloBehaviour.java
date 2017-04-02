@@ -8,11 +8,8 @@ import jm.music.data.Part;
 import jm.music.data.Phrase;
 import tools.ensemble.agents.Composer;
 import tools.ensemble.agents.Musician;
-import tools.ensemble.agents.TimeManager;
-import tools.ensemble.behaviours.ComposerBhaviours.accompaniment.ComposeAccompanimentBehaviour;
 import tools.ensemble.interfaces.DataStoreComposer;
 import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ChordsAttributes;
-import tools.ensemble.ontologies.timemanager.TimeHandler;
 import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Section;
 
 import java.util.LinkedList;
@@ -100,17 +97,17 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
                 System.out.println("the index is in compose" + Composer.NextSectionSoloIndex);
                 System.out.println("the reminder in section"  +queueSections);
 
-                Composer.getSoloPianoScore().empty();
+                Composer.getSoloScore().empty();
                 saxPart.empty();
                 switch (Composer.NextSectionSoloCharacter)
                 {
                     case 'A':
-                        Composer.getSoloPianoScore().setTempo(Musician.getTempo());
-                        Composer.getSoloPianoScore().addPart(composeSectionA());
+                        Composer.getSoloScore().setTempo(Musician.getTempo());
+                        Composer.getSoloScore().addPart(composeSectionA());
                         break;
                     case 'B':
-                        Composer.getSoloPianoScore().setTempo(Musician.getTempo());
-                        Composer.getSoloPianoScore().addPart(composeSectionB());
+                        Composer.getSoloScore().setTempo(Musician.getTempo());
+                        Composer.getSoloScore().addPart(composeSectionB());
                         break;
                 }
 
@@ -130,17 +127,17 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
                 Composer.NextSectionSoloIndex = queueSectionIndex.remove();
                 System.out.println("the section is " +  Composer.NextSectionSoloCharacter);
                 System.out.println("the index is " + Composer.NextSectionSoloIndex);
-                Composer.getSoloPianoScore().empty();
+                Composer.getSoloScore().empty();
                 saxPart.empty();
                 switch (Composer.NextSectionSoloCharacter)
                 {
                     case 'A':
-                        Composer.getSoloPianoScore().setTempo(Musician.getTempo());
-                        Composer.getSoloPianoScore().addPart(composeSectionA());
+                        Composer.getSoloScore().setTempo(Musician.getTempo());
+                        Composer.getSoloScore().addPart(composeSectionA());
                         break;
                     case 'B':
-                        Composer.getSoloPianoScore().setTempo(Musician.getTempo());
-                        Composer.getSoloPianoScore().addPart(composeSectionB());
+                        Composer.getSoloScore().setTempo(Musician.getTempo());
+                        Composer.getSoloScore().addPart(composeSectionB());
                         break;
                 }
 

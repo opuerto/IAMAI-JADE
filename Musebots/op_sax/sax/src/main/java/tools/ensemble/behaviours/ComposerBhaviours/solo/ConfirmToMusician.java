@@ -20,19 +20,22 @@ public class ConfirmToMusician extends OneShotBehaviour implements DataStoreComp
         super(a);
     }
 
+    public void onStart()
+    {
+        transition = 6;
+        internalMusician = (AID) getDataStore().get(INTERNAL_MUSICIAN_AID);
+        System.out.println("the internal composer "+internalMusician);
+        //from support to lead is the first time playing solo again
+        if (Musician.getFromSupportTolead())
+        {
+            getDataStore().remove(FIRST_TIME_SOLO);
+            getDataStore().put(FIRST_TIME_SOLO,1);
+        }
+    }
+
     public void action()
     {
-        if (firstTimeHere < 1)
-        {
-            internalMusician = (AID) getDataStore().get(INTERNAL_MUSICIAN_AID);
-            System.out.println("the internal composer "+internalMusician);
-            //from support to lead is the first time playing solo again
-            if (Musician.getFromSupportTolead())
-            {
-                getDataStore().remove(FIRST_TIME_SOLO);
-                getDataStore().put(FIRST_TIME_SOLO,1);
-            }
-        }
+
         ACLMessage confirm = new ACLMessage(ACLMessage.INFORM);
         confirm.setConversationId("request-solo-to-composer-Inform");
         confirm.addReceiver(internalMusician);
