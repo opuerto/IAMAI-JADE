@@ -452,10 +452,10 @@
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/ComposeSoloBehaviour.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Composer.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/PlayAccompanimentBehaviour.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/ResponseSoloRequest.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/RequestInfoSectionToSyn.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/GetInfoSectionFromSyn.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/ConfirmToMusician.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/ResponseSoloRequest.java" />
       </list>
     </option>
   </component>
@@ -1482,12 +1482,12 @@
       <workItem from="1490978086800" duration="611000" />
       <workItem from="1490998677717" duration="156000" />
       <workItem from="1491041089579" duration="5848000" />
-      <workItem from="1491057698587" duration="26126000" />
+      <workItem from="1491057698587" duration="26350000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="757061000" />
+    <option name="totallyTimeSpent" value="757285000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1592" y="-8" width="1296" height="1000" extended-state="6" />
