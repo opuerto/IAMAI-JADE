@@ -24,7 +24,7 @@ import java.util.Date;
 public class GetInfoSectionFromSync extends OneShotBehaviour implements DataStoreComposer {
 
 
-    int transition = 14;
+    int transition = 13;
     int firstTimeHere = 0;
     AID internalMusician;
     MessageTemplate mt1 = MessageTemplate.and(
@@ -37,6 +37,12 @@ public class GetInfoSectionFromSync extends OneShotBehaviour implements DataStor
     public GetInfoSectionFromSync(Agent a)
     {
         super(a);
+    }
+
+    public void onStart()
+    {
+        transition = 13;
+        firstTimeHere = 0;
     }
 
     public void action()

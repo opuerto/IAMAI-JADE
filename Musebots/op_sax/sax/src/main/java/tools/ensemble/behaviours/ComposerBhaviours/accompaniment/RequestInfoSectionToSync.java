@@ -12,7 +12,7 @@ import tools.ensemble.interfaces.DataStoreComposer;
  */
 public class RequestInfoSectionToSync extends OneShotBehaviour implements DataStoreComposer {
 
-    private int transition = 13;
+    private int transition = 14;
     private int firstTimeHere = 0;
     private AID SynId;
     public RequestInfoSectionToSync(Agent a)
@@ -35,7 +35,7 @@ public class RequestInfoSectionToSync extends OneShotBehaviour implements DataSt
         requestInfo.addReceiver(SynId);
         getDataStore().put(CURRENT_MESSAGE_FOR_SYN, requestInfo);
         myAgent.send(requestInfo);
-        transition = 13;
+        transition = 14;
         System.out.println("receiver "+SynId);
     }
     public void action() {

@@ -40,7 +40,7 @@ public class ConfirmComposeAccompaniment extends OneShotBehaviour implements Dat
             //AccompanimentScore.empty();
             //composeChordProgression();
             //getDataStore().put(ACCOMPANIMENT_SCORE,AccompanimentScore);
-             myAgent.send(replyConfirmToMusician);
+            myAgent.send(replyConfirmToMusician);
 
             if(getDataStore().containsKey(FROM_PLAY_TO_COMPOSE))
             {
