@@ -29,6 +29,10 @@ public class ResponseAccompanimentRequest extends OneShotBehaviour implements Da
         super(a);
         this.intro = intro;
     }
+    public void onStart()
+    {
+        transition = 0;
+    }
 
     public void action()
     {

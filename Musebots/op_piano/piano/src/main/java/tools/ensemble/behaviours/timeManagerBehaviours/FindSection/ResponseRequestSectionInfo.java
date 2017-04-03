@@ -33,6 +33,7 @@ public class ResponseRequestSectionInfo extends OneShotBehaviour implements Data
 
     public void onStart()
     {
+        System.out.println("Response Request Section to syn ");
         transition = 0;
         firtSolo = 0;
     }

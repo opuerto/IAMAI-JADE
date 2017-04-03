@@ -30,12 +30,20 @@ public class ResponseAccompanimentRequest extends OneShotBehaviour implements Da
         this.intro = intro;
     }
 
+    public void onStart()
+    {
+        System.out.println("Respond Accompaniment request");
+        transition = 0;
+        System.out.println("transition: "+transition);
+    }
+
     public void action()
     {
         ACLMessage replyRequest = myAgent.receive(mt1);
         ACLMessage replyFromLeadingToSupport = myAgent.receive(template1);
         if(replyRequest != null)
         {
+            System.out.println("Response Accompaniment after intro ");
             getDataStore().put(INTERNAL_MUSICIAN_AID,replyRequest.getSender());
             //Get the time left on the intro.
             long introTimeLeft = Long.parseLong(replyRequest.getContent());

@@ -254,7 +254,8 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         fsm.registerTransition(STATE_REQUEST_INTRO,STATE_LEADER,17);
         fsm.registerTransition(STATE_LEADER,STATE_REQUEST_SOLO,11);
         fsm.registerTransition(STATE_REQUEST_SOLO,STATE_REQUEST_SOLO,30);
-        fsm.registerTransition(STATE_REQUEST_SOLO,STATE_PASS_LEAD,12);
+        fsm.registerTransition(STATE_REQUEST_SOLO,STATE_PASS_LEAD,12,new String[]{STATE_WAITING_LEADERSHIP,
+                STATE_REQUEST_SOLO});
         fsm.registerTransition(STATE_PASS_LEAD,STATE_PASS_LEAD,34);
 
 
@@ -266,15 +267,17 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
         fsm.registerTransition(STATE_INTRO,STATE_INTRO,8);
         fsm.registerTransition(STATE_INTRO,STATE_PLAY_SECTIONS,7);
         fsm.registerTransition(STATE_PLAY_SECTIONS,STATE_PLAY_SECTIONS,40);
-        fsm.registerTransition(STATE_FROM_LEADING_TO_SUPPORT,STATE_WAITING_LEADERSHIP,80);
+        fsm.registerTransition(STATE_FROM_LEADING_TO_SUPPORT,STATE_WAITING_LEADERSHIP,80,new String[]{STATE_PASS_LEAD,
+                STATE_FROM_LEADING_TO_SUPPORT});
         fsm.registerTransition(STATE_FROM_LEADING_TO_SUPPORT,STATE_FROM_LEADING_TO_SUPPORT,38);
         fsm.registerTransition(STATE_PLAY_SECTIONS,STATE_WAITING_LEADERSHIP,20);
         fsm.registerTransition(STATE_WAITING_LEADERSHIP,STATE_WAITING_LEADERSHIP,37);
 
         //INTERCHANGEBLE
-        fsm.registerTransition(STATE_WAITING_LEADERSHIP,STATE_REQUEST_SOLO,14);
-        fsm.registerTransition(STATE_PASS_LEAD,STATE_FROM_LEADING_TO_SUPPORT,39);
-
+        fsm.registerTransition(STATE_WAITING_LEADERSHIP,STATE_REQUEST_SOLO,14,new String[]{STATE_FROM_LEADING_TO_SUPPORT,
+                STATE_WAITING_LEADERSHIP});
+        fsm.registerTransition(STATE_PASS_LEAD,STATE_FROM_LEADING_TO_SUPPORT,39,new String[]{STATE_REQUEST_SOLO,
+                STATE_PASS_LEAD});
         //Add the Behaviour
         addBehaviour(fsm);
 

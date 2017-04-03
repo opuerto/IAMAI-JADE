@@ -68,12 +68,19 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
 
                 if (!Musician.getLeader())
                 {
+
                     play();
+                    transition = 6;
+                }
+                else
+                {
+                    System.out.println("Im not playing because Im not a leader");
+                    transition = 11;
                 }
 
                 Composer.setHoldPlay(1);
 
-                transition = 6;
+
             }
         }
 

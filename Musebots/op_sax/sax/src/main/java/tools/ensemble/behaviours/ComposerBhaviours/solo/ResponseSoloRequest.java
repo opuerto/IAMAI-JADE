@@ -37,6 +37,7 @@ public class ResponseSoloRequest extends OneShotBehaviour implements DataStoreCo
     {
         transition = 0;
         System.out.println("Response to the solo request in composer");
+        System.out.println("transition "+transition);
 
     }
     public void action()

@@ -22,6 +22,9 @@ public class RequestInfoSectionToSync extends OneShotBehaviour implements DataSt
 
     public void onStart()
     {
+        transition = 14;
+        System.out.println("Request Info Section to Sync ");
+        System.out.println("Transition "+transition);
         ACLMessage requestInfo = new ACLMessage(ACLMessage.REQUEST);
         requestInfo.setConversationId("request-Current-Section-to-Syn");
         requestInfo.setReplyWith(myAgent.getLocalName() + System.currentTimeMillis());

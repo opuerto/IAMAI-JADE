@@ -57,7 +57,7 @@ public class GetInfoSectionFromSyn extends OneShotBehaviour implements DataStore
     {
 
 
-        ACLMessage getInfoSection = myAgent.receive(mt2);
+        ACLMessage getInfoSection = myAgent.receive(mt1);
         if (getInfoSection != null)
         {
             System.out.println("The message we got was "+getInfoSection);

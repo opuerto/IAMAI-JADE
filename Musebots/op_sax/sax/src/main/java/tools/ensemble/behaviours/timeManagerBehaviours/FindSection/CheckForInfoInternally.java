@@ -34,7 +34,9 @@ public class CheckForInfoInternally extends OneShotBehaviour implements DataStor
 
     public void onStart()
     {
+        System.out.println("Check info internally");
         transition = 5;
+        System.out.println("transition is "+transition);
 
         Musician.setLeader(true);
 
@@ -43,8 +45,10 @@ public class CheckForInfoInternally extends OneShotBehaviour implements DataStor
             internalComposer = (AID) getDataStore().get(INTERNAL_COMPOSER_IN_SYN);
 
         }
+        System.out.println("internal composer in check info internally is "+internalComposer);
         if (getDataStore().containsKey(SECTION_INSTANCE))
         {
+            System.out.println("section instance");
             section = (Section) getDataStore().get(SECTION_INSTANCE);
             ACLMessage sendInfoToComposer = new ACLMessage(ACLMessage.CONFIRM);
             sendInfoToComposer.setConversationId("Inform-the-composer-the-currentSection");
@@ -58,7 +62,9 @@ public class CheckForInfoInternally extends OneShotBehaviour implements DataStor
             }catch (Exception ex) { ex.printStackTrace(); }
             sendInfoToComposer.addReceiver(internalComposer);
             myAgent.send(sendInfoToComposer);
+            System.out.println("We sent the message: "+sendInfoToComposer);
             transition = 6;
+
         }
 
     }
