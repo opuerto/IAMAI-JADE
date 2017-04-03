@@ -34,61 +34,70 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
         super(a);
     }
 
+     public void onStart()
+     {
+         System.out.println("on Start "+getBehaviourName());
+         queueSections.clear();
+         queueSectionIndex.clear();
+         transition = 8;
+         if(getDataStore().containsKey(FIRST_TIME_SOLO))
+         {
+             Composer.setFirstTimePlayingSolo((Integer) getDataStore().get(FIRST_TIME_SOLO));
+         }
+         form = Musician.getTuneForm();
+
+         //We want omit the section that is currently playing and start to soloing from the next section.
+         if(Composer.getFirstTimePlayingSolo() > 0)
+         {
+             //Reset the measure counter
+             Composer.setMeasureCounter(0);
+             System.out.println("Im first time solo");
+             if (getDataStore().containsKey(SECTION_INSTANCE_FOR_SYN_SOLO))
+             {
+                 sectionInfo = (Section) getDataStore().get(SECTION_INSTANCE_FOR_SYN_SOLO);
+             }
+             for (int i = 0; i<form.length(); i++)
+             {
+                 if(i > sectionInfo.getSectionIndex())
+                 {
+                     queueSections.add(form.charAt(i));
+                     queueSectionIndex.add(i);
+                 }
+
+             }
+             System.out.println("Original queueSection "+queueSections);
+             System.out.println("Original queueIndex "+queueSectionIndex);
+             Composer.setFirstTimePlayingSolo(0);
+         }
+         else
+         {
+             System.out.println("Im not first time playing any more");
+
+             for (int i = 0; i<form.length(); i++)
+             {
+                 queueSections.add(form.charAt(i));
+                 queueSectionIndex.add(i);
+             }
+             System.out.println("Original queueSection in compose "+queueSections);
+             System.out.println("Original queueIndex in compose"+queueSectionIndex);
+
+         }
+
+
+     }
+
     public void action()
     {
         if (firstTimeHere < 1)
         {
 
-            if(getDataStore().containsKey(FIRST_TIME_SOLO))
-            {
-                Composer.firstTimePlayingSolo = (Integer) getDataStore().get(FIRST_TIME_SOLO);
-            }
-            form = Musician.tuneForm;
-
-            //We want omit the section that is currently playing and start to soloing from the next section.
-            if(Composer.firstTimePlayingSolo > 0)
-            {
-                //Reset the measure counter
-                Composer.setMeasureCounter(0);
-                System.out.println("Im first time solo");
-                if (getDataStore().containsKey(SECTION_INSTANCE_FOR_SYN_SOLO))
-                {
-                    sectionInfo = (Section) getDataStore().get(SECTION_INSTANCE_FOR_SYN_SOLO);
-                }
-                for (int i = 0; i<form.length(); i++)
-                {
-                    if(i > sectionInfo.getSectionIndex())
-                    {
-                        queueSections.add(form.charAt(i));
-                        queueSectionIndex.add(i);
-                    }
-
-                }
-                System.out.println("Original queueSection "+queueSections);
-                System.out.println("Original queueIndex "+queueSectionIndex);
-                Composer.firstTimePlayingSolo = 0;
-            }
-            else
-            {
-                System.out.println("Im not first time playing any more");
-
-                for (int i = 0; i<form.length(); i++)
-                {
-                    queueSections.add(form.charAt(i));
-                    queueSectionIndex.add(i);
-                }
-                System.out.println("Original queueSection in compose "+queueSections);
-                System.out.println("Original queueIndex in compose"+queueSectionIndex);
-
-            }
-
 
 
         }
 
-        if(Composer.holdSoloComposition < 1)
+        if(Composer.getHoldSoloComposition() < 1)
         {
-            Composer.holdSoloPlayback = 0;
+            Composer.setHoldSoloPlayback(0);
             if(!queueSections.isEmpty())
             {
                 Composer.NextSectionSoloCharacter = queueSections.remove();
@@ -144,17 +153,16 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
             }
 
             Composer.holdSoloComposition = 1;
-            transition = 9;
-
-            //If Im not the leader I cant continue playing the solo
-            /*if(Composer.NextSectionSoloIndex == 0 && !Musician.leader)
+            if( !Musician.getLeader())
             {
+                System.out.println("stop playing solo you are not a leader");
                 transition = 18;
-            }
-            else
+                System.out.println("Transition is "+transition);
+            }else
             {
                 transition = 9;
-            }*/
+                System.out.println("go to play that section transition is "+transition);
+            }
         }
 
     }

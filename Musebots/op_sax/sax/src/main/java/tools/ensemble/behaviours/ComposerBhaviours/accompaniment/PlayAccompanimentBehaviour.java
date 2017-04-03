@@ -109,11 +109,12 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
 
                 //Call the function that play and calculate the lenght of the section
 
-                if (!Musician.getLeader())
+                if (!Musician.getLeader() && transition == 6)
                 {
 
                     play();
                     transition = 6;
+                    Composer.setHoldPlay(1);
                 }
                 else
                 {
@@ -121,7 +122,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
                     transition = 11;
                 }
                 //holdPlay = 1;
-                Composer.setHoldPlay(1);
+
                 //getDataStore().remove(HOLD_PLAYBACK);
                 //getDataStore().put(HOLD_PLAYBACK,holdPlay);
                 //transition = 6;
@@ -136,7 +137,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
         accompanimentScore = Composer.getAccompanimentScore();
 
         //if (!Musician.getLeader())
-        Play.midi(Composer.getAccompanimentScore(),false,false,8,0);
+        Play.midi(Composer.getAccompanimentScore(),false,false,2,0);
          Composer.incrementMeasureCounter();
         System.out.println("The cycle number is "+Composer.getMeasureCounter());
         System.out.println("The current section is "+Composer.getNextsectionCharacter());

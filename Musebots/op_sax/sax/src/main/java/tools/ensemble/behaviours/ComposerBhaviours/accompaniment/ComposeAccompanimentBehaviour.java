@@ -49,6 +49,15 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
         super(a);
     }
 
+    public void onStart()
+    {
+        System.out.println("in Start "+getBehaviourName());
+        transition = 2;
+        firstTimeHere = 0;
+        queueSections.clear();
+        queueSectionIndex.clear();
+    }
+
     public void action()
     {
        /* if (firstTimeHere < 1 )

@@ -372,7 +372,8 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
 
         //Register Transitions
         soloFSM.registerTransition(STATE_WAIT_FOR_SOLO_REQUEST,STATE_WAIT_FOR_SOLO_REQUEST,0);
-        soloFSM.registerTransition(STATE_WAIT_FOR_SOLO_REQUEST,STATE_REQUEST_INFO_SECTION,1);
+        soloFSM.registerTransition(STATE_WAIT_FOR_SOLO_REQUEST,STATE_REQUEST_INFO_SECTION,1,new String[]{STATE_COMPOSE_SOLO,
+                STATE_WAIT_FOR_SOLO_REQUEST});
         soloFSM.registerTransition(STATE_REQUEST_INFO_SECTION,STATE_REQUEST_INFO_SECTION,2);
         soloFSM.registerTransition(STATE_REQUEST_INFO_SECTION,STATE_GET_INFO_SECTION,3,new String[]{STATE_WAIT_FOR_SOLO_REQUEST,
                 STATE_REQUEST_INFO_SECTION});
@@ -434,7 +435,8 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
 
         // Transitions
         accompaniementFSM.registerTransition(STATE_WAIT_FOR_ACCOMP_REQUEST,STATE_WAIT_FOR_ACCOMP_REQUEST,0);
-        accompaniementFSM.registerTransition(STATE_WAIT_FOR_ACCOMP_REQUEST,STATE_CONFIRM_COMPOSIION,9);
+        accompaniementFSM.registerTransition(STATE_WAIT_FOR_ACCOMP_REQUEST,STATE_CONFIRM_COMPOSIION,9,new String[]{STATE_COMPOSE_ACCOMP,
+                STATE_WAIT_FOR_ACCOMP_REQUEST});
         accompaniementFSM.registerTransition(STATE_CONFIRM_COMPOSIION,STATE_CONFIRM_COMPOSIION,8);
         accompaniementFSM.registerTransition(STATE_CONFIRM_COMPOSIION,STATE_COMPOSE_ACCOMP,1,new String[]{STATE_WAIT_FOR_ACCOMP_REQUEST,
                 STATE_CONFIRM_COMPOSIION});
@@ -450,7 +452,7 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         accompaniementFSM.registerTransition(STATE_PLAY_ACCOMP,STATE_REQUEST_INFO_TO_SYNC,17,new String[]{STATE_GET_INFO_FROM_SYNC,
                 STATE_PLAY_ACCOMP});
         accompaniementFSM.registerTransition(STATE_WAIT_FOR_ACCOMP_REQUEST,STATE_REQUEST_INFO_TO_SYNC,12,new String[]{STATE_GET_INFO_FROM_SYNC,
-                STATE_WAIT_FOR_ACCOMP_REQUEST});
+                STATE_COMPOSE_ACCOMP,STATE_WAIT_FOR_ACCOMP_REQUEST});
         accompaniementFSM.registerTransition(STATE_REQUEST_INFO_TO_SYNC,STATE_GET_INFO_FROM_SYNC,14,new String[]{STATE_WAIT_FOR_ACCOMP_REQUEST,
                 STATE_REQUEST_INFO_TO_SYNC});
         accompaniementFSM.registerTransition(STATE_GET_INFO_FROM_SYNC,STATE_GET_INFO_FROM_SYNC,13);

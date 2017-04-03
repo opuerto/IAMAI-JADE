@@ -50,6 +50,13 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
         Language = lang;
     }
 
+    public void onStart()
+    {
+       System.out.println("on start play "+getBehaviourName());
+        transition = 10;
+        firstTimeHere = 0;
+    }
+
     public void action()
     {
         if (firstTimeHere < 1)
@@ -100,7 +107,7 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
             }
 
             //Play the solo
-            if (Composer.getMeasureCounter() >= Musician.tuneForm.length()*2)
+            if (Composer.getMeasureCounter() >= Musician.tuneForm.length()*1)
             {
                 System.out.println("Get Out of here "+Composer.getMeasureCounter());
                 System.out.println("the meassure "+Composer.getMeasureCounter());
@@ -115,9 +122,11 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
                 //Go to compose another section of solo
                 transition = 12;
             }
-
-            play();
-            Composer.setHoldSoloPlayback(1);
+            if (Musician.getLeader())
+            {
+                play();
+                Composer.setHoldSoloPlayback(1);
+            }
 
             //Go to compose another section of solo
             //transition = 12;
@@ -127,6 +136,15 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
     public int onEnd()
     {
         firstTimeHere++;
+        if (transition == 17)
+        {
+            reset();
+            System.out.println("the transition is 17 we reset");
+        }else if (transition == 13)
+        {
+            reset();
+            System.out.println("transition 13 we need more time");
+        }
 
         return transition;
     }

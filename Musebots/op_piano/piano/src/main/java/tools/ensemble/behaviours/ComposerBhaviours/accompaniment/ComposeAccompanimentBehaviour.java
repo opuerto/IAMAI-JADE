@@ -12,6 +12,7 @@ import tools.ensemble.agents.Composer;
 import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStoreComposer;
 import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ChordsAttributes;
+import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Section;
 
 import java.lang.reflect.Array;
 import java.util.LinkedList;
@@ -39,12 +40,22 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
     private Queue<Character> queueSections = new LinkedList<Character>();
     private Queue<Integer> queueSectionIndex = new LinkedList<Integer>();
     private int sIndex;
+    private Section section;
 
 
 
     public ComposeAccompanimentBehaviour(Agent a)
     {
         super(a);
+    }
+
+    public void onStart()
+    {
+        System.out.println("in Start "+getBehaviourName());
+        transition = 2;
+        firstTimeHere = 0;
+        queueSections.clear();
+        queueSectionIndex.clear();
     }
 
     public void action()
@@ -57,13 +68,34 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
             //AccompanimentScore.setTempo(Musician.tempo);
             Composer.getAccompanimentScore().setTempo(Musician.getTempo());
 
-            for(int i = 0; i < form.length(); i++)
+            if(Musician.getIsFromLeadingToSupport())
             {
-                queueSections.add(form.charAt(i));
-                queueSectionIndex.add(i);
+                System.out.println("Im coming from being solo to support the new soloist (state Compose accompaniment)");
+                section = (Section) getDataStore().get(SECTION_INSTANCE_FOR_SYN_ACCOMP);
+                for (int i = 0; i<form.length(); i++)
+                {
+                    if(i > section.getSectionIndex())
+                    {
+                        queueSections.add(form.charAt(i));
+                        queueSectionIndex.add(i);
+                    }
+
+                }
+
+                System.out.println("Original queueSection "+queueSections);
+                System.out.println("Original queueIndex "+queueSectionIndex);
+
             }
-            System.out.println("Original queueSection "+queueSections);
-            System.out.println("Original queueIndex "+queueSectionIndex);
+            else
+            {
+                for(int i = 0; i < form.length(); i++)
+                {
+                    queueSections.add(form.charAt(i));
+                    queueSectionIndex.add(i);
+                }
+                System.out.println("Original queueSection "+queueSections);
+                System.out.println("Original queueIndex "+queueSectionIndex);
+            }
 
 
         }
