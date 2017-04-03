@@ -1,1 +1,1 @@
-http://Lenovo-PC.lan:7778/acc
+http://ejercicios:7778/acc
