@@ -53,9 +53,13 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
     public void onStart()
     {
 
+        System.out.println("start on externally ");
         transition = 3;
         firstTimeHere = 0;
         state = 0;
+        System.out.println("transition "+transition);
+        System.out.println("Times here "+firstTimeHere);
+        System.out.println("State "+state);
 
     }
 
@@ -129,9 +133,26 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
                         System.out.println("Info from my section in external syn");
                         System.out.println("section index "+sectionIndex);
                         System.out.println("Section current section " + CurrentSection);
-                        System.out.println("Section time left"+timeLeft);
+                        System.out.println("Section time left"+timeLeft.getTime());
                     }
+                    long Now = System.currentTimeMillis();
+                    long timeElapsed = Now - sectionStartedAt.getTime();
+                    long timeLefts = timeLeft.getTime() - timeElapsed;
+                    long quarterofTimeLeft = timeLeft.getTime() /2;
+                    long isEnoughTime = timeLeft.getTime() - quarterofTimeLeft;
+                    System.out.println(" is enough time "+isEnoughTime);
+
+                    if(timeLefts < 0 || timeLefts < isEnoughTime)
+                    {
+                        System.out.println("the time left is state 0 "+timeLefts);
+                        firstTimeHere = -1;
+                        state = 0;
+                    }else
+                    {
+                        System.out.println("the time left is "+timeLefts);
                         state = 2;
+                    }
+
 
 
                    /* if(firsSolo == 1)

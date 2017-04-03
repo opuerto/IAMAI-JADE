@@ -39,6 +39,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
     private char theSection;
     private int theIndexSection;
     private Date sectionStartedAt;
+    private Section getSection;
 
     public PlayAccompanimentBehaviour(Agent a, Ontology timehandlerOntology, Codec langugage)
     {
@@ -55,6 +56,17 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
             int holdPlay = Composer.getHoldPlay() ;
             if(holdPlay < 1)
             {
+                if (Composer.getMustRecalculateTime())
+                {
+                    getSection = (Section) getDataStore().get(SECTION_INSTANCE_FOR_SYN_ACCOMP);
+                    long Now = System.currentTimeMillis();
+                    long timeElapsed = Now - getSection.getSectionStartedAt().getTime();
+                    long timeLefts = getSection.getTimeLeft().getTime() - timeElapsed;
+                    System.out.println("the time left in play accompaniment is "+timeLefts);
+                    Composer.setSectionPlayLeft(timeLefts);
+                    Composer.setMustRecalculateTime(false);
+
+                }
 
                 theSection = Composer.getNextsectionCharacter();
                 theIndexSection = Composer.getNextsectionIndex();

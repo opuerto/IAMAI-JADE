@@ -89,6 +89,7 @@ public class GetInfoSectionFromSyn extends OneShotBehaviour implements DataStore
                 }
 
             }
+
             transition = 5;
 
 

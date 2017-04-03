@@ -52,8 +52,10 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
 
     public void onStart()
         {
+            System.out.println("On star playback");
             transition = 10;
             firstTimeHere = 0;
+            Composer.setMeasureCounter(0);
         }
     public void action()
     {
@@ -111,7 +113,7 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
             {
                 System.out.println("Get Out of here "+Composer.getMeasureCounter());
                 System.out.println("the meassure "+Composer.getMeasureCounter());
-                System.out.println("the tune form lenght "+Musician.tuneForm.length()*2 );
+                System.out.println("the tune form lenght "+Musician.tuneForm.length()*1 );
                 Composer.setMeasureCounter(0);
                 stopAndPassLead();
                 transition = 17;
@@ -125,6 +127,10 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
             {
                 play();
                 Composer.setHoldSoloPlayback(1);
+            }
+            else
+            {
+                transition = 17;
             }
 
 

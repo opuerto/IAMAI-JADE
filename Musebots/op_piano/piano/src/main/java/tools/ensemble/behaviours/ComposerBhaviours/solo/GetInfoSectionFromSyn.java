@@ -10,6 +10,7 @@ import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStoreComposer;
 import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Section;
 
@@ -84,6 +85,7 @@ public class GetInfoSectionFromSyn extends OneShotBehaviour implements DataStore
                     getDataStore().put(SECTION_INSTANCE_FOR_SYN_SOLO,se);
                 }
             }
+
             transition = 5;
 
 

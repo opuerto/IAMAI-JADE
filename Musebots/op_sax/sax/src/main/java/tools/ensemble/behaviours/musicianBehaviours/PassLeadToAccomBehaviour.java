@@ -53,6 +53,8 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
         nResponders = 0;
         state = 0;
         System.out.println("Pass Lead To accompaniment");
+        System.out.println("transition "+transition);
+        System.out.println("state "+state);
     }
 
     public void action()
@@ -67,6 +69,7 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
                 ACLMessage message = myAgent.receive(mt1);
                 if (message != null)
                 {
+                    System.out.println(" I receved an inform message "+message);
                     state = 2;
 
                 }
@@ -86,7 +89,7 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
                     //Find a receiver
                     findAllReceivers();
                     constructACLMessage();
-                    myAgent.doWait(5000);
+                    myAgent.doWait(11000);
                     requestSoloNegotiation RequestSolo = new requestSoloNegotiation(myAgent,msg);
                     RequestSolo.setDataStore(getDataStore());
                     myAgent.addBehaviour(RequestSolo);
@@ -101,6 +104,7 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
                 //System.out.println("case 3");
                 break;
             case 4:
+                Musician.setLeader(false);
                 //System.out.println("case 4");
                 break;
 
@@ -114,6 +118,10 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
         if (transition == 34)
         {
             block(500);
+        }
+        if (transition == 39)
+        {
+            reset();
         }
         return transition;
     }

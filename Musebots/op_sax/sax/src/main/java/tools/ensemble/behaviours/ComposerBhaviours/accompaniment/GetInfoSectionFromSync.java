@@ -74,6 +74,8 @@ public class GetInfoSectionFromSync extends OneShotBehaviour implements DataStor
             Concept concept = ((Action)content).getAction();
             if(concept instanceof Section)
             {
+                //Set this to true
+                Composer.setMustRecalculateTime(true);
                 System.out.println("Current Section in From Solo to Support  : " +getBehaviourName() +" is " +((Section) concept).getAccompanimentCurrentSection());
                 System.out.println("index in Section  From Solo to Support : " +getBehaviourName() +" is " +((Section) concept).getSectionIndex());
                 System.out.println("Time left From Solo to Support "+((Section) concept).getTimeLeft().getTime());
@@ -81,8 +83,9 @@ public class GetInfoSectionFromSync extends OneShotBehaviour implements DataStor
                 long Now = System.currentTimeMillis();
                 long timeElapsed = Now - sectionStartedAt;
                 long timeLeft = ((Section) concept).getTimeLeft().getTime() - timeElapsed;
+                Composer.setSectionPlayLeft(timeLeft);
                  se.setAccompanimentCurrentSection(((Section) concept).getAccompanimentCurrentSection());
-                System.out.println("time left "+timeElapsed);
+                System.out.println("time left "+timeLeft);
                 se.setSectionStartedAt(((Section) concept).getSectionStartedAt());
                 se.setTimeLeft(((Section) concept).getTimeLeft());
                 se.setSectionIndex(((Section) concept).getSectionIndex());

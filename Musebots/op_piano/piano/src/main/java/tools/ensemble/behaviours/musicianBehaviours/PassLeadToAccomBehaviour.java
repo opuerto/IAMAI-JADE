@@ -86,7 +86,7 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
                     //Find a receiver
                     findAllReceivers();
                     constructACLMessage();
-                    myAgent.doWait(10000);
+                    myAgent.doWait(11000);
                     requestSoloNegotiation RequestSolo = new requestSoloNegotiation(myAgent,msg);
                     RequestSolo.setDataStore(getDataStore());
                     myAgent.addBehaviour(RequestSolo);
