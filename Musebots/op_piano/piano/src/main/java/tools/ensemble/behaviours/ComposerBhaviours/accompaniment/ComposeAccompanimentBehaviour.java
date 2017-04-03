@@ -142,6 +142,8 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                             Composer.getAccompanimentScore().empty();
 
                             transition = 3;
+                            System.out.println("From Composer reset and go to wait for accompaniment request");
+                            System.out.println("Transition "+transition);
                         }else
                         {
                             transition = 4;

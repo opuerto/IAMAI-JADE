@@ -216,6 +216,8 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                             Composer.getAccompanimentScore().empty();
 
                             transition = 3;
+                            System.out.println("stop supporting go to wait for another request");
+                            System.out.println("Transition is "+transition);
                         }else
                         {
                             transition = 4;

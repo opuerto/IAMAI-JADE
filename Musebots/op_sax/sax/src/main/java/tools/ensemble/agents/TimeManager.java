@@ -190,6 +190,10 @@ public class TimeManager extends Agent implements DataStoreTimeManager, JMC {
         //Add the state to the parallel behavior
 
         pb.addSubBehaviour(responseInfoSection);
+        //The behaviour that provide the current section
+        ResponseSectionRequestFromExtComp RSRFEC = new ResponseSectionRequestFromExtComp(this,timeHandlerOntology,codec);
+        RSRFEC.setDataStore(pb.getDataStore());
+        pb.addSubBehaviour(RSRFEC);
         addBehaviour(pb);
 
 

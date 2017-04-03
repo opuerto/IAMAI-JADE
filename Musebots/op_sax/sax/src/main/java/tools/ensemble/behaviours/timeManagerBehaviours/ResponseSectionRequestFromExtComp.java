@@ -35,6 +35,7 @@ public class ResponseSectionRequestFromExtComp extends SimpleBehaviour implement
            ACLMessage replyToExtSyn = myAgent.receive(mt1);
             if(replyToExtSyn != null)
             {
+
                 if (getDataStore().containsKey(SECTION_INSTANCE))
                 {
                     sectionInstance = (Section) getDataStore().get(SECTION_INSTANCE);

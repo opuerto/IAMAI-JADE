@@ -13,10 +13,12 @@ import tools.ensemble.interfaces.DataStorteMusicians;
  */
 public class FromLeadingToSupportPlaySection extends OneShotBehaviour implements DataStorteMusicians {
 
-    private int transition = 38;
+    private int transitionParentBehaviour = 38;
     private int firstTimeHere = 0;
     private Agent agent;
     private  AID internalComposer;
+    private FSMBehaviour requestAccompaniment;
+
     //Messages
     private ACLMessage requestMessage = new ACLMessage(ACLMessage.CFP);
     private ACLMessage replyAgree = new ACLMessage(ACLMessage.CONFIRM);
@@ -36,8 +38,9 @@ public class FromLeadingToSupportPlaySection extends OneShotBehaviour implements
 
     public void onStart()
     {
-        transition = 38;
-        FSMBehaviour requestAccompaniment = new FSMBehaviour(agent);
+        System.out.println("Im going to request the sections");
+        transitionParentBehaviour = 38;
+        requestAccompaniment = new FSMBehaviour(agent);
         RequestInternalStatePlayBehaviour requestPlayBehaviour = new RequestInternalStatePlayBehaviour();
         requestPlayBehaviour.setDataStore(getDataStore());
         requestAccompaniment.registerFirstState(requestPlayBehaviour,REQUEST_PLAY);
@@ -73,13 +76,17 @@ public class FromLeadingToSupportPlaySection extends OneShotBehaviour implements
 
     public int onEnd()
     {
-        if(transition == 38)
+        if(transitionParentBehaviour == 38)
         {
             block(500);
         }
 
         //firstTimeHere++;
-        return transition;
+        if (transitionParentBehaviour == 80)
+        {
+            myAgent.removeBehaviour(requestAccompaniment);
+        }
+        return transitionParentBehaviour;
     }
 
     private class RequestInternalStatePlayBehaviour extends OneShotBehaviour
@@ -171,7 +178,7 @@ public class FromLeadingToSupportPlaySection extends OneShotBehaviour implements
     {
 
         private int transiton= 4;
-        private MessageTemplate mt1 = MessageTemplate.and(MessageTemplate.MatchConversationId("request-solo-to-composer-Inform"),
+        private MessageTemplate mt1 = MessageTemplate.and(MessageTemplate.MatchConversationId("From-leader-to-Support-Inform"),
                 MessageTemplate.MatchPerformative(ACLMessage.INFORM)
         );
         private MessageTemplate mt1Andmt2;
@@ -190,7 +197,7 @@ public class FromLeadingToSupportPlaySection extends OneShotBehaviour implements
             {
                 System.out.println("The agent informed it will play the solo");
                 //Send the state compose of the FSM inside the accompanimentPlaySection to the end state.
-                // transitionParentBehaviour = 12;
+                 transitionParentBehaviour = 80;
                 //Stop the simple behaviour that is the parent of this fsm
 
             }else{block();}

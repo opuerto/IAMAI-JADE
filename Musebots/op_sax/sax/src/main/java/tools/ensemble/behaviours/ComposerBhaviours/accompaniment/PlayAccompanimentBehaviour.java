@@ -109,10 +109,17 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
 
                 //Call the function that play and calculate the lenght of the section
 
-               if (!Musician.getLeader() && transition == 6)
-               {
-                   play();
-               }
+                if (!Musician.getLeader())
+                {
+
+                    play();
+                    transition = 6;
+                }
+                else
+                {
+                    System.out.println("Im not playing because Im not a leader");
+                    transition = 11;
+                }
                 //holdPlay = 1;
                 Composer.setHoldPlay(1);
                 //getDataStore().remove(HOLD_PLAYBACK);

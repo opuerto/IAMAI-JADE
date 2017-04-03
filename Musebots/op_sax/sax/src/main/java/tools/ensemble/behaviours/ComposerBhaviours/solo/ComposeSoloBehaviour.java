@@ -149,6 +149,8 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
             Composer.setHoldComposition(1);
             if( !Musician.getLeader())
             {
+                System.out.println("stop playing solo you are not a leader");
+                System.out.println("Transition is "+transition);
                 transition = 18;
             }else
             {

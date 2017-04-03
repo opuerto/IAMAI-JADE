@@ -96,6 +96,11 @@ public class GetInfoSectionFromSync extends OneShotBehaviour implements DataStor
                 }
 
             }
+            ACLMessage informToMusician = new ACLMessage(ACLMessage.INFORM);
+            informToMusician.setConversationId("From-leader-to-Support-Inform");
+            informToMusician.addReceiver(internalMusician);
+            myAgent.send(informToMusician);
+            System.out.println("send meassage to musician");
             Musician.setIsFromLeadingToSupport(true);
             Composer.setHoldComposition(0);
             transition = 15;
