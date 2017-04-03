@@ -22,6 +22,7 @@ public class ConfirmToMusician extends OneShotBehaviour implements DataStoreComp
 
     public void onStart()
     {
+        System.out.println("confirm to musician in solo composer FSM");
         transition = 6;
         holdComposition = 0;
         internalMusician = (AID) getDataStore().get(INTERNAL_MUSICIAN_AID);

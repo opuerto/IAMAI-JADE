@@ -26,6 +26,7 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
     //Variables to calculate the time of intro
     private long introStartedAt;
     private long introDuration;
+    private FSMBehaviour requestSolo;
     //Check if is the first solo to be played in the song, if so, Wait until the end of the head.
     private int firstTimeSolo;
     //Messages
@@ -48,17 +49,20 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
 
     public void onStart()
     {
+        System.out.println("Request a Solo "+getBehaviourName());
         transitionParentBehaviour = 30;
         if(getDataStore().containsKey(FIRST_SOLO))
         {
             firstTimeSolo = 1;
+            System.out.println("first time solo "+firstTimeSolo);
         }
         else
         {
             firstTimeSolo = 0;
+            System.out.println("first time solo "+firstTimeSolo);
         }
 
-        FSMBehaviour requestSolo = new FSMBehaviour(agent);
+        requestSolo = new FSMBehaviour(agent);
         RequestPlayBehaviour requestPlayBehaviour = new RequestPlayBehaviour();
         requestPlayBehaviour.setDataStore(getDataStore());
         requestSolo.registerFirstState(requestPlayBehaviour,REQUEST_PLAY);
@@ -99,6 +103,14 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
         {
             block(500);
         }
+        if(transitionParentBehaviour == 12)
+        {
+            myAgent.removeBehaviour(requestSolo);
+            getDataStore().remove(FIRST_SOLO);
+            getDataStore().remove(INTRO_DURATION);
+            getDataStore().remove(INTRO_TIMESTAMP);
+
+        }
         return transitionParentBehaviour;
     }
 
@@ -108,6 +120,7 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
         public RequestPlayBehaviour()
         {
             super(agent);
+            System.out.println("Constructor in Request Play Behaviour");
         }
 
         public void action()

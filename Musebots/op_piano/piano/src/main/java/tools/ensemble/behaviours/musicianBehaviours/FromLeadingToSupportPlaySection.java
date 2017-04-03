@@ -170,6 +170,7 @@ public class FromLeadingToSupportPlaySection extends OneShotBehaviour implements
             {
                 block(500);
             }
+
             return transition;
         }
     }

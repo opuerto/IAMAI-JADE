@@ -39,6 +39,10 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
 
     public void onStart()
     {
+        System.out.println("on Start "+getBehaviourName());
+        queueSections.clear();
+        queueSectionIndex.clear();
+        transition = 8;
         if(getDataStore().containsKey(FIRST_TIME_SOLO))
         {
             Composer.setFirstTimePlayingSolo((Integer) getDataStore().get(FIRST_TIME_SOLO));
@@ -54,7 +58,9 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
             if (getDataStore().containsKey(SECTION_INSTANCE_FOR_SYN_SOLO))
             {
                 sectionInfo = (Section) getDataStore().get(SECTION_INSTANCE_FOR_SYN_SOLO);
+
             }
+            System.out.println("the form length "+form.length());
             for (int i = 0; i<form.length(); i++)
             {
                 if(i > sectionInfo.getSectionIndex())
@@ -62,6 +68,7 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
                     queueSections.add(form.charAt(i));
                     queueSectionIndex.add(i);
                 }
+                System.out.println("i = "+i);
 
             }
             System.out.println("Original queueSection "+queueSections);
@@ -97,8 +104,8 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
                 Composer.setNextSectionSoloCharacter(queueSections.remove());
                 Composer.setNextSectionSoloIndex(queueSectionIndex.remove());
                 System.out.println("the section is in compose state " +  Composer.getNextsectionCharacter());
-                System.out.println("the index is in compose" + Composer.getNextSectionSoloIndex());
-                System.out.println("the reminder in section"  +queueSections);
+                System.out.println("the index is in compose " + Composer.getNextSectionSoloIndex());
+                System.out.println("the reminder in section "  +queueSections);
 
                 Composer.getSoloScore().empty();
                 saxPart.empty();
@@ -150,8 +157,8 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
             if( !Musician.getLeader())
             {
                 System.out.println("stop playing solo you are not a leader");
-                System.out.println("Transition is "+transition);
                 transition = 18;
+                System.out.println("Transition is "+transition);
             }else
             {
                 transition = 9;
