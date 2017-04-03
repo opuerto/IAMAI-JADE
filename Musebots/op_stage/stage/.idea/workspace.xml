@@ -63,7 +63,16 @@
             <state relative-caret-position="340">
               <caret line="30" column="30" selection-start-line="29" selection-start-column="65" selection-end-line="30" selection-end-column="30" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#540#695#0" expanded="false" />
+                <element signature="e#694#695#0" expanded="false" />
+                <element signature="e#1271#1272#0" expanded="false" />
+                <element signature="e#1302#1303#0" expanded="false" />
+                <element signature="e#2175#2176#0" expanded="false" />
+                <element signature="e#2213#2214#0" expanded="false" />
+                <element signature="e#2262#2263#0" expanded="false" />
+                <element signature="e#2321#2322#0" expanded="false" />
+                <element signature="e#2813#2814#0" expanded="false" />
+                <element signature="e#2845#2846#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -1113,7 +1122,7 @@
     <option name="totallyTimeSpent" value="581828000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="7" />
+    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1567,7 +1576,16 @@
         <state relative-caret-position="340">
           <caret line="30" column="30" selection-start-line="29" selection-start-column="65" selection-end-line="30" selection-end-column="30" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#540#695#0" expanded="false" />
+            <element signature="e#694#695#0" expanded="false" />
+            <element signature="e#1271#1272#0" expanded="false" />
+            <element signature="e#1302#1303#0" expanded="false" />
+            <element signature="e#2175#2176#0" expanded="false" />
+            <element signature="e#2213#2214#0" expanded="false" />
+            <element signature="e#2262#2263#0" expanded="false" />
+            <element signature="e#2321#2322#0" expanded="false" />
+            <element signature="e#2813#2814#0" expanded="false" />
+            <element signature="e#2845#2846#0" expanded="false" />
           </folding>
         </state>
       </provider>
