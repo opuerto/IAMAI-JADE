@@ -39,9 +39,8 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
 
     public void onStart()
     {
+        Composer.setMeasureCounter(0);
         System.out.println("on Start "+getBehaviourName());
-        queueSections.clear();
-        queueSectionIndex.clear();
         transition = 8;
         if(getDataStore().containsKey(FIRST_TIME_SOLO))
         {
@@ -52,6 +51,8 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
         //We want omit the section that is currently playing and start to soloing from the next section.
         if(Composer.getFirstTimePlayingSolo() > 0)
         {
+            queueSections.clear();
+            queueSectionIndex.clear();
             //Reset the measure counter
             Composer.setMeasureCounter(0);
             System.out.println("Im first time solo");
@@ -68,7 +69,7 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
                     queueSections.add(form.charAt(i));
                     queueSectionIndex.add(i);
                 }
-                System.out.println("i = "+i);
+
 
             }
             System.out.println("Original queueSection "+queueSections);

@@ -54,8 +54,7 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
         System.out.println("in Start "+getBehaviourName());
         transition = 2;
         firstTimeHere = 0;
-        queueSections.clear();
-        queueSectionIndex.clear();
+
     }
 
     public void action()
@@ -70,6 +69,8 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
         if (firstTimeHere < 1 )
         {
 
+            queueSections.clear();
+            queueSectionIndex.clear();
             form = Musician.getTuneForm();
             //AccompanimentScore.setTempo(Musician.tempo);
             Composer.getAccompanimentScore().setTempo(Musician.getTempo());

@@ -188,6 +188,18 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
         return accompanimentScore;
     }
 
+    //This rule will force to calculate a new time left to play in the play accompaniment behaviour every time after the intro has been played
+    //Check this class PlayAccompanimentBehaviour
+    public static boolean mustRecalculateTime = false;
+    public static synchronized void setMustRecalculateTime(boolean var1)
+    {
+        mustRecalculateTime = var1;
+    }
+    public static synchronized boolean getMustRecalculateTime()
+    {
+        return mustRecalculateTime;
+    }
+
     //Finite state machines objects declaration
     FSMBehaviour introFSM;
     FSMBehaviour soloFSM;

@@ -120,7 +120,7 @@ public class WaitToGetLead extends OneShotBehaviour {
 
     //Hacemos una simulación para que pueda dar que existe o no coche (sobre un 80% probab).
     private boolean deciteToPlay() {
-        return (Math.random() * 100 > 10);
+        return (Math.random() * 100 > 1);
     }
 
 }

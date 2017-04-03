@@ -39,7 +39,7 @@ public class ResponseSectionRequestFromExtComp extends SimpleBehaviour implement
                 if (getDataStore().containsKey(SECTION_INSTANCE))
                 {
                     sectionInstance = (Section) getDataStore().get(SECTION_INSTANCE);
-                    System.out.println(sectionInstance.getAccompanimentCurrentSection());
+
                 }
                 if(sectionInstance.getSectionIndex() > -1 && sectionInstance.getTimeLeft().getTime() > 0 && sectionInstance.getSectionStartedAt().getTime() > 0)
                 {
