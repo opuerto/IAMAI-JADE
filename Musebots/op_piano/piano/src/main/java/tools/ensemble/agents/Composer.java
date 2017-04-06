@@ -213,9 +213,9 @@ public class Composer extends Agent implements MusicianStates,DataStorteMusician
     protected void setup()
     {
         //run the midi
-        Play.midi(new Score(),false,false,4,0);
-        Play.midi(new Score(),false,false,5,0);
-        Play.midi(new Score(),false,false,6,0);
+        Play.midi(new Score(),false,false,2,0);
+        //Play.midi(new Score(),false,false,5,0);
+        //Play.midi(new Score(),false,false,6,0);
 
         //
 

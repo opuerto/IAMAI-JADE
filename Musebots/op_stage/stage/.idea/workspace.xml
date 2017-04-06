@@ -64,7 +64,7 @@
       <file leaf-file-name="MainScore.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/run/MainScore.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
+            <state relative-caret-position="374">
               <caret line="22" column="34" selection-start-line="22" selection-start-column="34" selection-end-line="22" selection-end-column="34" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -1115,12 +1115,12 @@
       <workItem from="1491223417594" duration="20935000" />
       <workItem from="1491298270258" duration="3108000" />
       <workItem from="1491345000429" duration="98000" />
-      <workItem from="1491468845951" duration="4485000" />
+      <workItem from="1491468845951" duration="6523000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="610461000" />
+    <option name="totallyTimeSpent" value="612499000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="0" />
@@ -1646,7 +1646,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/run/MainScore.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
+        <state relative-caret-position="374">
           <caret line="22" column="34" selection-start-line="22" selection-start-column="34" selection-end-line="22" selection-end-column="34" />
           <folding>
             <element signature="imports" expanded="true" />
