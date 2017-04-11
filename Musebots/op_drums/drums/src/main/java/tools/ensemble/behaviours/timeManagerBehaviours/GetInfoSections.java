@@ -51,6 +51,7 @@ public class GetInfoSections extends Behaviour implements DataStoreTimeManager {
                         sectionInstance.setSectionStartedAt(((Section) concept).getSectionStartedAt());
                         getDataStore().remove(SECTION_INSTANCE);
                         getDataStore().put(SECTION_INSTANCE,sectionInstance);
+                        System.out.println("section in synchronizer is index "+sectionInstance.getSectionIndex());
 
                     }
                     else

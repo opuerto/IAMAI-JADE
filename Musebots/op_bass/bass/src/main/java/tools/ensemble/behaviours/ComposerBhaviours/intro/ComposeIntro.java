@@ -130,9 +130,10 @@ public class ComposeIntro extends OneShotBehaviour implements DataStoreComposer,
         if (rhythmNumb == 1) rhythmLength = rhythm2.length;
         if (rhythmNumb == 2) rhythmLength = rhythm3.length;
         if (rhythmNumb == 3) rhythmLength = rhythm4.length;
-        introPhrase.addNote(new Note(REST, 0.66));
+
         for (int i = 0; i < lenght; i++)
         {
+            introPhrase.addNote(new Note(REST, 0.66));
             for(int k=0;k<rhythmLength;k++) {
                 while (ok == false) {
                     //get new interval
@@ -172,7 +173,7 @@ public class ComposeIntro extends OneShotBehaviour implements DataStoreComposer,
     public int onEnd()
     {
         firstTimeState++;
-        if (transition == 2)
+        if(transition == 2)
         {
             block(500);
         }

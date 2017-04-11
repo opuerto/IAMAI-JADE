@@ -52,7 +52,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
     private ScoreElements scoreElements;
     //Evaluate the case about which action the state should perform
     private int steps = 0;
-    //handle the timeout on the ContractNet protocol if we didn't get a reply from the receiver we need to reset and try again
+    //handle the timeout on the ContractNet protocol if we didn't get a reply from the receiver we need to reset and try firstTimeHere
     private int timeout = 0;
     //count the number of responders that we receive in the contractNet protocol
     private int nResponders = 0;
@@ -236,7 +236,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
             if (responses.size() < nResponders) {
                 // Some responder didn't reply within the specified timeout
                 System.out.println("Timeout expired: missing "+(nResponders - responses.size())+" responses");
-                //Try again from the beginning
+                //Try firstTimeHere from the beginning
                 if (nResponders < 1)
                 {
                     System.out.println("Non responder");
@@ -292,7 +292,7 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
                 accept.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
             }else
             {
-               //If there is no good proposal we try again from the beginning.
+               //If there is no good proposal we try firstTimeHere from the beginning.
                 System.out.println("All Rejected");
                 timeout = 1;
 
@@ -307,6 +307,8 @@ public class RequestIntro extends OneShotBehaviour implements DataStorteMusician
             getDataStore().put(INTRO_TIMESTAMP,introTimestamp);
             System.out.println("Intro timestamp: "+introTimestamp);
             System.out.println("Agent "+inform.getSender().getName()+" The intro has started to play");
+            //Let know to the next state that is gonna be the first solo in the song
+            getDataStore().put(FIRST_SOLO,true);
             steps = 1;
             //myAgent.doWait(introDuration);
 

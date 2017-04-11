@@ -112,7 +112,7 @@ public class ExpectingIntroRequest extends OneShotBehaviour implements DataStore
     public int onEnd()
     {
         firstTimeState++;
-        if (transition == 0)
+        if(transition == 0)
         {
             block(500);
         }

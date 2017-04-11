@@ -2,7 +2,6 @@ package tools.ensemble.ontologies.musicelements.vocabulary.concepts;
 
 import jade.content.Concept;
 
-
 import jade.util.leap.List;
 import jade.util.leap.ArrayList;
 

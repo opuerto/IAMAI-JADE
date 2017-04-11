@@ -79,7 +79,6 @@ public class CheckInfoIntroResponder extends AchieveREResponder implements DataS
                         myAgent.removeBehaviour(searchIntro);
                         searchIntro = null;
                     }
-                    myAgent.doWait(2000);
                     searchIntro = new RequestIntroDataInitiator(myAgent,searchIntroData);
                     searchIntro.setDataStore(getDataStore());
                     myAgent.addBehaviour(searchIntro);
@@ -111,7 +110,6 @@ public class CheckInfoIntroResponder extends AchieveREResponder implements DataS
                     myAgent.removeBehaviour(searchIntro);
                     searchIntro = null;
                 }
-
                       searchIntro = new RequestIntroDataInitiator(myAgent,searchIntroData);
                       searchIntro.setDataStore(getDataStore());
                 myAgent.addBehaviour(searchIntro);

@@ -16,9 +16,13 @@ public interface ComposerStatesNames {
     //STATES FOR SOLOS
 
     public final static String STATE_WAIT_FOR_SOLO_REQUEST = "waitForSoloRequest";
+    public final static String STATE_REQUEST_INFO_SECTION = "requestInfoSection";
+    public final static String STATE_GET_INFO_SECTION = "getInfoSection";
+    public final static String STATE_CONFIRM_TO_MUSICIAN = "confirmToMusician";
     public final static String STATE_COMPOSE_SOLO = "composeSolo";
     public final static String STATE_PLAY_SOLO = "playSolo";
     public final static String STATE_END_SOLO = "end";
+
 
     //STATE FOR ACCOMPANIMENT
 
@@ -26,5 +30,7 @@ public interface ComposerStatesNames {
     public final static String STATE_CONFIRM_COMPOSIION = "confirmComposition";
     public final static String STATE_COMPOSE_ACCOMP = "composeAccompaniment";
     public final static String STATE_PLAY_ACCOMP = "playAccomp";
+    public final static String STATE_REQUEST_INFO_TO_SYNC = "requestInfoToSync";
+    public final static String STATE_GET_INFO_FROM_SYNC = "getInfoFromSync";
     public final static String STATE_END_ACCOMP = "end";
 }

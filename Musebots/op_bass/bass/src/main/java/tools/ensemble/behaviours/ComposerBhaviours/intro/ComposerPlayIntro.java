@@ -77,7 +77,7 @@ public class ComposerPlayIntro extends OneShotBehaviour implements DataStoreComp
 
     public int onEnd()
     {
-        if (transition == 4)
+        if(transition == 4)
         {
             block(500);
         }

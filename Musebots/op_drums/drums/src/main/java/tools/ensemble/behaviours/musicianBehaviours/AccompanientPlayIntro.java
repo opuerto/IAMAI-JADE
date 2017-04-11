@@ -87,9 +87,7 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
     Ontology timeHandlerOntology;
     //We kept the Composer ontology
     Ontology composerOntology;
-    //we kept the counter that will check if this is the first time in the behaviour
-    int again = 0;
-    //we kept the handler of the switch in the action method
+        //we kept the handler of the switch in the action method
     int step = 0;
     //check if we got a confirm from the time manager
     private boolean timeManagerGotInfo = false;
@@ -101,6 +99,9 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
     private float duration;
     //length of the intro
     private int lenght;
+    //Block
+    private boolean block = false;
+    private boolean restart = false ;
 
 
     //Only for now will help us to use the composer conversation simulation
@@ -121,40 +122,40 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
         this.composerOntology = composerOntology;
     }
 
+    public void onStart()
+    {
+        System.out.println("Play intro fsm");
+        fsmBehaviour = new FSMBehaviour(agent);
+        //register the states
+        StateStart stateStart = new StateStart();
+        stateStart.setDataStore(getDataStore());
+        fsmBehaviour.registerFirstState(stateStart,STATE_INTRO_NEGOTIATION);
+        fsmBehaviour.registerState(new StateRejectedIntro(),STATE_REJECTED_INTRO);
+        StatePassInfo statePassInfo = new StatePassInfo();
+        statePassInfo.setDataStore(getDataStore());
+        fsmBehaviour.registerState(statePassInfo,STATE_PASS_INTRO_DATA);
+        ExtendIntro extend = new ExtendIntro();
+        extend.setDataStore(getDataStore());
+        fsmBehaviour.registerState(extend,STATE_EXTEND_INTRO);
+        StateEnd end = new StateEnd();
+        end.setDataStore(getDataStore());
+        fsmBehaviour.registerLastState(end,STATE_END);
+        fsmBehaviour.registerTransition(STATE_INTRO_NEGOTIATION,STATE_INTRO_NEGOTIATION,0);
+        fsmBehaviour.registerTransition(STATE_INTRO_NEGOTIATION,STATE_REJECTED_INTRO,7);
+        fsmBehaviour.registerDefaultTransition(STATE_REJECTED_INTRO,STATE_END);
+        fsmBehaviour.registerTransition(STATE_INTRO_NEGOTIATION,STATE_PASS_INTRO_DATA,1);
+        fsmBehaviour.registerTransition(STATE_PASS_INTRO_DATA,STATE_PASS_INTRO_DATA,2);
+        fsmBehaviour.registerTransition(STATE_PASS_INTRO_DATA,STATE_END,3);
+        fsmBehaviour.registerTransition(STATE_PASS_INTRO_DATA,STATE_EXTEND_INTRO,4);
+        fsmBehaviour.registerTransition(STATE_EXTEND_INTRO,STATE_EXTEND_INTRO,5);
+        fsmBehaviour.registerTransition(STATE_EXTEND_INTRO,STATE_PASS_INTRO_DATA,6);
+
+
+        agent.addBehaviour(fsmBehaviour);
+    }
+
     public void action()
     {
-        if(again < 1)
-        {
-            System.out.println("Play intro fsm");
-            fsmBehaviour = new FSMBehaviour(agent);
-            //register the states
-            StateStart stateStart = new StateStart();
-            stateStart.setDataStore(getDataStore());
-            fsmBehaviour.registerFirstState(stateStart,STATE_INTRO_NEGOTIATION);
-            fsmBehaviour.registerState(new StateRejectedIntro(),STATE_REJECTED_INTRO);
-            StatePassInfo statePassInfo = new StatePassInfo();
-            statePassInfo.setDataStore(getDataStore());
-            fsmBehaviour.registerState(statePassInfo,STATE_PASS_INTRO_DATA);
-            ExtendIntro extend = new ExtendIntro();
-            extend.setDataStore(getDataStore());
-            fsmBehaviour.registerState(extend,STATE_EXTEND_INTRO);
-            StateEnd end = new StateEnd();
-            end.setDataStore(getDataStore());
-            fsmBehaviour.registerLastState(end,STATE_END);
-            fsmBehaviour.registerTransition(STATE_INTRO_NEGOTIATION,STATE_INTRO_NEGOTIATION,0);
-            fsmBehaviour.registerTransition(STATE_INTRO_NEGOTIATION,STATE_REJECTED_INTRO,7);
-            fsmBehaviour.registerDefaultTransition(STATE_REJECTED_INTRO,STATE_END);
-            fsmBehaviour.registerTransition(STATE_INTRO_NEGOTIATION,STATE_PASS_INTRO_DATA,1);
-            fsmBehaviour.registerTransition(STATE_PASS_INTRO_DATA,STATE_PASS_INTRO_DATA,2);
-            fsmBehaviour.registerTransition(STATE_PASS_INTRO_DATA,STATE_END,3);
-            fsmBehaviour.registerTransition(STATE_PASS_INTRO_DATA,STATE_EXTEND_INTRO,4);
-            fsmBehaviour.registerTransition(STATE_EXTEND_INTRO,STATE_EXTEND_INTRO,5);
-            fsmBehaviour.registerTransition(STATE_EXTEND_INTRO,STATE_PASS_INTRO_DATA,6);
-
-
-            agent.addBehaviour(fsmBehaviour);
-
-        }
 
         switch (step)
         {
@@ -166,15 +167,21 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
                 transition = 7;
                 break;
         }
+
+
     }
 
     public int onEnd()
     {
-        again++;
+
         if(transition == 7)
         {
             agent.removeBehaviour(fsmBehaviour);
             fsmBehaviour = null;
+        }
+        if(transition == 8)
+        {
+            block(500);
         }
         return transition;
     }
@@ -189,17 +196,17 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
         }
         int exit;
         int counter = 0;
+        public void onStart()
+        {
+            introNegotiationResponder = new IntroNegotiationResponder(myAgent,mt);
+            introNegotiationResponder.setDataStore(getDataStore());
+            myAgent.addBehaviour(introNegotiationResponder);
+            System.out.println("start State");
+        }
 
         public void action ()
         {
 
-            if(counter < 1)
-            {
-                introNegotiationResponder = new IntroNegotiationResponder(myAgent,mt);
-                introNegotiationResponder.setDataStore(getDataStore());
-                myAgent.addBehaviour(introNegotiationResponder);
-                System.out.println("start State");
-            }
             switch (stateStart)
             {
                 case 0:
@@ -220,7 +227,7 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
 
         public int onEnd()
         {
-            counter++;
+
             return  exit;
         }
     }
@@ -253,14 +260,16 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
         }
         int exit;
         int counter=0;
+
+        public void onStart()
+        {
+            passInfo = new IntroInteractionTimeManager(duration);
+            passInfo.setDataStore(getDataStore());
+            myAgent.addBehaviour(passInfo);
+        }
         public void action()
         {
-            if(counter < 1)
-            {
-                passInfo = new IntroInteractionTimeManager(duration);
-                passInfo.setDataStore(getDataStore());
-                myAgent.addBehaviour(passInfo);
-            }
+
             switch (statePassInfo)
             {
                 case 0:
@@ -276,7 +285,7 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
         }
         public int onEnd()
         {
-            counter++;
+
             return exit;
         }
     }
@@ -289,9 +298,13 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
         }
         int exit;
         //int counter=0;
-        public void action()
+        public void onStart()
         {
             System.out.println("extend intro");
+        }
+        public void action()
+        {
+
 
             exit = 6;
 
@@ -349,9 +362,9 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
         {
             agentComposer = (AID) getDataStore().get(INTERNAL_COMPOSER);
             IntroConcepts introData = new IntroConcepts();
-            introData.setIntroTempo(Musician.tempo);
-            introData.setIntroNumerator(Musician.timeSignatureNumerator);
-            introData.setIntroDenominator(Musician.timeSignatureDenominator);
+            introData.setIntroTempo(Musician.getTempo());
+            introData.setIntroNumerator(Musician.getTimeSignatureNumerator());
+            introData.setIntroDenominator(Musician.getTimeSignatureDenominator());
             introData.setIntroLength(lenght);
             ACLMessage msg = new ACLMessage(ACLMessage.CFP);
             msg.setLanguage(codec.getName());
@@ -390,7 +403,7 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
 
             playIntroActionObject = new PlayIntroAction();
             //Calculate the duration of the intro based on the song structure and the lenght get from the leader
-            double calculateDuration = ((((double) Musician.timeSignatureNumerator*(double) lenght)/(double) Musician.tempo)*60*1000);
+            double calculateDuration = ((((double) Musician.getTimeSignatureNumerator()*(double) lenght)/(double) Musician.getTempo())*60*1000);
 
             duration = (float) calculateDuration;
             playIntroActionObject.setLenght(lenght);
@@ -580,51 +593,52 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
             this.message = message;
         }
 
+        public void onStart()
+        {
+            //System.out.println("Run the simple behaviour " + count);
+            FSMBehaviour RIFSM = new FSMBehaviour(myAgent);
+            //Register the estates
+            CFP cfpB = new CFP();
+            cfpB.setDataStore(RIFSM.getDataStore());
+            RIFSM.registerFirstState(cfpB, CALL_FOR_PROPOSAL);
+
+            AcceptProposalBehaviour acceptProposalBehaviour = new AcceptProposalBehaviour();
+            acceptProposalBehaviour.setDataStore(RIFSM.getDataStore());
+            RIFSM.registerState(acceptProposalBehaviour, ACCEPT_PROPOSAL);
+
+            ConfirmBehaviour confirmBehaviour = new ConfirmBehaviour();
+            confirmBehaviour.setDataStore(RIFSM.getDataStore());
+            RIFSM.registerState(confirmBehaviour, CONFIRM);
+
+            HandleInformBehaviour handleInformBehaviour = new HandleInformBehaviour();
+            handleInformBehaviour.setDataStore(RIFSM.getDataStore());
+            RIFSM.registerState(handleInformBehaviour, HANDLE_INFORM);
+
+            RIFSM.registerLastState(new EndConversationWithComposer(), END_CONVERSATION_WITH_COMPOSER);
+
+            //register transitions
+            RIFSM.registerTransition(CALL_FOR_PROPOSAL, CALL_FOR_PROPOSAL, 0);
+            RIFSM.registerTransition(CALL_FOR_PROPOSAL, ACCEPT_PROPOSAL, 1);
+            RIFSM.registerTransition(ACCEPT_PROPOSAL, ACCEPT_PROPOSAL, 2);
+            RIFSM.registerTransition(ACCEPT_PROPOSAL, CONFIRM, 3);
+            RIFSM.registerTransition(CONFIRM, CONFIRM, 4);
+            RIFSM.registerTransition(CONFIRM, HANDLE_INFORM, 5);
+            RIFSM.registerTransition(HANDLE_INFORM, HANDLE_INFORM, 6);
+            RIFSM.registerTransition(HANDLE_INFORM, END_CONVERSATION_WITH_COMPOSER, 7);
+            RIFSM.registerTransition(CALL_FOR_PROPOSAL, CONFIRM, 10);
+
+            agent.addBehaviour(RIFSM);
+        }
+
         public void action()
         {
-            if(count < 1) {
-                System.out.println("Run the simple behaviour " + count);
-                FSMBehaviour RIFSM = new FSMBehaviour(myAgent);
-                //Register the estates
-                CFP cfpB = new CFP();
-                cfpB.setDataStore(RIFSM.getDataStore());
-                RIFSM.registerFirstState(cfpB, CALL_FOR_PROPOSAL);
 
-                AcceptProposalBehaviour acceptProposalBehaviour = new AcceptProposalBehaviour();
-                acceptProposalBehaviour.setDataStore(RIFSM.getDataStore());
-                RIFSM.registerState(acceptProposalBehaviour, ACCEPT_PROPOSAL);
-
-                ConfirmBehaviour confirmBehaviour = new ConfirmBehaviour();
-                confirmBehaviour.setDataStore(RIFSM.getDataStore());
-                RIFSM.registerState(confirmBehaviour, CONFIRM);
-
-                HandleInformBehaviour handleInformBehaviour = new HandleInformBehaviour();
-                handleInformBehaviour.setDataStore(RIFSM.getDataStore());
-                RIFSM.registerState(handleInformBehaviour, HANDLE_INFORM);
-
-                RIFSM.registerLastState(new EndConversationWithComposer(), END_CONVERSATION_WITH_COMPOSER);
-
-                //register transitions
-                RIFSM.registerTransition(CALL_FOR_PROPOSAL, CALL_FOR_PROPOSAL, 0);
-                RIFSM.registerTransition(CALL_FOR_PROPOSAL, ACCEPT_PROPOSAL, 1);
-                RIFSM.registerTransition(ACCEPT_PROPOSAL, ACCEPT_PROPOSAL, 2);
-                RIFSM.registerTransition(ACCEPT_PROPOSAL, CONFIRM, 3);
-                RIFSM.registerTransition(CONFIRM, CONFIRM, 4);
-                RIFSM.registerTransition(CONFIRM, HANDLE_INFORM, 5);
-                RIFSM.registerTransition(HANDLE_INFORM, HANDLE_INFORM, 6);
-                RIFSM.registerTransition(HANDLE_INFORM, END_CONVERSATION_WITH_COMPOSER, 7);
-                RIFSM.registerTransition(CALL_FOR_PROPOSAL, CONFIRM, 10);
-
-                agent.addBehaviour(RIFSM);
-
-
-            }
 
         }
 
         public boolean done() {
 
-            count++;
+
             if (goOut)
             {
                 return true;
@@ -669,23 +683,24 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
                 super(agent);
 
             }
+            public void onStart()
+            {
+                mt1 =  MessageTemplate.and(
+                        MessageTemplate.MatchConversationId("introInteraction-musician-composer-PROPOSE"),
+                        MessageTemplate.MatchInReplyTo(message.getReplyWith()));
+                mt1andmt2 = MessageTemplate.and(mt1,
+                        MessageTemplate.MatchPerformative(ACLMessage.PROPOSE));
+            }
 
             public void action()
             {
-                if(firstTime < 1)
-                {
-                    mt1 =  MessageTemplate.and(
-                            MessageTemplate.MatchConversationId("introInteraction-musician-composer-PROPOSE"),
-                            MessageTemplate.MatchInReplyTo(message.getReplyWith()));
-                    mt1andmt2 = MessageTemplate.and(mt1,
-                            MessageTemplate.MatchPerformative(ACLMessage.PROPOSE));
-                }
+
 
                 replyPropose = agent.receive(mt1andmt2);
                 if (replyPropose != null)
                 {
                     System.out.println("Agent "+replyPropose.getSender().getName()+" proposed ");
-                     ACLMessage replayProposeToComposer = replyPropose.createReply();
+                    ACLMessage replayProposeToComposer = replyPropose.createReply();
                     replayProposeToComposer.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
                     replayProposeToComposer.setReplyWith(replyPropose.getSender().getLocalName()+System.currentTimeMillis());
                     replayProposeToComposer.setConversationId("introInteraction-musician-composer-ACCEPTPROPOSAL");
@@ -697,12 +712,12 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
             }
 
             public int onEnd()
-           {
-                firstTime++;
-               if (transition == 2)
-               {
-                   block(500);
-               }
+            {
+
+                if(transition == 2)
+                {
+                    block(500);
+                }
                 return transition;
             }
         }
@@ -710,13 +725,17 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
         private class ConfirmBehaviour extends OneShotBehaviour
         {
 
-           private int confirmTransition = 4;
-           private int firstTimeHere =0;
+            private int confirmTransition = 4;
+            private int firstTimeHere =0;
             private MessageTemplate mt1;
             private MessageTemplate mt1andmt2;
             public ConfirmBehaviour()
             {
                 super(agent);
+            }
+            public void onStart()
+            {
+
             }
             public void action()
             {
@@ -767,15 +786,15 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
             }
             public void action()
             {
-                 if(firstTimeHere < 0)
-                 {
-                     mt1 =  MessageTemplate.and(
-                             MessageTemplate.MatchConversationId("introInteraction-musician-composer-INFORM"),
-                             MessageTemplate.MatchInReplyTo(replyAgree.getReplyWith()));
+                if(firstTimeHere < 0)
+                {
+                    mt1 =  MessageTemplate.and(
+                            MessageTemplate.MatchConversationId("introInteraction-musician-composer-INFORM"),
+                            MessageTemplate.MatchInReplyTo(replyAgree.getReplyWith()));
 
-                     mt1andmt2 = MessageTemplate.and(mt1,
-                             MessageTemplate.MatchPerformative(ACLMessage.INFORM));
-                 }
+                    mt1andmt2 = MessageTemplate.and(mt1,
+                            MessageTemplate.MatchPerformative(ACLMessage.INFORM));
+                }
                 getMessageInform = agent.receive(mt1andmt2);
                 if (getMessageInform != null)
                 {
@@ -805,7 +824,7 @@ public class AccompanientPlayIntro extends OneShotBehaviour implements DataStore
             }
             public int onEnd()
             {
-                if(transition == 6)
+                if (transition == 6)
                 {
                     block(500);
                 }

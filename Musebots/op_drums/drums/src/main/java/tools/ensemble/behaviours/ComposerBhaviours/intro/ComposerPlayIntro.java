@@ -60,7 +60,7 @@ public class ComposerPlayIntro extends OneShotBehaviour implements DataStoreComp
                 if(getDataStore().containsKey(INTRO_COMPOSER_INSTANCE))
                 {
                     introInstanceConceps = (IntroConcepts) getDataStore().get(INTRO_COMPOSER_INSTANCE);
-                    Play.midi(introScore,false,false,5,0);
+                    Play.midi(introScore,false,false,2,0);
                     introInstanceConceps.setIntroStartedAt(new Date());
                     try
                     {

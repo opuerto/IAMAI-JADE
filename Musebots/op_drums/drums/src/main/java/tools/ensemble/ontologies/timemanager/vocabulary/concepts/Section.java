@@ -53,5 +53,4 @@ public class Section implements Concept {
         return sectionStartedAt;
     }
 
-
 }

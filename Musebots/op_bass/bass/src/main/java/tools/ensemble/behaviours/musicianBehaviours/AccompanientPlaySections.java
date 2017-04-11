@@ -92,50 +92,49 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
         this.timeHandlerOntology = TimeHandler;
     }
 
+    public void onStart()
+    {
+        myTimeManager = (getDataStore().containsKey(INTERNAL_TIME_MANAGER))? (AID) getDataStore().get(INTERNAL_TIME_MANAGER) :null;
+        fsmPlayHead = new FSMBehaviour(agent);
+        //create instance of the behaviour CheckIntroData
+        StateCheckForIntroData checkIntroData = new StateCheckForIntroData();
+        checkIntroData.setDataStore(getDataStore());
+        fsmPlayHead.registerFirstState(checkIntroData,STATE_CHECK_INTRO_DATA);
+        //create instance of the behaviour Compose
+        StateCompose stateCompose = new StateCompose();
+        stateCompose.setDataStore(getDataStore());
+        fsmPlayHead.registerState(stateCompose, STATE_COMPOSE_SECTION);
+        //create instance of the behaviour get intro data
+        StateGetInfoLater getInfo = new StateGetInfoLater();
+        getInfo.setDataStore(getDataStore());
+        fsmPlayHead.registerState(getInfo,STATE_GET_INFO);
+        //create instance of the behaviour clear and retry
+        StateClearRetry clearAndRetry = new StateClearRetry();
+        clearAndRetry.setDataStore(getDataStore());
+        fsmPlayHead.registerState(clearAndRetry,STATE_CLEAR_RETRY);
+        StateEnd stateEnd = new StateEnd();
+        stateEnd.setDataStore(getDataStore());
+        fsmPlayHead.registerLastState(stateEnd,STATE_END);
+
+        //Register Transitions
+        fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA,STATE_CHECK_INTRO_DATA,0);
+        fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA,STATE_GET_INFO,1);
+        fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA, STATE_COMPOSE_SECTION,2);
+        fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA,STATE_END,3);
+        fsmPlayHead.registerTransition(STATE_GET_INFO,STATE_GET_INFO,4);
+        fsmPlayHead.registerTransition(STATE_GET_INFO, STATE_COMPOSE_SECTION,5);
+        fsmPlayHead.registerTransition(STATE_GET_INFO,STATE_CLEAR_RETRY,8);
+        fsmPlayHead.registerTransition(STATE_CLEAR_RETRY,STATE_GET_INFO,9,new String[]{STATE_GET_INFO,
+                STATE_CLEAR_RETRY});
+        fsmPlayHead.registerTransition(STATE_COMPOSE_SECTION, STATE_COMPOSE_SECTION,6);
+        fsmPlayHead.registerTransition(STATE_COMPOSE_SECTION,STATE_END,7);
+
+        agent.addBehaviour(fsmPlayHead);
+        System.out.println("Create FSM Play Head");
+    }
+
     public void action()
     {
-
-
-        //We don't want to create a new State Machine each time that we visit this state, but only the very first time
-        if(firstTimeAction < 1)
-        {
-            myTimeManager = (getDataStore().containsKey(INTERNAL_TIME_MANAGER))? (AID) getDataStore().get(INTERNAL_TIME_MANAGER) :null;
-            fsmPlayHead = new FSMBehaviour(agent);
-            //create instance of the behaviour CheckIntroData
-            StateCheckForIntroData checkIntroData = new StateCheckForIntroData();
-            checkIntroData.setDataStore(getDataStore());
-            fsmPlayHead.registerFirstState(checkIntroData,STATE_CHECK_INTRO_DATA);
-            //create instance of the behaviour Compose
-            StateCompose stateCompose = new StateCompose();
-            stateCompose.setDataStore(getDataStore());
-            fsmPlayHead.registerState(stateCompose, STATE_COMPOSE_SECTION);
-            //create instance of the behaviour get intro data
-            StateGetInfoLater getInfo = new StateGetInfoLater();
-            getInfo.setDataStore(getDataStore());
-            fsmPlayHead.registerState(getInfo,STATE_GET_INFO);
-            //create instance of the behaviour clear and retry
-            StateClearRetry clearAndRetry = new StateClearRetry();
-            clearAndRetry.setDataStore(getDataStore());
-            fsmPlayHead.registerState(clearAndRetry,STATE_CLEAR_RETRY);
-            StateEnd stateEnd = new StateEnd();
-            stateEnd.setDataStore(getDataStore());
-            fsmPlayHead.registerLastState(stateEnd,STATE_END);
-
-            //Register Transitions
-            fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA,STATE_CHECK_INTRO_DATA,0);
-            fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA,STATE_GET_INFO,1);
-            fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA, STATE_COMPOSE_SECTION,2);
-            fsmPlayHead.registerTransition(STATE_CHECK_INTRO_DATA,STATE_END,3);
-            fsmPlayHead.registerTransition(STATE_GET_INFO,STATE_GET_INFO,4);
-            fsmPlayHead.registerTransition(STATE_GET_INFO, STATE_COMPOSE_SECTION,5);
-            fsmPlayHead.registerTransition(STATE_GET_INFO,STATE_CLEAR_RETRY,8);
-            fsmPlayHead.registerTransition(STATE_CLEAR_RETRY,STATE_GET_INFO,9);
-            fsmPlayHead.registerTransition(STATE_COMPOSE_SECTION, STATE_COMPOSE_SECTION,6);
-            fsmPlayHead.registerTransition(STATE_COMPOSE_SECTION,STATE_END,7);
-
-            agent.addBehaviour(fsmPlayHead);
-            System.out.println("Create FSM Play Head");
-        }
 
         switch (step)
         {
@@ -143,7 +142,8 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
                 transition = 40;
                 break;
             case 1:
-                transition = 9;
+
+                transition = 20;
         }
 
 
@@ -151,12 +151,8 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
 
     public int onEnd()
     {
-        firstTimeAction++;
-        if (transition == 9)
-        {
-            agent.removeBehaviour(fsmPlayHead);
-            fsmPlayHead = null;
-        }
+
+
         if(transition == 40)
         {
             block(500);
@@ -174,20 +170,22 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
             super(agent);
         }
 
+        public void onStart()
+        {
+            System.out.println(counter);
+            ACLMessage message = createMessage();
+            if(message != null)
+            {
+                CheckInfoInitiator checkInfo = new CheckInfoInitiator(agent,message);
+                checkInfo.setDataStore(getDataStore());
+                agent.addBehaviour(checkInfo);
+
+            }else{System.out.println("message "+message); stateCheckIntroData = 3;}
+        }
+
         public void action()
         {
-            if (counter < 1)
-            {
-                ACLMessage message = createMessage();
-                if(message != null)
-                {
-                    CheckInfoInitiator checkInfo = new CheckInfoInitiator(agent,message);
-                    checkInfo.setDataStore(getDataStore());
-                    agent.addBehaviour(checkInfo);
 
-                }else{System.out.println("message "+message); stateCheckIntroData = 3;}
-
-            }
 
             switch (stateCheckIntroData)
             {
@@ -210,7 +208,7 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
 
         public int onEnd()
         {
-            counter++;
+
             if(transition == 0)
             {
                 block(500);
@@ -249,16 +247,19 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
             super(agent);
         }
 
+        public void onStart()
+        {
+            //System.out.println("Im in behaviour "+getBehaviourName());
+            ACLMessage message = createMessage();
+            getInfoInitiator = new GetInfoInitiator(agent,message);
+            getInfoInitiator.setDataStore(getDataStore());
+            agent.addBehaviour(getInfoInitiator);
+        }
+
+
         public void action()
         {
-            if (getInfoFirstTime < 1)
-            {
 
-                ACLMessage message = createMessage();
-                 getInfoInitiator = new GetInfoInitiator(agent,message);
-                getInfoInitiator.setDataStore(getDataStore());
-                agent.addBehaviour(getInfoInitiator);
-            }
 
             switch (stateGetInfo)
             {
@@ -276,7 +277,7 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
 
         public int onEnd()
         {
-            getInfoFirstTime++;
+            //getInfoFirstTime++;
             if (transition == 4)
             {
                 block(500);
@@ -319,8 +320,8 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
 
             agent.removeBehaviour(getInfoInitiator);
             getInfoInitiator = null;
-            getInfoFirstTime = 0;
-            stateGetInfo = 0;
+            //getInfoFirstTime = 0;
+            //stateGetInfo = 0;
             transition = 9;
         }
 
@@ -344,17 +345,15 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
             super(agent);
         }
 
+       public void onStart()
+       {
+           RequestAccompaniementFSM RAFSM = new RequestAccompaniementFSM();
+           RAFSM.setDataStore(getDataStore());
+           agent.addBehaviour(RAFSM);
+       }
+
         public void action()
         {
-            if (counter < 1)
-            {
-                RequestAccompaniementFSM RAFSM = new RequestAccompaniementFSM();
-                RAFSM.setDataStore(getDataStore());
-                agent.addBehaviour(RAFSM);
-            }
-
-
-
 
             switch (stateComposeSections)
             {
@@ -369,10 +368,10 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
 
         public int onEnd()
         {
-            counter++;
+
             if (transition == 6)
             {
-                block();
+                block(500);
             }
             return transition;
         }
@@ -502,7 +501,7 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
         }
 
         protected void handleInform(ACLMessage inform) {
-            //System.out.println("The agent "+inform.getSender().getName() +" inform on get info initiator");
+           // System.out.println("The agent "+inform.getSender().getName() +" inform on get info initiator");
             try
             {
                 ContentElement content = agent.getContentManager().extractContent(inform);
@@ -520,13 +519,13 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
             catch (Exception e) {
                 e.printStackTrace();
             }
-            System.out.println("Duration :"+duration);
-            System.out.println("intro started at :"+introStartedAt);
+            //System.out.println("Duration :"+duration);
+            //System.out.println("intro started at :"+introStartedAt);
             stateGetInfo = 1;
         }
 
         protected void handleFailure(ACLMessage fail) {
-            System.out.println(myAgent.getLocalName()+" : "+" Something went wrong on get info initiator");
+            //System.out.println(myAgent.getLocalName()+" : "+" Something went wrong on get info initiator");
             stateGetInfo = 2;
         }
 
@@ -566,47 +565,53 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
             super(agent);
         }
 
+        public void onStart()
+        {
+            if(getDataStore().containsKey(INTERNAL_COMPOSER))
+            {
+                internalComposer = (AID) getDataStore().get(INTERNAL_COMPOSER);
+            }
+            FSMBehaviour requestAccompaniment = new FSMBehaviour(agent);
+
+            //Register requestPlayBehaviour
+            RequestPlayBehaviour RPB = new RequestPlayBehaviour();
+            RPB.setDataStore(getDataStore());
+            requestAccompaniment.registerFirstState(RPB,REQUEST_PLAY);
+
+            handleAgreeBehaviour agreeBehaviour = new handleAgreeBehaviour();
+            agreeBehaviour.setDataStore(getDataStore());
+            requestAccompaniment.registerState(agreeBehaviour,HANDLE_AGREE);
+
+            requestHandleConfirm handleConfirmBehavior = new requestHandleConfirm();
+            handleConfirmBehavior.setDataStore(getDataStore());
+            requestAccompaniment.registerLastState(handleConfirmBehavior,HANDLE_CONFIRM);
+            requestAccompaniment.registerLastState(new OneShotBehaviour() {
+                @Override
+                public void action() {
+                    System.out.println("Last State in requestSolo State machine");
+                }
+            },"LastState");
+
+            //Transition
+
+            requestAccompaniment.registerTransition(REQUEST_PLAY,HANDLE_AGREE,0);
+            requestAccompaniment.registerTransition(HANDLE_AGREE,HANDLE_AGREE,2);
+            requestAccompaniment.registerTransition(HANDLE_AGREE,HANDLE_CONFIRM,3);
+            requestAccompaniment.registerTransition(HANDLE_CONFIRM,HANDLE_CONFIRM,4);
+            requestAccompaniment.registerTransition(HANDLE_CONFIRM,"LastState",5);
+
+            agent.addBehaviour(requestAccompaniment);
+        }
+
 
         public void action()
         {
-            if (c < 1)
-            {
-                if(getDataStore().containsKey(INTERNAL_COMPOSER))
-                {
-                    internalComposer = (AID) getDataStore().get(INTERNAL_COMPOSER);
-                }
-                FSMBehaviour requestAccompaniment = new FSMBehaviour(agent);
-
-                //Register requestPlayBehaviour
-                RequestPlayBehaviour RPB = new RequestPlayBehaviour();
-                RPB.setDataStore(getDataStore());
-                requestAccompaniment.registerFirstState(RPB,REQUEST_PLAY);
-
-                handleAgreeBehaviour agreeBehaviour = new handleAgreeBehaviour();
-                agreeBehaviour.setDataStore(getDataStore());
-                requestAccompaniment.registerState(agreeBehaviour,HANDLE_AGREE);
-
-                requestHandleConfirm handleConfirmBehavior = new requestHandleConfirm();
-                handleConfirmBehavior.setDataStore(getDataStore());
-                requestAccompaniment.registerLastState(handleConfirmBehavior,HANDLE_CONFIRM);
-
-                //Transition
-
-                requestAccompaniment.registerTransition(REQUEST_PLAY,HANDLE_AGREE,0);
-                requestAccompaniment.registerTransition(HANDLE_AGREE,HANDLE_AGREE,2);
-                requestAccompaniment.registerTransition(HANDLE_AGREE,HANDLE_CONFIRM,3);
-
-                agent.addBehaviour(requestAccompaniment);
-
-            }
-
-
 
 
         }
 
         public boolean done() {
-            c++;
+
             if(goOut)
             {
                 return true;
@@ -643,6 +648,7 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
                 requestMessage.setReplyWith(internalComposer.getLocalName()+System.currentTimeMillis());
                 requestMessage.addReceiver(internalComposer);
                 requestMessage.setContent(String.valueOf(calculateTimeLeft()));
+
 
                 agent.send(requestMessage);
 
@@ -683,8 +689,10 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
                     replyAgreeToComposer.setReplyWith(replyAgree.getSender().getLocalName()+System.currentTimeMillis());
                     replyAgree.setReplyWith(replyAgreeToComposer.getReplyWith());
                     agent.send(replyAgreeToComposer);
+                    //Send the state compose of the FSM inside the accompanimentPlaySection to the end state.
+                    stateComposeSections = 1;
                     transition = 3;
-                }else{block();}
+                }
             }
 
             public int onEnd()
@@ -705,6 +713,7 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
                     MessageTemplate.MatchPerformative(ACLMessage.INFORM)
                     );
             private MessageTemplate mt1Andmt2;
+            private int transition = 4;
             public requestHandleConfirm()
             {
                 super(agent);
@@ -712,13 +721,15 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
 
             public void action()
             {
+                System.out.println("Confirm handle");
                 mt1Andmt2 = MessageTemplate.and(mt1,MessageTemplate.MatchInReplyTo(replyAgree.getReplyWith()));
-                ACLMessage inform = agent.receive(mt1Andmt2);
+                ACLMessage inform = agent.receive(mt1);
                 if(inform != null)
                 {
+
                     System.out.println("The agent informed it will play");
-                    //Send the state compose of the FSM inside the accompanimentPlaySection to the end state.
-                    stateComposeSections = 1;
+
+                    transition = 5;
                     //Stop the simple behaviour that is the parent of this fsm
                     goOut = true;
                 }else{block();}
@@ -726,62 +737,20 @@ public class AccompanientPlaySections extends OneShotBehaviour implements DataSt
 
 
             }
-
-
-        }
-        private class temporalBehaviour extends OneShotBehaviour
-        {
-            public temporalBehaviour()
+            public int onEnd()
             {
-                super(agent);
+                if (transition ==4)
+                {
+                    block(500);
+                }
+                return transition;
             }
 
-            public void action(){
-                System.out.println("I'm in behaviour "+getBehaviourName());
-            }
-        }
-
-    }
-
-
-
-    private class SimulateComposeConversation extends OneShotBehaviour
-    {
-        private int measures;
-        public SimulateComposeConversation (int measures)
-        {this.measures = measures;}
-        public void action()
-        {
-            System.out.println("simulate composer");
-            int pitch = C3; // variable to store the calculated pitch (initialized with a start pitch value)
-            int numberOfNotes = measures * Musician.timeSignatureNumerator;
-            System.out.println("numberOfNotes: "+numberOfNotes);
-            double pitches[] = {E5,G5,C6,F5};
-            for (int i = 0; i < numberOfNotes; i++)
-            {
-                int  x = (int)(Math.random()*4);
-                thePhrase.add(new Note(pitches[x],QUARTER_NOTE));
-            }
-            thePart.add(thePhrase);
-            theScore.addPart(thePart);
-        }
-    }
-
-    private class playBack extends OneShotBehaviour
-    {
-        public void action()
-        {
-            System.out.println("play back");
-
-            //Play.midi(theScore,false,false,1,1);
-            Play.midi(theScore,false,false,3,0);
-
-            //stateComposeSections = 1;
 
         }
+
+
     }
-
-
 
 
 }

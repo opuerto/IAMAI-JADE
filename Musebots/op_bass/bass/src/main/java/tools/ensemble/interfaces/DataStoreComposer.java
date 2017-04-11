@@ -38,10 +38,28 @@ public interface DataStoreComposer {
 
     //Section that the musician going to paly
     public static final String NEXT_SECTION_TO_PLAY = "nextSectionToPlay";
- // the index of the character that represent the song form in the string array
-   public static final String NEXT_SECTION_INDEX = "nextSectionIndex";
+    // the index of the character that represent the song form in the string array
+    public static final String NEXT_SECTION_INDEX = "nextSectionIndex";
 
     //Save the info about the sections sent by the syn, that we will use to play the solo.
-    public static final String SECTION_INSTANCE_FOR_SYN_SOLO = "sectionInstanceForSyncSolo";
+   public static final String SECTION_INSTANCE_FOR_SYN_SOLO = "sectionInstanceForSyncSolo";
+
+ //Save the internal Musician ID
+ public static final String INTERNAL_MUSICIAN_AID = "internalMusicianID";
+
+ //Store if is the first solo played in the sond
+ public static final String FIRST_TIME_SOLO = "firstTimeSolo";
+
+
+ //Store current message from musician
+ public static final String CURRENT_MESSAGE_FOR_MUSICIAN = "currentMessageFromMusician";
+
+ //Store current message from musician
+ public static final String CURRENT_MESSAGE_FOR_SYN = "currentMessageFromSyn";
+
+ //Save the info about the sections sent by the syn, that we will use to play the accompaniement.
+ public static final String SECTION_INSTANCE_FOR_SYN_ACCOMP = "sectionInstanceForSyncAccom";
+
+
 
 }

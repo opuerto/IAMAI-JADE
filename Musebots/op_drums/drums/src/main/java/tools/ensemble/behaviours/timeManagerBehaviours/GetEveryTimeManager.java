@@ -74,12 +74,15 @@ public class GetEveryTimeManager extends Behaviour implements DataStoreTimeManag
     {
         if(externalTimeManagerList.size() == listLength)
         {
+
             return true;
         }
-        else{
+        else
+        {
             block(500);
             return false;
         }
+
 
 
     }

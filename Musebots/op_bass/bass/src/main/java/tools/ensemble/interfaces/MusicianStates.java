@@ -26,7 +26,7 @@ public interface MusicianStates {
     public final static String STATE_ACCOMPANIST="Accompanist";
     public final static String STATE_GET_STRUCTURE="GetStructure";
     public final static String STATE_INTRO ="Intro";
-    public final static String STATE_PLAY_HEAD ="State_Play_Head";
+    public final static String STATE_PLAY_SECTIONS ="State_Play_Head";
     public final static String STATE_ACCEPT_INTRO="AcceptIntro";
     public final static String STATE_REFUSE_INTRO="RefuseIntro";
     public final static String STATE_ACCEPT_ACCOMPANIMENT="AcceptAccompaniment";
@@ -34,4 +34,5 @@ public interface MusicianStates {
     public final static String STATE_ACCOMPANIENT_SILENT="AccompanientSilent";
     public final static String STATE_WAITING_LEADERSHIP="WaitingLeadership";
     public final static String STATE_ACCEPT_ENDING="AcceptEnding";
+    public final static String STATE_FROM_LEADING_TO_SUPPORT = "fromLeadingToSupport";
 }

@@ -74,7 +74,6 @@ public class TimeHandler extends Ontology {
             cs.add(SECTION_STARTED_AT,(PrimitiveSchema)getSchema(BasicOntology.DATE));
 
 
-
             cs = (ConceptSchema)getSchema(INTRO);
             cs.add(INTRO_LENGHT,(PrimitiveSchema)getSchema(BasicOntology.FLOAT), ObjectSchema.MANDATORY);
             cs.add(INTRO_STARTED_AT,(PrimitiveSchema)getSchema(BasicOntology.DATE), ObjectSchema.MANDATORY);
@@ -83,7 +82,7 @@ public class TimeHandler extends Ontology {
             cs.add(SONG_STARTED_AT,(PrimitiveSchema)getSchema(BasicOntology.FLOAT));
         }
         catch(OntologyException oe) {
-            oe.printStackTrace();
+        oe.printStackTrace();
         }
     }
 
