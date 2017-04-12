@@ -106,7 +106,7 @@ public class LeaderRequestSoloToMyComposer extends OneShotBehaviour implements D
         if(transitionParentBehaviour == 12)
         {
             myAgent.removeBehaviour(requestSolo);
-            getDataStore().remove(FIRST_SOLO);
+            //getDataStore().remove(FIRST_SOLO);
             getDataStore().remove(INTRO_DURATION);
             getDataStore().remove(INTRO_TIMESTAMP);
 

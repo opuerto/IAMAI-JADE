@@ -87,6 +87,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
                 else
                 {
                     System.out.println("Im not playing because Im not a leader");
+                    Composer.setTimeLeftInCurrentsection(null);
                     transition = 11;
                 }
 
