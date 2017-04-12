@@ -26,11 +26,9 @@ public class ConfirmComposeAccompaniment extends OneShotBehaviour implements Dat
 
     public void action()
     {
-
         ACLMessage replyConfirm = myAgent.receive(mt1);
         if(replyConfirm != null)
         {
-
             System.out.println("Agent confirm I will Compose");
             ACLMessage replyConfirmToMusician = replyConfirm.createReply();
             replyConfirmToMusician.setPerformative(ACLMessage.INFORM);
