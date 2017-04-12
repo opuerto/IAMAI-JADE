@@ -5,6 +5,7 @@ import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import tools.ensemble.agents.Composer;
 import tools.ensemble.interfaces.DataStoreComposer;
 
 /**
@@ -25,6 +26,7 @@ public class ConfirmComposeAccompaniment extends OneShotBehaviour implements Dat
 
     public void action()
     {
+
         ACLMessage replyConfirm = myAgent.receive(mt1);
         if(replyConfirm != null)
         {
