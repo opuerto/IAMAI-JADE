@@ -36,6 +36,9 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
     private String CurrentSection;
     private Date timeLeft;
     private Date sectionStartedAt;
+    private int repliesCnt = 0;
+    private long bestTime = 0;
+    private AID bestSender;
     private ACLMessage findSection = new ACLMessage(ACLMessage.REQUEST);
     Vector timeManagerList = new Vector();
     AID internalComposer;
@@ -52,15 +55,15 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
 
     public void onStart()
     {
-
         System.out.println("start on externally ");
         transition = 3;
         firstTimeHere = 0;
         state = 0;
+        repliesCnt = 0;
+        bestTime = 0;
         System.out.println("transition "+transition);
         System.out.println("Times here "+firstTimeHere);
         System.out.println("State "+state);
-
     }
 
     public void action()
@@ -72,7 +75,7 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
             case 0:
                 if (firstTimeHere < 1)
                 {
-                    System.out.println("Im in case 0 in request exernaly state");
+                    System.out.println("Im in case 0 in request externally state");
                     form = Musician.tuneForm;
                     if (getDataStore().containsKey(FIRST_TIME_SOLO_IN_SYN))
                     {
@@ -105,7 +108,7 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
 
                 break;
             case 1:
-                         MessageTemplate mt1 = MessageTemplate.and(
+                MessageTemplate mt1 = MessageTemplate.and(
                         MessageTemplate.MatchConversationId("Get-Section-From-External-Syn"),
                         MessageTemplate.MatchPerformative(ACLMessage.INFORM)
                 );
@@ -113,70 +116,94 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
                 ACLMessage getSection = myAgent.receive(mt1Andmt2);
                 if(getSection != null)
                 {
-                    ContentElement content = null;
-                    try {
-                        content = myAgent.getContentManager().extractContent(getSection);
-                    } catch (Codec.CodecException e) {
-                        e.printStackTrace();
-                    } catch (OntologyException e) {
-                        e.printStackTrace();
-                    }
-
-                    //Concept
-                    Concept concept = ((Action)content).getAction();
-                    if (concept instanceof Section)
+                    //we got a message
+                    if (getSection.getPerformative() == ACLMessage.INFORM)
                     {
-                        sectionIndex = ((Section) concept).getSectionIndex();
-                        CurrentSection = ((Section) concept).getAccompanimentCurrentSection();
-                        timeLeft = ((Section) concept).getTimeLeft();
-                        sectionStartedAt = ((Section) concept).getSectionStartedAt();
-                        System.out.println("Info from my section in external syn");
+                        //This is the section
+                        ContentElement content = null;
+                        try {
+                            content = myAgent.getContentManager().extractContent(getSection);
+                        } catch (Codec.CodecException e) {
+                            e.printStackTrace();
+                        } catch (OntologyException e) {
+                            e.printStackTrace();
+                        }
+                        //Concept
+                        Concept concept = ((Action)content).getAction();
+                        if (concept instanceof Section)
+                        {
+                            long Now = System.currentTimeMillis();
+                            long timeElapsed = Now - ((Section) concept).getSectionStartedAt().getTime();
+                            long timeLefts = ((Section) concept).getTimeLeft().getTime() - timeElapsed;
+                            if (bestTime < timeLefts)
+                            {
+                                System.out.println("Best time mayor que timeleft");
+                                sectionIndex = ((Section) concept).getSectionIndex();
+                                CurrentSection = ((Section) concept).getAccompanimentCurrentSection();
+                                timeLeft = ((Section) concept).getTimeLeft();
+                                sectionStartedAt = ((Section) concept).getSectionStartedAt();
+                                bestTime = timeLefts;
+                                bestSender = getSection.getSender();
+                            }
+
+                        }
+
+                        //state = 2;
+                     /* long Now = System.currentTimeMillis();
+                      long timeElapsed = Now - sectionStartedAt.getTime();
+                      long timeLefts = timeLeft.getTime() - timeElapsed;
+                      long quarterofTimeLeft = timeLeft.getTime() /2;
+                      long isEnoughTime = timeLeft.getTime() - quarterofTimeLeft;
+                      System.out.println(" is enough time "+isEnoughTime);
+
+                      if(timeLefts < 0 || timeLefts < isEnoughTime)
+                      {
+                          System.out.println("the time left is state 0 "+timeLefts);
+                          firstTimeHere = -1;
+                          state = 0;
+                      }else
+                      {
+                          System.out.println("the time left is "+timeLefts);
+                          state = 2;
+                      }*/
+
+                    }
+                    repliesCnt++;
+                    if(repliesCnt >= ReceiversNo)
+                    {
+                        //We received all replies
+                        System.out.println("We received all replies");
                         System.out.println("section index "+sectionIndex);
                         System.out.println("Section current section " + CurrentSection);
-                        System.out.println("Section time left"+timeLeft.getTime());
-                    }
-                    long Now = System.currentTimeMillis();
-                    long timeElapsed = Now - sectionStartedAt.getTime();
-                    long timeLefts = timeLeft.getTime() - timeElapsed;
-                    long quarterofTimeLeft = timeLeft.getTime() /2;
-                    long isEnoughTime = timeLeft.getTime() - quarterofTimeLeft;
-                    System.out.println(" is enough time "+isEnoughTime);
+                        System.out.println("Section time left "+timeLeft.getTime());
+                        System.out.println("Best Sender "+bestSender);
 
-                    if(timeLefts < 0 || timeLefts < isEnoughTime)
-                    {
-                        System.out.println("the time left is state 0 "+timeLefts);
-                        firstTimeHere = -1;
-                        state = 0;
-                    }else
-                    {
-                        System.out.println("the time left is "+timeLefts);
                         state = 2;
                     }
 
 
+                 /* if(firsSolo == 1)
+                  {
+                      //Check if the song is in the last section of the structure so we can start right at the beginning
+                      int lastSectionIndex = form.length()-1;
+                      String LastSection = String.valueOf(form.charAt(lastSectionIndex));
 
-                   /* if(firsSolo == 1)
-                    {
-                        //Check if the song is in the last section of the structure so we can start right at the beginning
-                        int lastSectionIndex = form.length()-1;
-                        String LastSection = String.valueOf(form.charAt(lastSectionIndex));
+                      if(sectionIndex == lastSectionIndex && LastSection.equals(CurrentSection))
+                      {
+                          //If is the last section then send the info to the composer
+                          state = 2;
+                      }
+                      else
+                      {
+                          //If not try again until we got the last section
+                          state = 0;
+                      }
 
-                        if(sectionIndex == lastSectionIndex && LastSection.equals(CurrentSection))
-                        {
-                            //If is the last section then send the info to the composer
-                            state = 2;
-                        }
-                        else
-                        {
-                            //If not try again until we got the last section
-                            state = 0;
-                        }
-
-                    }
-                    else // If is not the first solo to be play in the song then send the composer whatever it got from the external synchronizer
-                    {
-                        state = 2;
-                    }*/
+                  }
+                  else // If is not the first solo to be play in the song then send the composer whatever it got from the external synchronizer
+                  {
+                      state = 2;
+                  }*/
 
 
                 }else
@@ -224,3 +251,5 @@ public class RequestToExternalSyn extends OneShotBehaviour implements DataStoreT
         return transition;
     }
 }
+
+
