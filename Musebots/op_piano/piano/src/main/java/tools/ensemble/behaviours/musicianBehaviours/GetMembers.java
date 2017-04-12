@@ -115,7 +115,7 @@ public class GetMembers extends OneShotBehaviour implements DataStorteMusicians 
 
 
 
-        if(Musicians.isEmpty() || Musicians.size() < 2)
+        if(Musicians.isEmpty() || Musicians.size() < 3)
         {
             transition = 0;
         }

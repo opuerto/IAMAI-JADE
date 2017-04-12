@@ -976,7 +976,7 @@
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="MAIN_CLASS_NAME" value="jade.Boot" />
       <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="-gui -local-host ejercicios -agents stage:tools.musebot.MusebotAssitant" />
+      <option name="PROGRAM_PARAMETERS" value="-gui -local-host thesis -agents stage:tools.musebot.MusebotAssitant" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -1116,12 +1116,12 @@
       <workItem from="1491946977606" duration="1364000" />
       <workItem from="1491982501221" duration="12841000" />
       <workItem from="1492018362472" duration="286000" />
-      <workItem from="1492020327443" duration="322000" />
+      <workItem from="1492020327443" duration="1311000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="640158000" />
+    <option name="totallyTimeSpent" value="641147000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="0" width="1604" height="867" extended-state="1" />
