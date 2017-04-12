@@ -37,27 +37,17 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="PlayAccompanimentBehaviour.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PlayAccompanimentBehaviour.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/PlayAccompanimentBehaviour.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="137" column="10" selection-start-line="137" selection-start-column="10" selection-end-line="137" selection-end-column="10" />
+            <state relative-caret-position="62">
+              <caret line="109" column="64" selection-start-line="109" selection-start-column="64" selection-end-line="109" selection-end-column="64" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ConfirmComposeAccompaniment.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/ConfirmComposeAccompaniment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="283">
-              <caret line="32" column="12" selection-start-line="32" selection-start-column="12" selection-end-line="32" selection-end-column="12" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PlaySoloBehaviour.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="PlaySoloBehaviour.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/PlaySoloBehaviour.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="283">
@@ -70,18 +60,18 @@
       <file leaf-file-name="ResponseSectionRequestFromExtComp.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/timeManagerBehaviours/ResponseSectionRequestFromExtComp.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="42" column="66" selection-start-line="42" selection-start-column="66" selection-end-line="42" selection-end-column="66" />
+            <state relative-caret-position="156">
+              <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Composer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Composer.java">
+      <file leaf-file-name="TimeManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/agents/TimeManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="334">
-              <caret line="215" column="43" selection-start-line="215" selection-start-column="43" selection-end-line="215" selection-end-column="43" />
+            <state relative-caret-position="-91">
+              <caret line="168" column="8" selection-start-line="168" selection-start-column="8" selection-end-line="168" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -90,28 +80,24 @@
       <file leaf-file-name="ComposeAccompanimentBehaviour.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/ComposeAccompanimentBehaviour.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2112">
-              <caret line="261" column="36" selection-start-line="261" selection-start-column="36" selection-end-line="261" selection-end-column="36" />
-              <folding />
+            <state relative-caret-position="125">
+              <caret line="33" column="78" selection-start-line="33" selection-start-column="78" selection-end-line="33" selection-end-column="78" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1422#1433#0" expanded="true" />
+                <element signature="e#1498#1507#0" expanded="true" />
+                <element signature="e#1622#1623#0" expanded="true" />
+                <element signature="e#1646#1647#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ComposerPlayIntro.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/intro/ComposerPlayIntro.java">
+      <file leaf-file-name="Composer.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Composer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="436">
-              <caret line="62" column="54" selection-start-line="62" selection-start-column="54" selection-end-line="62" selection-end-column="54" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ResponseAccompanimentRequest.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/ResponseAccompanimentRequest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-799">
-              <caret line="14" column="97" selection-start-line="14" selection-start-column="97" selection-end-line="14" selection-end-column="97" />
+            <state relative-caret-position="130">
+              <caret line="215" column="43" selection-start-line="215" selection-start-column="43" selection-end-line="215" selection-end-column="43" />
               <folding />
             </state>
           </provider>
@@ -120,18 +106,43 @@
       <file leaf-file-name="AccompanientPlaySections.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/AccompanientPlaySections.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="368">
-              <caret line="158" column="9" selection-start-line="158" selection-start-column="9" selection-end-line="158" selection-end-column="9" />
+            <state relative-caret-position="271">
+              <caret line="732" column="41" selection-start-line="732" selection-start-column="41" selection-end-line="732" selection-end-column="41" />
+              <folding>
+                <element signature="e#11132#11133#0" expanded="true" />
+                <element signature="e#11168#11169#0" expanded="true" />
+                <element signature="e#19259#19463#0" expanded="true" />
+                <element signature="e#19462#19463#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ComposerPlayIntro.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/intro/ComposerPlayIntro.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="334">
+              <caret line="62" column="54" selection-start-line="62" selection-start-column="54" selection-end-line="62" selection-end-column="54" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RequestIntroDataInitiator.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/timeManagerBehaviours/RequestIntroDataInitiator.java">
+      <file leaf-file-name="ComposeSoloBehaviour.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/ComposeSoloBehaviour.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="64" column="48" selection-start-line="64" selection-start-column="48" selection-end-line="64" selection-end-column="48" />
+            <state relative-caret-position="198">
+              <caret line="28" column="54" selection-start-line="28" selection-start-column="54" selection-end-line="28" selection-end-column="54" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ComposeIntro.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/intro/ComposeIntro.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="436">
+              <caret line="53" column="53" selection-start-line="53" selection-start-column="53" selection-end-line="53" selection-end-column="53" />
               <folding />
             </state>
           </provider>
@@ -415,7 +426,6 @@
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/interfaces/ComposerStatesNames.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/AccompanientGetStructure.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/intro/ExpectingIntroRequest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/intro/ComposeIntro.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/timeManagerBehaviours/FindInternalMusician.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/AccompanientPlayIntro.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/timeManagerBehaviours/CheckInfoIntroResponder.java" />
@@ -424,21 +434,23 @@
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/interfaces/DataStoreComposer.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/musebot/MusebotAssitant.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/ResponseAccompanimentRequest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/agents/TimeManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/timeManagerBehaviours/GetInfoSections.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/ontologies/musicelements/MusicElementsOntology.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Musician.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/ComposeSoloBehaviour.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/ComposeAccompanimentBehaviour.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/timeManagerBehaviours/RequestIntroDataInitiator.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/ConfirmComposeAccompaniment.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/timeManagerBehaviours/ResponseSectionRequestFromExtComp.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/GetMembers.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/timeManagerBehaviours/GetEveryTimeManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/timeManagerBehaviours/RequestIntroDataInitiator.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/agents/TimeManager.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/AccompanientPlaySections.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Composer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/intro/ComposeIntro.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/intro/ComposerPlayIntro.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/PlaySoloBehaviour.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/ConfirmComposeAccompaniment.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/ComposeAccompanimentBehaviour.java" />
         <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/PlayAccompanimentBehaviour.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/ComposeSoloBehaviour.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/PlaySoloBehaviour.java" />
       </list>
     </option>
   </component>
@@ -455,10 +467,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
+    <option name="x" value="1592" />
     <option name="y" value="-8" />
-    <option name="width" value="1616" />
-    <option name="height" value="876" />
+    <option name="width" value="1296" />
+    <option name="height" value="1000" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -1431,30 +1443,30 @@
       <workItem from="1490746193150" duration="86000" />
       <workItem from="1491928433013" duration="8080000" />
       <workItem from="1491947005100" duration="1338000" />
-      <workItem from="1491982538094" duration="5487000" />
+      <workItem from="1491982538094" duration="12395000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="323060000" />
+    <option name="totallyTimeSpent" value="329968000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="1" />
+    <frame x="1592" y="-8" width="1296" height="1000" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31897712" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3183391" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32974428" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28258362" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23650385" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29773462" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1653,13 +1665,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/intro/ComposeIntro.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2618">
-          <caret line="176" column="21" selection-start-line="176" selection-start-column="21" selection-end-line="176" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/timeManagerBehaviours/FindInternalMusician.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="901">
@@ -1692,13 +1697,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1037">
           <caret line="81" column="9" selection-start-line="69" selection-start-column="8" selection-end-line="81" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/agents/TimeManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1836">
-          <caret line="126" column="0" selection-start-line="126" selection-start-column="0" selection-end-line="126" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1749,34 +1747,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/ComposeSoloBehaviour.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1989">
-          <caret line="133" column="16" selection-start-line="133" selection-start-column="16" selection-end-line="133" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/GetMembers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1819">
-          <caret line="117" column="54" selection-start-line="117" selection-start-column="54" selection-end-line="117" selection-end-column="54" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/timeManagerBehaviours/GetEveryTimeManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/timeManagerBehaviours/CheckInfoIntroResponder.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1252">
@@ -1801,58 +1771,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/AccompanientPlaySections.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="158" column="9" selection-start-line="158" selection-start-column="9" selection-end-line="158" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/ComposeAccompanimentBehaviour.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2112">
-          <caret line="261" column="36" selection-start-line="261" selection-start-column="36" selection-end-line="261" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/ResponseAccompanimentRequest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-799">
           <caret line="14" column="97" selection-start-line="14" selection-start-column="97" selection-end-line="14" selection-end-column="97" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/timeManagerBehaviours/ResponseSectionRequestFromExtComp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="42" column="66" selection-start-line="42" selection-start-column="66" selection-end-line="42" selection-end-column="66" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Composer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="334">
-          <caret line="215" column="43" selection-start-line="215" selection-start-column="43" selection-end-line="215" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/intro/ComposerPlayIntro.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
-          <caret line="62" column="54" selection-start-line="62" selection-start-column="54" selection-end-line="62" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/PlaySoloBehaviour.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="283">
-          <caret line="162" column="55" selection-start-line="162" selection-start-column="55" selection-end-line="162" selection-end-column="55" />
           <folding />
         </state>
       </provider>
@@ -1865,10 +1787,109 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/GetMembers.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="436">
+          <caret line="117" column="54" selection-start-line="117" selection-start-column="54" selection-end-line="117" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/timeManagerBehaviours/GetEveryTimeManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/timeManagerBehaviours/ResponseSectionRequestFromExtComp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/agents/TimeManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-91">
+          <caret line="168" column="8" selection-start-line="168" selection-start-column="8" selection-end-line="168" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/AccompanientPlaySections.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="271">
+          <caret line="732" column="41" selection-start-line="732" selection-start-column="41" selection-end-line="732" selection-end-column="41" />
+          <folding>
+            <element signature="e#11132#11133#0" expanded="true" />
+            <element signature="e#11168#11169#0" expanded="true" />
+            <element signature="e#19259#19463#0" expanded="true" />
+            <element signature="e#19462#19463#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/agents/Composer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="215" column="43" selection-start-line="215" selection-start-column="43" selection-end-line="215" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/intro/ComposeIntro.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="436">
+          <caret line="53" column="53" selection-start-line="53" selection-start-column="53" selection-end-line="53" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/intro/ComposerPlayIntro.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="334">
+          <caret line="62" column="54" selection-start-line="62" selection-start-column="54" selection-end-line="62" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/ComposeAccompanimentBehaviour.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="33" column="78" selection-start-line="33" selection-start-column="78" selection-end-line="33" selection-end-column="78" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1422#1433#0" expanded="true" />
+            <element signature="e#1498#1507#0" expanded="true" />
+            <element signature="e#1622#1623#0" expanded="true" />
+            <element signature="e#1646#1647#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/accompaniment/PlayAccompanimentBehaviour.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="137" column="10" selection-start-line="137" selection-start-column="10" selection-end-line="137" selection-end-column="10" />
+        <state relative-caret-position="62">
+          <caret line="109" column="64" selection-start-line="109" selection-start-column="64" selection-end-line="109" selection-end-column="64" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/ComposeSoloBehaviour.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="28" column="54" selection-start-line="28" selection-start-column="54" selection-end-line="28" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/PlaySoloBehaviour.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="283">
+          <caret line="162" column="55" selection-start-line="162" selection-start-column="55" selection-end-line="162" selection-end-column="55" />
           <folding />
         </state>
       </provider>

@@ -26,7 +26,7 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
     private String form;
     private Queue<Character> queueSections = new LinkedList<Character>();
     private Queue<Integer> queueSectionIndex = new LinkedList<Integer>();
-    private Part saxPart = new Part("Sax PArt",PIANO,2);
+    private Part saxPart = new Part("Sax PArt",PIANO,1);
     private int rootPitch;
 
     public ComposeSoloBehaviour(Agent a)

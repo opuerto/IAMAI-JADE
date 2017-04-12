@@ -51,7 +51,7 @@ public class ComposeIntro extends OneShotBehaviour implements DataStoreComposer,
     //The Score of the intro.
     Score introScore = new Score("The intro Score");
     Phrase introPhrase = new Phrase("The intro Phrase");
-    Part pianoPart = new Part("the piano part",PIANO,2);//Part(java.lang.String title, int instrument, int channel)
+    Part pianoPart = new Part("the piano part",BASS,1);//Part(java.lang.String title, int instrument, int channel)
 
     //Instance to the behaviour
 
@@ -110,7 +110,7 @@ public class ComposeIntro extends OneShotBehaviour implements DataStoreComposer,
     private void ComposeIntro()
     {
         int lenght = introInstanceConcepts.getIntroLength();
-        int rootPitch = E4; //set start pitch to C
+        int rootPitch = C1-24; //set start pitch to C
        // int pitch = C3; // variable to store the calculated pitch (initialized with a start pitch value)
         int numberOfNotes = lenght * introScore.getNumerator();
         // build the rhythms
@@ -150,13 +150,13 @@ public class ComposeIntro extends OneShotBehaviour implements DataStoreComposer,
                 }
                 //add the next note to the phrase
                 if (rhythmNumb == 0) introPhrase.addNote(
-                        new Note(pitch, rhythm1[k]));
+                        new Note(pitch-24, rhythm1[k]));
                 if (rhythmNumb == 1) introPhrase.addNote(
-                        new Note(pitch, rhythm2[k]));
+                        new Note(pitch-24, rhythm2[k]));
                 if (rhythmNumb == 2) introPhrase.addNote(
-                        new Note(pitch, rhythm3[k]));
+                        new Note(pitch-24, rhythm3[k]));
                 if (rhythmNumb == 3) introPhrase.addNote(
-                        new Note(pitch, rhythm4[k]));
+                        new Note(pitch-24, rhythm4[k]));
                 ok = false;
             }
         }

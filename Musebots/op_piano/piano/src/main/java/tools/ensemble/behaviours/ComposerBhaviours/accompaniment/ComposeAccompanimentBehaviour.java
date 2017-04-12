@@ -34,7 +34,7 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
     //private Score AccompanimentScore = new Score("Accompaniment Score");
 
     private Phrase AccompanimentPhrase = new Phrase("Accompaniment Phrase");
-    private Part AccompanimentPianoPart = new Part("Accompaniment Piano",PIANO,2);
+    private Part AccompanimentPianoPart = new Part("Accompaniment Piano",PIANO,1);
     private String form;
     private int rootPitch;
     private Queue<Character> queueSections = new LinkedList<Character>();
