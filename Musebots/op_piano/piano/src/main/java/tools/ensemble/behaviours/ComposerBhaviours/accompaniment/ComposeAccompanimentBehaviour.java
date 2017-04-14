@@ -201,11 +201,11 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
         for(int i = 0; i < size; i++)
         {
 
-            ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.getSectionAchords().get(i);
+            ChordsAttributes chordAttribute = (ChordsAttributes) Musician.getSectionAchords().get(i);
 
-            rootPitch = chordAttrbute.getRootPitch();
-            String noteType = chordAttrbute.getMajorOrMinor();
-            int extension = chordAttrbute.getExtension();
+            rootPitch = chordAttribute.getRootPitch();
+            String noteType = chordAttribute.getMajorOrMinor();
+            int extension = chordAttribute.getExtension();
 
             for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
             {
