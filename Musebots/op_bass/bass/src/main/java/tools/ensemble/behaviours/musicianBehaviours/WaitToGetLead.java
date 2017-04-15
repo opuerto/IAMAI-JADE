@@ -103,6 +103,7 @@ public class WaitToGetLead extends OneShotBehaviour {
             informToLeader = accept.createReply();
             informToLeader.setPerformative(ACLMessage.INFORM);
             inform.setPerformative(ACLMessage.PROPAGATE);
+            Musician.setLastMusicianPassedMeTheLeadership(accept.getSender());
             state = 1;
             return inform;
         }

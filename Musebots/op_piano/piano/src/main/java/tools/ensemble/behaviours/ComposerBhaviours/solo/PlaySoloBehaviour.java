@@ -107,11 +107,11 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
             }
 
             //Play the solo
-            if (Composer.getMeasureCounter() >= Musician.tuneForm.length()*1)
+            if (Composer.getMeasureCounter() >= 1)
             {
                 System.out.println("Get Out of here "+Composer.getMeasureCounter());
                 System.out.println("the meassure "+Composer.getMeasureCounter());
-                System.out.println("the tune form lenght "+Musician.tuneForm.length()*3 );
+                System.out.println("the tune form lenght "+Musician.tuneForm.length() );
                 Composer.setMeasureCounter(0);
                 stopAndPassLead();
 

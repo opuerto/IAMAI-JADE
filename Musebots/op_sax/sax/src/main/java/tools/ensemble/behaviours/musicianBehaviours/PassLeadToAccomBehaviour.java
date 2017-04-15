@@ -53,8 +53,6 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
         nResponders = 0;
         state = 0;
         System.out.println("Pass Lead To accompaniment");
-        System.out.println("transition "+transition);
-        System.out.println("state "+state);
     }
 
     public void action()
@@ -69,7 +67,6 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
                 ACLMessage message = myAgent.receive(mt1);
                 if (message != null)
                 {
-                    System.out.println(" I receved an inform message "+message);
                     state = 2;
 
                 }
@@ -104,8 +101,7 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
                 //System.out.println("case 3");
                 break;
             case 4:
-                Musician.setLeader(false);
-                //System.out.println("case 4");
+                System.out.println("case 4");
                 break;
 
         }
@@ -118,10 +114,6 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
         if (transition == 34)
         {
             block(500);
-        }
-        if (transition == 39)
-        {
-            reset();
         }
         return transition;
     }
@@ -172,8 +164,15 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
     private class requestSoloNegotiation extends ContractNetInitiator
     {
         AID responderSelectect = null;
+        //Store the sender name
+        String sender = null;
+        //Store the last musician who passed me the lead
+        String LastMusicianPassingMeTheLEad;
+        //Store LastMusicians who I passed the lead
+        String MusicianIPassedTheLead;
         //Check the we only accept the first musician that propose and accept the call for proposal
         boolean findMycandidate = false;
+        boolean findAnotherCandidate = false;
         int rejectedCtn = 0;
         public requestSoloNegotiation(Agent a, ACLMessage msg)
         {
@@ -227,7 +226,7 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
                 ACLMessage ms = (ACLMessage) e.nextElement();
                 if (ms.getPerformative() == ACLMessage.PROPOSE)
                 {
-
+                    sender = ms.getSender().getLocalName();
                     //increment if when we got a propose performative
                     ACLMessage reply = ms.createReply();
                     reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
@@ -236,14 +235,38 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
                     if (!findMycandidate)
                     {
 
-                        if (Musician.lastMusicianIpassedTheLeadership != null && receivers.size() > 1)
+                        if (receivers.size() > 1)
                         {
-                            if(Musician.lastMusicianIpassedTheLeadership != ms.getSender() )
+                            if (Musician.lastMusicianIpassedTheLeadership != null)
+                            {
+                                MusicianIPassedTheLead = Musician.lastMusicianIpassedTheLeadership.getLocalName();
+
+                                if(MusicianIPassedTheLead.equals(sender))
+                                {
+                                    findAnotherCandidate = true;
+                                }
+                                else {findAnotherCandidate = false;}
+                            }
+                            if(Musician.getLastMusicianPassedMeTheLeadership() != null)
+                            {
+                                LastMusicianPassingMeTheLEad = Musician.getLastMusicianPassedMeTheLeadership().getLocalName();
+
+                                if(LastMusicianPassingMeTheLEad.equals(sender) )
+                                {
+                                    findAnotherCandidate = true;
+                                }else {
+
+                                    System.out.println("last musician i pass "+Musician.getLastMusicianPassedMeTheLeadership());
+                                    findAnotherCandidate = false;
+                                }
+                            }
+                            if (!findAnotherCandidate)
                             {
                                 accept = reply;
                                 Musician.lastMusicianIpassedTheLeadership = ms.getSender();
                                 responderSelectect = ms.getSender();
                                 findMycandidate = true;
+
                             }
                         }
                         else

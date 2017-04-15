@@ -17,6 +17,7 @@ import tools.ensemble.ontologies.timemanager.vocabulary.concepts.Section;
 import java.lang.reflect.Array;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Random;
 
 /**
  * Created by OscarAlfonso on 3/6/2017.
@@ -259,18 +260,19 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
             rootPitch = chordAttrbute.getRootPitch();
             String noteType = chordAttrbute.getMajorOrMinor();
             int extension = chordAttrbute.getExtension();
-
+            int[] notes = {rootPitch+3,rootPitch+7};
+            int randomN;
             for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
             {
-
-                if(j<1)
+                randomN =  (int)Math.random() * notes.length;
+                if(j <3 )
                 {
-                    phrase.add(new Note(rootPitch,QUARTER_NOTE,60));
+                    phrase.add(new Note(REST,QUARTER_NOTE,60));
 
                 }
                 else
                 {
-                    phrase.add(new Note(rootPitch+3,QUARTER_NOTE,60));
+                    phrase.add(new Note(notes[randomN],QUARTER_NOTE,60));
 
                 }
                 //phrase.add(new Note(rootPitch-2,C,80));
