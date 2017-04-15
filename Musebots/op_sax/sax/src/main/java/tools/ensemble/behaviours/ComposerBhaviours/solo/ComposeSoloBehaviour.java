@@ -6,6 +6,7 @@ import jm.JMC;
 import jm.music.data.Note;
 import jm.music.data.Part;
 import jm.music.data.Phrase;
+import jm.util.View;
 import tools.ensemble.agents.Composer;
 import tools.ensemble.agents.Musician;
 import tools.ensemble.agents.TimeManager;
@@ -113,13 +114,17 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
                 switch (Composer.getNextSectionSoloCharacter())
                 {
                     case 'A':
+
                         Composer.getSoloScore().setTempo(Musician.getTempo());
                         Composer.getSoloScore().addPart(randomWalkSectionA());
+
                         break;
                     case 'B':
+
                         Composer.getSoloScore().setTempo(Musician.getTempo());
-                        Composer.getSoloScore().addPart(randomWalkSectionB()
-                        );
+                        Composer.getSoloScore().addPart(randomWalkSectionB());
+
+
                         break;
                 }
 
@@ -144,12 +149,16 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
                 switch (Composer.getNextsectionCharacter())
                 {
                     case 'A':
+
                         Composer.getSoloScore().setTempo(Musician.getTempo());
                         Composer.getSoloScore().addPart(randomWalkSectionA());
+
                         break;
                     case 'B':
+
                         Composer.getSoloScore().setTempo(Musician.getTempo());
                         Composer.getSoloScore().addPart(randomWalkSectionB());
+
                         break;
                 }
 
@@ -254,10 +263,10 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
             String noteType = chordAttribute.getMajorOrMinor();
             int extension = chordAttribute.getExtension();
             // build the rhythms
-            double[] rhythm1 = {0.34,0.66,0.34,0.66,0.34,0.66,0.34};
-            double[] rhythm2 = {0.34,0.66,0.34,0.66,1.34};
-            double[] rhythm3 = {1.0,0.34,0.66,0.34,1.0};
-            double[] rhythm4 = {0.34,0.66,1.0,1.34};
+            double[] rhythm1 = {0.30,0.70,0.30,0.70,0.30,0.70,0.30};
+            double[] rhythm2 = {0.30,0.70,0.30,0.70,1.34};
+            double[] rhythm3 = {1.0,0.30,0.70,0.30,1.0};
+            double[] rhythm4 = {0.30,0.70,1.0,1.34};
             int temp = 0;
             boolean ok = false;
             int rhythmNumb = (int)(Math.random() *4);
