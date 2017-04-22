@@ -241,7 +241,7 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
                             {
                                 MusicianIPassedTheLead = Musician.lastMusicianIpassedTheLeadership.getLocalName();
 
-                                if(MusicianIPassedTheLead.equals(sender))
+                                if(MusicianIPassedTheLead.equals(sender))//sender
                                 {
                                     findAnotherCandidate = true;
                                 }
@@ -251,7 +251,7 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
                             {
                                 LastMusicianPassingMeTheLEad = Musician.getLastMusicianPassedMeTheLeadership().getLocalName();
 
-                                if(LastMusicianPassingMeTheLEad.equals(sender) )
+                                if(LastMusicianPassingMeTheLEad.equals(sender) )//sender
                                 {
                                     findAnotherCandidate = true;
                                 }else {

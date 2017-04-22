@@ -28,6 +28,7 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
     private Queue<Integer> queueSectionIndex = new LinkedList<Integer>();
     private Part ridePart = new Part("Drums ride", 0, 9);
     private Part snarePart = new Part("Drums snare", 0, 9);
+    private Part bassDrumPart = new Part("Drums bass", 0, 9);
 
     private int rootPitch;
 
@@ -111,17 +112,20 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
                 Composer.getSoloScore().empty();
                 snarePart.empty();
                 ridePart.empty();
+                bassDrumPart.empty();
                 switch (Composer.NextSectionSoloCharacter)
                 {
                     case 'A':
                         Composer.getSoloScore().setTempo(Musician.getTempo());
                         Composer.getSoloScore().addPart(composeSectionA(snarePart.getTitle()));
                         Composer.getSoloScore().addPart(composeSectionA(ridePart.getTitle()));
+                        Composer.getSoloScore().addPart(composeSectionA(bassDrumPart.getTitle()));
                         break;
                     case 'B':
                         Composer.getSoloScore().setTempo(Musician.getTempo());
                         Composer.getSoloScore().addPart(composeSectionB(snarePart.getTitle()));
                         Composer.getSoloScore().addPart(composeSectionB(ridePart.getTitle()));
+                        Composer.getSoloScore().addPart(composeSectionB(bassDrumPart.getTitle()));
                         break;
                 }
 
@@ -150,11 +154,13 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
                         Composer.getSoloScore().setTempo(Musician.getTempo());
                         Composer.getSoloScore().addPart(composeSectionA(snarePart.getTitle()));
                         Composer.getSoloScore().addPart(composeSectionA(ridePart.getTitle()));
+                        Composer.getSoloScore().addPart(composeSectionA(bassDrumPart.getTitle()));
                         break;
                     case 'B':
                         Composer.getSoloScore().setTempo(Musician.getTempo());
                         Composer.getSoloScore().addPart(composeSectionB(snarePart.getTitle()));
                         Composer.getSoloScore().addPart(composeSectionB(ridePart.getTitle()));
+                        Composer.getSoloScore().addPart(composeSectionB(bassDrumPart.getTitle()));
                         break;
                 }
 
@@ -183,7 +189,7 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
 
     private Part composeSectionA(String partName)
     {
-        if(partName.equals("Drums ride"))
+        if(partName.equals("Drums snare"))
         {
             int size = Musician.sectionAchords.size();
             int x;
@@ -223,6 +229,46 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
             }
             return ridePart;
         }
+        if(partName.equals("Drums bass"))
+        {
+            int size = Musician.sectionAchords.size();
+            int x;
+            double[] pattern;
+            double[] pattern0 = {C, 0.67, 0.33, C, C};
+            double[] pattern1 = {0.67, 0.33, C, 0.33, 0.67,C};
+            double[] pattern2 = {C, C, C, 0.67, 0.33};
+            double[] pattern3 = {0.33, 0.67, 0.33, C, 0.67,0.67,0.33};
+            for(int i = 0; i < size; i++)
+            {
+                // choose one of the patterns at random
+                x = (int)(Math.random()*4);
+                switch (x)
+                {
+                    case 0:
+                        pattern = new double[pattern0.length];
+                        pattern = pattern0;
+                        break;
+                    case 1:
+                        pattern = new double[pattern1.length];
+                        pattern = pattern1;
+                        break;
+                    case 2:
+                        pattern = new double[pattern2.length];
+                        pattern = pattern2;
+                        break;
+                    case 3:
+                        pattern = new double[pattern3.length];
+                        pattern = pattern3;
+                        break;
+                    default:
+                        pattern = new double[pattern0.length];
+                        pattern = pattern0;
+                }
+                bassDrumPart.addPhrase(swingTimeBassDrum(pattern));
+
+            }
+            return bassDrumPart;
+        }
         int size = Musician.sectionAchords.size();
         for(int i = 0; i < size; i++)
         {
@@ -235,7 +281,7 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
 
     private Part composeSectionB(String partName)
     {
-        if(partName.equals("Drums ride"))
+        if(partName.equals("Drums snare"))
         {
             int size = Musician.sectionBchords.size();
             int x;
@@ -276,6 +322,46 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
             }
             return ridePart;
         }
+        if(partName.equals("Drums bass"))
+        {
+            int size = Musician.sectionBchords.size();
+            int x;
+            double[] pattern;
+            double[] pattern0 = {C, 0.67, 0.33, C, C};
+            double[] pattern1 = {0.67, 0.33, C, 0.33, 0.67,C};
+            double[] pattern2 = {C, C, C, 0.67, 0.33};
+            double[] pattern3 = {0.33, 0.67, 0.33, C, 0.67,0.67,0.33};
+            for(int i = 0; i < size; i++)
+            {
+                // choose one of the patterns at random
+                x = (int)(Math.random()*4);
+                switch (x)
+                {
+                    case 0:
+                        pattern = new double[pattern0.length];
+                        pattern = pattern0;
+                        break;
+                    case 1:
+                        pattern = new double[pattern1.length];
+                        pattern = pattern1;
+                        break;
+                    case 2:
+                        pattern = new double[pattern2.length];
+                        pattern = pattern2;
+                        break;
+                    case 3:
+                        pattern = new double[pattern3.length];
+                        pattern = pattern3;
+                        break;
+                    default:
+                        pattern = new double[pattern0.length];
+                        pattern = pattern0;
+                }
+                bassDrumPart.addPhrase(swingTimeBassDrum(pattern));
+
+            }
+            return bassDrumPart;
+        }
         int size = Musician.sectionBchords.size();
         for(int i = 0; i < size; i++)
         {
@@ -289,10 +375,25 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
         // build the ride line
         Phrase phr = new Phrase();
 
-        int ride = 51;
+        int snare = 38;
+
         for (int i = 0; i< pattern.length; i++)
         {
-            Note note = new Note(ride,pattern[i],60);
+            Note note = new Note(snare,pattern[i],80);
+            phr.addNote(note);
+        }
+        return phr;
+    }
+
+    private Phrase swingTimeBassDrum(double[] pattern) {
+        // build the ride line
+        Phrase phr = new Phrase();
+
+        int bassDrum = 36;
+
+        for (int i = 0; i< pattern.length; i++)
+        {
+            Note note = new Note(bassDrum,pattern[i],80);
             phr.addNote(note);
         }
         return phr;
@@ -301,10 +402,10 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
     public static Phrase swingAccents() {
         // build the bass line from the rootPitch
         Phrase phr = new Phrase();
-        int snare = 38;
+        int ride = 51;
         for (int i=0;i<4;i++) {
-            phr.addNote(new Note(REST, 0.67,50));
-            phr.addNote(new Note(snare, 0.33,
+            phr.addNote(new Note(REST, 0.67,70));
+            phr.addNote(new Note(ride, 0.33,
                     (int)(Math.random()*60)));
         }
         return phr;
