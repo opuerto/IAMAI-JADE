@@ -26,7 +26,9 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
     private String form;
     private Queue<Character> queueSections = new LinkedList<Character>();
     private Queue<Integer> queueSectionIndex = new LinkedList<Integer>();
-    private Part saxPart = new Part("Sax PArt",PIANO,1);
+    private Part ridePart = new Part("Drums ride", 0, 9);
+    private Part snarePart = new Part("Drums snare", 0, 9);
+
     private int rootPitch;
 
     public ComposeSoloBehaviour(Agent a)
@@ -107,16 +109,19 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
                 System.out.println("the reminder in section"  +queueSections);
 
                 Composer.getSoloScore().empty();
-                saxPart.empty();
+                snarePart.empty();
+                ridePart.empty();
                 switch (Composer.NextSectionSoloCharacter)
                 {
                     case 'A':
                         Composer.getSoloScore().setTempo(Musician.getTempo());
-                        Composer.getSoloScore().addPart(randomWalkSectionA());
+                        Composer.getSoloScore().addPart(composeSectionA(snarePart.getTitle()));
+                        Composer.getSoloScore().addPart(composeSectionA(ridePart.getTitle()));
                         break;
                     case 'B':
                         Composer.getSoloScore().setTempo(Musician.getTempo());
-                        Composer.getSoloScore().addPart(randomWalkSectionB());
+                        Composer.getSoloScore().addPart(composeSectionB(snarePart.getTitle()));
+                        Composer.getSoloScore().addPart(composeSectionB(ridePart.getTitle()));
                         break;
                 }
 
@@ -137,16 +142,19 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
                 System.out.println("the section is " +  Composer.NextSectionSoloCharacter);
                 System.out.println("the index is " + Composer.NextSectionSoloIndex);
                 Composer.getSoloScore().empty();
-                saxPart.empty();
+                snarePart.empty();
+                ridePart.empty();
                 switch (Composer.NextSectionSoloCharacter)
                 {
                     case 'A':
                         Composer.getSoloScore().setTempo(Musician.getTempo());
-                        Composer.getSoloScore().addPart(randomWalkSectionA());
+                        Composer.getSoloScore().addPart(composeSectionA(snarePart.getTitle()));
+                        Composer.getSoloScore().addPart(composeSectionA(ridePart.getTitle()));
                         break;
                     case 'B':
                         Composer.getSoloScore().setTempo(Musician.getTempo());
-                        Composer.getSoloScore().addPart(randomWalkSectionB());
+                        Composer.getSoloScore().addPart(composeSectionB(snarePart.getTitle()));
+                        Composer.getSoloScore().addPart(composeSectionB(ridePart.getTitle()));
                         break;
                 }
 
@@ -173,280 +181,133 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
         return transition;
     }
 
-    private Part composeSectionA()
+    private Part composeSectionA(String partName)
     {
-        //Part bassPart = new Part("Bass Part",BASS,3);
-        Phrase phrase = new Phrase();
+        if(partName.equals("Drums ride"))
+        {
+            int size = Musician.sectionAchords.size();
+            int x;
+            double[] pattern;
+            double[] pattern0 = {C, 0.67, 0.33, C, C};
+            double[] pattern1 = {0.67, 0.33, C, 0.33, 0.67,C};
+            double[] pattern2 = {C, C, C, 0.67, 0.33};
+            double[] pattern3 = {0.33, 0.67, 0.33, C, 0.67,0.67,0.33};
+            for(int i = 0; i < size; i++)
+            {
+                // choose one of the patterns at random
+                x = (int)(Math.random()*4);
+                switch (x)
+                {
+                    case 0:
+                        pattern = new double[pattern0.length];
+                        pattern = pattern0;
+                        break;
+                    case 1:
+                        pattern = new double[pattern1.length];
+                        pattern = pattern1;
+                        break;
+                    case 2:
+                        pattern = new double[pattern2.length];
+                        pattern = pattern2;
+                        break;
+                    case 3:
+                        pattern = new double[pattern3.length];
+                        pattern = pattern3;
+                        break;
+                    default:
+                        pattern = new double[pattern0.length];
+                        pattern = pattern0;
+                }
+                ridePart.addPhrase(swingTime(pattern));
 
+            }
+            return ridePart;
+        }
         int size = Musician.sectionAchords.size();
         for(int i = 0; i < size; i++)
         {
-            //rootPitch = ((Long) Musician.sectionAchords.get(i)).intValue();
-            ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.getSectionAchords().get(i);
-            //System.out.println(chordAttrbute);
-            rootPitch = chordAttrbute.getRootPitch();
-            String noteType = chordAttrbute.getMajorOrMinor();
-            int extension = chordAttrbute.getExtension();
+            snarePart.addPhrase(swingAccents());
 
-            for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
-            {
-
-                if(j<1)
-                {
-                    phrase.add(new Note(rootPitch,QUARTER_NOTE,60));
-
-                }
-                else
-                {
-                    phrase.add(new Note(rootPitch+3,QUARTER_NOTE,60));
-
-                }
-
-            }
         }
+        return snarePart;
 
-
-        saxPart.addPhrase(phrase);
-
-
-        return saxPart;
     }
-    private Part composeSectionB()
+
+    private Part composeSectionB(String partName)
     {
-
-        //Part bassPart = new Part("Bass Part",BASS,3);
-        Phrase phrase = new Phrase();
-
-        int size = Musician.getSectionBchords().size();
-        for(int i = 0; i < size; i++)
+        if(partName.equals("Drums ride"))
         {
-            //rootPitch = ((Long) Musician.sectionAchords.get(i)).intValue();
-            ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.getSectionBchords().get(i);
-            //System.out.println(chordAttrbute);
-            rootPitch = chordAttrbute.getRootPitch();
-            String noteType = chordAttrbute.getMajorOrMinor();
-            int extension = chordAttrbute.getExtension();
-
-            for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
+            int size = Musician.sectionBchords.size();
+            int x;
+            double[] pattern;
+            double[] pattern0 = {C, 0.67, 0.33, C, C};
+            double[] pattern1 = {0.67, 0.33, C, 0.33, 0.67,C};
+            double[] pattern2 = {C, C, C, 0.67, 0.33};
+            double[] pattern3 = {0.33, 0.67, 0.33, C, 0.67,0.67,0.33};
+            for(int i = 0; i < size; i++)
             {
-                phrase.add(new Note(rootPitch,QUARTER_NOTE,60));
-
-
-            }
-        }
-
-        saxPart.addPhrase(phrase);
-
-        return saxPart;
-
-    }
-
-    private Part randomWalkSectionA()
-    {
-        Phrase phrase = new Phrase();
-        int size = Musician.sectionAchords.size();
-        for(int i = 0; i < size; i++)
-        {
-            ChordsAttributes chordAttribute = (ChordsAttributes) Musician.getSectionAchords().get(i);
-            rootPitch = chordAttribute.getRootPitch();
-            String noteType = chordAttribute.getMajorOrMinor();
-            int extension = chordAttribute.getExtension();
-            // build the rhythms
-            double[] rhythm1 = {0.30,0.70,0.30,0.70,0.30,0.70,0.30};
-            double[] rhythm2 = {0.30,0.70,0.30,0.70,1.34};
-            double[] rhythm3 = {1.0,0.30,0.70,0.30,1.0};
-            double[] rhythm4 = {0.30,0.70,1.0,1.34};
-            int temp = 0;
-            boolean ok = false;
-            int rhythmNumb = (int)(Math.random() *4);
-            int rhythmLength = 0;
-            int intervalNumb = 0;
-            //choose a rhythm to use for the phrase
-            if (rhythmNumb == 0) rhythmLength = rhythm1.length;
-            if (rhythmNumb == 1) rhythmLength = rhythm2.length;
-            if (rhythmNumb == 2) rhythmLength = rhythm3.length;
-            if (rhythmNumb == 3) rhythmLength = rhythm4.length;
-
-            for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
-            {
-                phrase.addNote(new Note(REST, 0.70));
-                for (int k = 0; k < rhythmLength; k++)
+                // choose one of the patterns at random
+                x = (int)(Math.random()*4);
+                switch (x)
                 {
-                    while (ok == false)
-                    {
-                        int intervalLenght = getNewInterval(rootPitch,extension,noteType).length;
-                        int[] p = new int[intervalLenght];
-                        p =  getNewInterval(rootPitch,extension,noteType);
-                        intervalNumb = (int)(Math.random()*intervalLenght);
-                        if (temp != p[intervalNumb])
-                        {
-                            temp = p[intervalNumb];
-                            ok = true;
-                            break;
-                        }
-
-                    }
-                    //add the next note to the phrase
-                    if (rhythmNumb == 0) phrase.addNote(
-                            new Note(temp, rhythm1[k]));
-                    if (rhythmNumb == 1) phrase.addNote(
-                            new Note(temp, rhythm2[k]));
-                    if (rhythmNumb == 2) phrase.addNote(
-                            new Note(temp, rhythm3[k]));
-                    if (rhythmNumb == 3) phrase.addNote(
-                            new Note(temp, rhythm4[k]));
-                    ok = false;
+                    case 0:
+                        pattern = new double[pattern0.length];
+                        pattern = pattern0;
+                        break;
+                    case 1:
+                        pattern = new double[pattern1.length];
+                        pattern = pattern1;
+                        break;
+                    case 2:
+                        pattern = new double[pattern2.length];
+                        pattern = pattern2;
+                        break;
+                    case 3:
+                        pattern = new double[pattern3.length];
+                        pattern = pattern3;
+                        break;
+                    default:
+                        pattern = new double[pattern0.length];
+                        pattern = pattern0;
                 }
+                ridePart.addPhrase(swingTime(pattern));
 
 
             }
-
+            return ridePart;
         }
-        saxPart.add(phrase);
-        return saxPart;
-    }
-
-    private Part randomWalkSectionB()
-    {
-        Phrase phrase = new Phrase();
         int size = Musician.sectionBchords.size();
         for(int i = 0; i < size; i++)
         {
-            ChordsAttributes chordAttribute = (ChordsAttributes) Musician.getSectionAchords().get(i);
-            rootPitch = chordAttribute.getRootPitch();
-            String noteType = chordAttribute.getMajorOrMinor();
-            int extension = chordAttribute.getExtension();
-            // build the rhythms
-            double[] rhythm1 = {0.30,0.70,0.30,0.70,0.30,0.70,0.30};
-            double[] rhythm2 = {0.30,0.70,0.30,0.70,1.34};
-            double[] rhythm3 = {1.0,0.30,0.70,0.30,1.0};
-            double[] rhythm4 = {0.30,0.70,1.0,1.34};
-            int temp = 0;
-            boolean ok = false;
-            int rhythmNumb = (int)(Math.random() *4);
-            int rhythmLength = 0;
-            int intervalNumb = 0;
-            //choose a rhythm to use for the phrase
-            if (rhythmNumb == 0) rhythmLength = rhythm1.length;
-            if (rhythmNumb == 1) rhythmLength = rhythm2.length;
-            if (rhythmNumb == 2) rhythmLength = rhythm3.length;
-            if (rhythmNumb == 3) rhythmLength = rhythm4.length;
-
-            for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
-            {
-                phrase.addNote(new Note(REST, 0.66));
-                for (int k = 0; k < rhythmLength; k++)
-                {
-                    while (ok == false)
-                    {
-                        int intervalLenght = getNewInterval(rootPitch,extension,noteType).length;
-                        int[] p = new int[intervalLenght];
-                        p =  getNewInterval(rootPitch,extension,noteType);
-                        intervalNumb = (int)(Math.random()*intervalLenght);
-                        if (temp != p[intervalNumb])
-                        {
-                            temp = p[intervalNumb];
-                            ok = true;
-                            break;
-                        }
-
-                    }
-                    //add the next note to the phrase
-                    if (rhythmNumb == 0) phrase.addNote(
-                            new Note(temp, rhythm1[k]));
-                    if (rhythmNumb == 1) phrase.addNote(
-                            new Note(temp, rhythm2[k]));
-                    if (rhythmNumb == 2) phrase.addNote(
-                            new Note(temp, rhythm3[k]));
-                    if (rhythmNumb == 3) phrase.addNote(
-                            new Note(temp, rhythm4[k]));
-                    ok = false;
-                }
-
-
-            }
+            snarePart.addPhrase(swingAccents());
 
         }
-        saxPart.add(phrase);
-        return saxPart;
+        return snarePart;
     }
 
+    private Phrase swingTime(double[] pattern) {
+        // build the ride line
+        Phrase phr = new Phrase();
 
+        int ride = 51;
+        for (int i = 0; i< pattern.length; i++)
+        {
+            Note note = new Note(ride,pattern[i],60);
+            phr.addNote(note);
+        }
+        return phr;
+    }
 
-    private int[] getNewInterval(int pitch, int extension, String type)
-    {
-        int[] pitchArray = new int[3];
-        if(type.equals("m") && extension == 7)
-        {
-            int[] pitchArrayMinor7 = new int[4];
-            pitchArrayMinor7[0] = pitch;
-            pitchArrayMinor7[1] = pitch + 3;
-            pitchArrayMinor7[2] = pitch + 7;
-            pitchArrayMinor7[3] = pitch + 10;
-            return pitchArrayMinor7;
+    public static Phrase swingAccents() {
+        // build the bass line from the rootPitch
+        Phrase phr = new Phrase();
+        int snare = 38;
+        for (int i=0;i<4;i++) {
+            phr.addNote(new Note(REST, 0.67,50));
+            phr.addNote(new Note(snare, 0.33,
+                    (int)(Math.random()*60)));
         }
-        else if(type.equals("M") && extension == 7)
-        {
-            int[] pitchArrayMajor7 = new int[4];
-            pitchArrayMajor7[0] = pitch;
-            pitchArrayMajor7[1] = pitch + 4;
-            pitchArrayMajor7[2] = pitch + 7;
-            pitchArrayMajor7[3] = pitch + 11;
-            return pitchArrayMajor7;
-
-        }
-        else if(type.equals("D") && extension == 7)
-        {
-
-            int[] pitchArrayDominant7 = new int[4];
-            pitchArrayDominant7[0] = pitch;
-            pitchArrayDominant7[1] = pitch + 4;
-            pitchArrayDominant7[2] = pitch + 7;
-            pitchArrayDominant7[3] = pitch + 10;
-            return pitchArrayDominant7;
-
-        }
-        else if (type.equals("Db") && extension == 7)
-        {
-            int[] pitchArrayDominantB7 = new int[4];
-            pitchArrayDominantB7[0] = pitch-1;
-            pitchArrayDominantB7[1] = pitch + 3;
-            pitchArrayDominantB7[2] = pitch + 6;
-            pitchArrayDominantB7[3] = pitch + 9;
-            return pitchArrayDominantB7;
-        }
-        else if(type.equals("M") && extension == 0)
-        {
-            int[] pitchArrayTriad = new int[3];
-            pitchArrayTriad[0] = pitch ;
-            pitchArrayTriad[1] = pitch + 4;
-            pitchArrayTriad[2] = pitch + 7;
-            return pitchArrayTriad;
-        }
-        else if (type.equals("m") && extension == 0)
-        {
-            int[] pitchArrayTriad = new int[3];
-            pitchArrayTriad[0] = pitch ;
-            pitchArrayTriad[1] = pitch + 3;
-            pitchArrayTriad[2] = pitch + 7;
-            return pitchArrayTriad;
-        }else if(type.equals("Dsus"))
-        {
-            int[] pitchArrayTriad = new int[3];
-            pitchArrayTriad[0] = pitch ;
-            pitchArrayTriad[1] = pitch + 7;
-            pitchArrayTriad[2] = pitch + 10;
-            return pitchArrayTriad;
-        }
-        else
-        {
-            pitchArray[0] = pitch;
-            pitchArray[1] = rootPitch + 4;
-            pitchArray[2] = rootPitch + 7;
-
-        }
-
-        return pitchArray;
+        return phr;
     }
 
 

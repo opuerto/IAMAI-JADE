@@ -159,7 +159,7 @@ public class PlaySoloBehaviour extends OneShotBehaviour implements DataStoreComp
     private void play()
     {
 
-        System.out.println("Im in playing");
+        System.out.println("Im in playing solo");
         Play.midi(Composer.getSoloScore(),false,false,1,0);
         Composer.incrementMeasureCounter();
 
