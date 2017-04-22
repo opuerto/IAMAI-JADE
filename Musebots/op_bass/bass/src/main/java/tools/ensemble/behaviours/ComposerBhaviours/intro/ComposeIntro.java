@@ -24,6 +24,7 @@ import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStoreComposer;
 import tools.ensemble.ontologies.composer.ComposerOntology;
 import tools.ensemble.ontologies.composer.vocabulary.concepts.IntroConcepts;
+import tools.ensemble.ontologies.musicelements.vocabulary.concepts.ChordsAttributes;
 
 /**
  * Created by OscarAlfonso on 2/28/2017.
@@ -45,7 +46,7 @@ public class ComposeIntro extends OneShotBehaviour implements DataStoreComposer,
             MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL)
     );
     private MessageTemplate mt1andmt2;
-
+    private int rootPitch;
     //intro instance object
     private IntroConcepts introInstanceConcepts;
     //The Score of the intro.
@@ -110,21 +111,22 @@ public class ComposeIntro extends OneShotBehaviour implements DataStoreComposer,
     private void ComposeIntro()
     {
         int lenght = introInstanceConcepts.getIntroLength();
-        int rootPitch = C1-24; //set start pitch to C
-       // int pitch = C3; // variable to store the calculated pitch (initialized with a start pitch value)
+        int sizeAsection = Musician.getSectionAchords().size();
+        ChordsAttributes chordAttribute = (ChordsAttributes) Musician.getSectionAchords().get((int)Math.random()*sizeAsection);
+        rootPitch = chordAttribute.getRootPitch()-24;
         int numberOfNotes = lenght * introScore.getNumerator();
+        String noteType = chordAttribute.getMajorOrMinor();
+        int extension = chordAttribute.getExtension();
         // build the rhythms
-        boolean ok = false;
-        double[] rhythm1 = {0.34,0.66,0.34,0.66,0.34,0.66,0.34};
-        double[] rhythm2 = {0.34,0.66,0.34,0.66,1.34};
-        double[] rhythm3 = {1.0,0.34,0.66,0.34,1.0};
-        double[] rhythm4 = {0.34,0.66,1.0,1.34};
-        int[] mode = {0,4,5,7,9};
-        int pitch = (int)Math.random()*12 + 65;
+        double[] rhythm1 = {0.30,0.70,0.30,0.70,0.30,0.70,0.30};
+        double[] rhythm2 = {0.30,0.70,0.30,0.70,1.34};
+        double[] rhythm3 = {1.0,0.30,0.70,0.30,1.0};
+        double[] rhythm4 = {0.30,0.70,1.0,1.34};
         int temp = 0;
+        boolean ok = false;
         int rhythmNumb = (int)(Math.random() *4);
         int rhythmLength = 0;
-
+        int intervalNumb = 0;
         //choose a rhythm to use for the phrase
         if (rhythmNumb == 0) rhythmLength = rhythm1.length;
         if (rhythmNumb == 1) rhythmLength = rhythm2.length;
@@ -136,27 +138,27 @@ public class ComposeIntro extends OneShotBehaviour implements DataStoreComposer,
             introPhrase.addNote(new Note(REST, 0.66));
             for(int k=0;k<rhythmLength;k++) {
                 while (ok == false) {
-                    //get new interval
-                    temp = (int)(Math.random() * 10) - 5;
-                    //check to see if new note is in the mode
-                    for(int j=0;j<mode.length;j++) {
-                        if ((pitch + temp)%12 ==
-                                (mode[j] + rootPitch)%12) {
-                            pitch += temp;
-                            ok = true;
-                            break;
-                        }
+                    int intervalLenght = getNewInterval(rootPitch,extension,noteType).length;
+                    int[] p = new int[intervalLenght];
+                    p =  getNewInterval(rootPitch,extension,noteType);
+                    intervalNumb = (int)(Math.random()*intervalLenght);
+                    if (temp != p[intervalNumb])
+                    {
+                        temp = p[intervalNumb];
+                        ok = true;
+                        break;
                     }
+
                 }
                 //add the next note to the phrase
                 if (rhythmNumb == 0) introPhrase.addNote(
-                        new Note(pitch-24, rhythm1[k]));
+                        new Note(temp, rhythm1[k]));
                 if (rhythmNumb == 1) introPhrase.addNote(
-                        new Note(pitch-24, rhythm2[k]));
+                        new Note(temp, rhythm2[k]));
                 if (rhythmNumb == 2) introPhrase.addNote(
-                        new Note(pitch-24, rhythm3[k]));
+                        new Note(temp, rhythm3[k]));
                 if (rhythmNumb == 3) introPhrase.addNote(
-                        new Note(pitch-24, rhythm4[k]));
+                        new Note(temp, rhythm4[k]));
                 ok = false;
             }
         }
@@ -168,6 +170,82 @@ public class ComposeIntro extends OneShotBehaviour implements DataStoreComposer,
         double tempo = introScore.getTempo();
         double lengofIntro = (betPerMeasure*numberOfMeasure/tempo)*60*1000;
         introInstanceConcepts.setIntroDuration((float) lengofIntro);
+    }
+
+    private int[] getNewInterval(int pitch, int extension, String type)
+    {
+        int[] pitchArray = new int[3];
+        if(type.equals("m") && extension == 7)
+        {
+            int[] pitchArrayMinor7 = new int[4];
+            pitchArrayMinor7[0] = pitch;
+            pitchArrayMinor7[1] = pitch + 3;
+            pitchArrayMinor7[2] = pitch + 7;
+            pitchArrayMinor7[3] = pitch + 10;
+            return pitchArrayMinor7;
+        }
+        else if(type.equals("M") && extension == 7)
+        {
+            int[] pitchArrayMajor7 = new int[4];
+            pitchArrayMajor7[0] = pitch;
+            pitchArrayMajor7[1] = pitch + 4;
+            pitchArrayMajor7[2] = pitch + 7;
+            pitchArrayMajor7[3] = pitch + 11;
+            return pitchArrayMajor7;
+
+        }
+        else if(type.equals("D") && extension == 7)
+        {
+
+            int[] pitchArrayDominant7 = new int[4];
+            pitchArrayDominant7[0] = pitch;
+            pitchArrayDominant7[1] = pitch + 4;
+            pitchArrayDominant7[2] = pitch + 7;
+            pitchArrayDominant7[3] = pitch + 10;
+            return pitchArrayDominant7;
+
+        }
+        else if (type.equals("Db") && extension == 7)
+        {
+            int[] pitchArrayDominantB7 = new int[4];
+            pitchArrayDominantB7[0] = pitch-1;
+            pitchArrayDominantB7[1] = pitch + 3;
+            pitchArrayDominantB7[2] = pitch + 6;
+            pitchArrayDominantB7[3] = pitch + 9;
+            return pitchArrayDominantB7;
+        }
+        else if(type.equals("M") && extension == 0)
+        {
+            int[] pitchArrayTriad = new int[3];
+            pitchArrayTriad[0] = pitch ;
+            pitchArrayTriad[1] = pitch + 4;
+            pitchArrayTriad[2] = pitch + 7;
+            return pitchArrayTriad;
+        }
+        else if (type.equals("m") && extension == 0)
+        {
+            int[] pitchArrayTriad = new int[3];
+            pitchArrayTriad[0] = pitch ;
+            pitchArrayTriad[1] = pitch + 3;
+            pitchArrayTriad[2] = pitch + 7;
+            return pitchArrayTriad;
+        }else if(type.equals("Dsus"))
+        {
+            int[] pitchArrayTriad = new int[3];
+            pitchArrayTriad[0] = pitch ;
+            pitchArrayTriad[1] = pitch + 7;
+            pitchArrayTriad[2] = pitch + 10;
+            return pitchArrayTriad;
+        }
+        else
+        {
+            pitchArray[0] = pitch;
+            pitchArray[1] = rootPitch + 4;
+            pitchArray[2] = rootPitch + 7;
+
+        }
+
+        return pitchArray;
     }
 
     public int onEnd()

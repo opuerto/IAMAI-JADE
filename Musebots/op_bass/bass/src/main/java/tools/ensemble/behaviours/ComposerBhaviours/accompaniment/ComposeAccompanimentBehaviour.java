@@ -285,11 +285,11 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
 
                 if(j<1)
                 {
-                    phrase.add(new Note(rootPitch,C,60));
+                    phrase.add(new Note(rootPitch,C,50));
                 }
                 else
                 {
-                    phrase.add(new Note(rootPitch+3,C,60));
+                    phrase.add(new Note(rootPitch+3,C,50));
                 }
                 //phrase.add(new Note(rootPitch-2,C,80));
                 //phrase.add(new Note(rootPitch-3,C,80));
@@ -319,7 +319,7 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
 
             for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
             {
-                phrase.add(new Note(rootPitch,C,60));
+                phrase.add(new Note(rootPitch,C,50));
                 //if(j<1)
                 //{
                 //    phrase.add(new Note(rootPitch,C,80));

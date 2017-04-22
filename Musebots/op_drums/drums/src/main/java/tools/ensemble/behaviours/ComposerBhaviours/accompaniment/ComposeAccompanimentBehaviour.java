@@ -244,11 +244,11 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
         // build the ride line
         Phrase phr = new Phrase();
         int ride = 51;
-        phr.addNote(new Note(ride, C,50));
-        phr.addNote(new Note(ride, 0.67,50));
-        phr.addNote(new Note(ride, 0.33,50));
-        phr.addNote(new Note(ride, C,50));
-        phr.addNote(new Note(ride, C,50));
+        phr.addNote(new Note(ride, C,80));
+        phr.addNote(new Note(ride, 0.67,80));
+        phr.addNote(new Note(ride, 0.33,80));
+        phr.addNote(new Note(ride, C,80));
+        phr.addNote(new Note(ride, C,80));
         return phr;
     }
 

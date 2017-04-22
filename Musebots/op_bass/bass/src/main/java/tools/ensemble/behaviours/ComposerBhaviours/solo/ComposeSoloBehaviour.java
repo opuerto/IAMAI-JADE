@@ -193,12 +193,12 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
 
                 if(j<1)
                 {
-                    phrase.add(new Note(rootPitch,QUARTER_NOTE,60));
+                    phrase.add(new Note(rootPitch,QUARTER_NOTE,50));
 
                 }
                 else
                 {
-                    phrase.add(new Note(rootPitch+3,QUARTER_NOTE,60));
+                    phrase.add(new Note(rootPitch+3,QUARTER_NOTE,50));
 
                 }
 
@@ -229,7 +229,7 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
 
             for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
             {
-                phrase.add(new Note(rootPitch,QUARTER_NOTE,60));
+                phrase.add(new Note(rootPitch,QUARTER_NOTE,50));
 
             }
         }
