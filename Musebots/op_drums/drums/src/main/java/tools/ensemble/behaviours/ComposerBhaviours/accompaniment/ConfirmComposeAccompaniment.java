@@ -5,6 +5,7 @@ import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import tools.ensemble.agents.Composer;
 import tools.ensemble.interfaces.DataStoreComposer;
 
 /**

@@ -87,6 +87,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
                 else
                 {
                     System.out.println("Im not playing because Im not a leader");
+                    Composer.setTimeLeftInCurrentsection(null);
                     transition = 11;
                 }
 
@@ -107,7 +108,7 @@ public class PlayAccompanimentBehaviour extends OneShotBehaviour implements Data
         accompanimentScore = Composer.getAccompanimentScore();
 
         //if (!Musician.getLeader())
-        Play.midi(Composer.getAccompanimentScore(),false,false,2,0);
+        Play.midi(Composer.getAccompanimentScore(),false,false,1,0);
         Composer.incrementMeasureCounter();
         System.out.println("The cycle number is "+Composer.getMeasureCounter());
         System.out.println("The current section is "+Composer.getNextsectionCharacter());

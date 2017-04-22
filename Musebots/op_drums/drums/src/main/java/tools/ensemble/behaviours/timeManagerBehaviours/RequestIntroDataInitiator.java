@@ -62,6 +62,7 @@ public class RequestIntroDataInitiator extends AchieveREInitiator implements Dat
                         intro.setIntroStartedAt(((Intro) concept).getIntroStartedAt());
                         getDataStore().remove(INTRO_INSTANCE);
                         getDataStore().put(INTRO_INSTANCE,intro);
+                        System.out.println("Intro instance $$ "+intro.getIntroLenght());
 
 
                     }

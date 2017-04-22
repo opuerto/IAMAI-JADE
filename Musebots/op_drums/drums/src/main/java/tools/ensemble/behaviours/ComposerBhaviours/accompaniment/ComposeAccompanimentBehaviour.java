@@ -29,12 +29,11 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
             MessageTemplate.MatchConversationId("request-accompaniment-conversation-CONFIRM"),
             MessageTemplate.MatchPerformative(ACLMessage.CONFIRM)
     );
-   // private MessageTemplate mt1andmt2;
+    // private MessageTemplate mt1andmt2;
 
-    //private Score AccompanimentScore = new Score("Accompaniment Score");
-
-    private Phrase AccompanimentPhrase = new Phrase("Accompaniment Phrase");
-    private Part AccompanimentPianoPart = new Part("Accompaniment Piano",PIANO,2);
+    private Score AccompanimentScore = new Score("Accompaniment Score");
+    private Part ridePart = new Part("Drums ride", 0, 9);
+    private Part snarePart = new Part("Drums snare", 0, 9);
     private String form;
     private int rootPitch;
     private Queue<Character> queueSections = new LinkedList<Character>();
@@ -116,19 +115,22 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                                 System.out.println("the index is " + Composer.getNextsectionIndex());
 
                                 Composer.getAccompanimentScore().empty();
-                                AccompanimentPianoPart.empty();
+                                snarePart.empty();
+                                ridePart.empty();
                                 switch (Composer.getNextsectionCharacter()) {
                                     case 'A':
 
 
                                         Composer.getAccompanimentScore().setTempo(Musician.getTempo());
-                                        Composer.getAccompanimentScore().add(composeSectionA());
+                                        Composer.getAccompanimentScore().addPart(composeSectionA(snarePart.getTitle()));
+                                        Composer.getAccompanimentScore().addPart(composeSectionA(ridePart.getTitle()));
                                         break;
 
                                     case 'B':
 
                                         Composer.getAccompanimentScore().setTempo(Musician.getTempo());
-                                        Composer.getAccompanimentScore().addPart(composeSectionB());
+                                        Composer.getAccompanimentScore().addPart(composeSectionB(snarePart.getTitle()));
+                                        Composer.getAccompanimentScore().addPart(composeSectionB(ridePart.getTitle()));
                                         break;
                                 }
                     }
@@ -149,19 +151,22 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                         System.out.println("the index is "+Composer.getNextsectionIndex());
 
                         Composer.getAccompanimentScore().empty();
-                        AccompanimentPianoPart.empty();
+                        snarePart.empty();
+                        ridePart.empty();
                         switch ( Composer.NextsectionCharacter)
                         {
                             case 'A':
                             {
 
                                 Composer.getAccompanimentScore().setTempo(Musician.getTempo());
-                                Composer.getAccompanimentScore().addPart(composeSectionA());
+                                Composer.getAccompanimentScore().addPart(composeSectionA(snarePart.getTitle()));
+                                Composer.getAccompanimentScore().addPart(composeSectionA(ridePart.getTitle()));
                                 break;
                             }
                             case 'B':
                                 Composer.getAccompanimentScore().setTempo(Musician.getTempo());
-                                Composer.getAccompanimentScore().addPart(composeSectionB());
+                                Composer.getAccompanimentScore().addPart(composeSectionB(snarePart.getTitle()));
+                                Composer.getAccompanimentScore().addPart(composeSectionB(ridePart.getTitle()));
                                 break;
                         }
 
@@ -192,237 +197,79 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
 
     //}
 
-
-    private Part composeSectionA()
+    private Part composeSectionA(String partName)
     {
-        Part pianoPart = new Part("Piano Part",PIANO,2);
-        CPhrase chord = new CPhrase();
-        int size = Musician.getSectionAchords().size();
-        for(int i = 0; i < size; i++)
+        if(partName.equals("Drums ride"))
         {
-
-            ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.getSectionAchords().get(i);
-
-            rootPitch = chordAttrbute.getRootPitch();
-            String noteType = chordAttrbute.getMajorOrMinor();
-            int extension = chordAttrbute.getExtension();
-
-            for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
+            int size = Musician.sectionAchords.size();
+            for(int i = 0; i < size; i++)
             {
-                if(j>1)
-                {
-                    int[] restArray = new int[3];
-                    restArray[0] = REST;
-                    restArray[1] = REST;
-                    restArray[2] = REST;
-                    chord.addChord(restArray, C, 50);
-                }else
-                {
-                    chord.addChord(getChordsForPhrase(rootPitch,extension,noteType), C, 50);
-                }
-            }
-        }
-
-        pianoPart.addCPhrase(chord);
-
-        return pianoPart;
-    }
-
-
-
-
-   private Part composeSectionB()
-    {
-
-        Part pianoPart = new Part("Piano Part",PIANO,2);
-        CPhrase chord = new CPhrase();
-        int size = Musician.getSectionBchords().size();
-        for(int i = 0; i < size; i++)
-        {
-            //rootPitch = ((Long) Musician.sectionAchords.get(i)).intValue();
-            ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.getSectionBchords().get(i);
-            //System.out.println(chordAttrbute);
-            rootPitch = chordAttrbute.getRootPitch();
-            String noteType = chordAttrbute.getMajorOrMinor();
-            int extension = chordAttrbute.getExtension();
-
-            for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
-            {
-                if(j>0)
-                {
-                    int[] restArray = new int[3];
-                    restArray[0] = REST;
-                    restArray[1] = REST;
-                    restArray[2] = REST;
-                    chord.addChord(restArray, C, 50);
-
-                }else
-                {
-                    chord.addChord(getChordsForPhrase(rootPitch,extension,noteType), C, 50);
-                }
+                ridePart.addPhrase(swingTime());
 
             }
+            return ridePart;
         }
-
-        pianoPart.addCPhrase(chord);
-        return pianoPart;
-
-    }
-
-    private Part composeSectionAs()
-    {
-        Part pianoPart = new Part("Piano Part",PIANO,2);
-        //Part bassPart = new Part("Bass Part",BASS,3);
-        Phrase phrase = new Phrase();
-
-        int size = Musician.getSectionAchords().size();
+        int size = Musician.sectionAchords.size();
         for(int i = 0; i < size; i++)
         {
-            //rootPitch = ((Long) Musician.sectionAchords.get(i)).intValue();
-            ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.getSectionAchords().get(i);
-            System.out.println(chordAttrbute);
-            rootPitch = chordAttrbute.getRootPitch()-24;
-            String noteType = chordAttrbute.getMajorOrMinor();
-            int extension = chordAttrbute.getExtension();
+            snarePart.addPhrase(swingAccents());
 
-            for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
-            {
-
-                if(j<1)
-                {
-                    phrase.add(new Note(rootPitch,C,60));
-                }
-                else
-                {
-                    phrase.add(new Note(rootPitch+3,C,60));
-                }
-                //phrase.add(new Note(rootPitch-2,C,80));
-                //phrase.add(new Note(rootPitch-3,C,80));
-                //phrase.add(new Note(rootPitch-5,C,80));
-            }
         }
+        return snarePart;
 
-        pianoPart.addPhrase(phrase);
-
-        return  pianoPart;
     }
-    private Part composeSectionBs()
+
+    private Part composeSectionB(String partName)
     {
+        if(partName.equals("Drums ride"))
+        {
+            int size = Musician.sectionBchords.size();
+            for(int i = 0; i < size; i++)
+            {
+                ridePart.addPhrase(swingTime());
 
-        Part pianoPart = new Part("Piano Part",PIANO,2);
-        Phrase phrase = new Phrase();
-
-        int size = Musician.getSectionBchords().size();
+            }
+            return ridePart;
+        }
+        int size = Musician.sectionBchords.size();
         for(int i = 0; i < size; i++)
         {
-            //rootPitch = ((Long) Musician.sectionAchords.get(i)).intValue();
-            ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.getSectionBchords().get(i);
-            System.out.println(chordAttrbute);
-            rootPitch = chordAttrbute.getRootPitch()-24;
-            String noteType = chordAttrbute.getMajorOrMinor();
-            int extension = chordAttrbute.getExtension();
+            snarePart.addPhrase(swingAccents());
 
-            for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
-            {
-                phrase.add(new Note(rootPitch,C,60));
-                //if(j<1)
-                //{
-                //    phrase.add(new Note(rootPitch,C,80));
-                // }
-                // else
-                //{
-                //    phrase.add(new Note(REST,C,80));
-                // }
-
-                //phrase.add(new Note(rootPitch+4,C,80));
-                //phrase.add(new Note(rootPitch+7,C,80));
-                //phrase.add(new Note(rootPitch+4,C,80));
-
-            }
         }
+        return snarePart;
+    }
 
-        pianoPart.addPhrase(phrase);
-        return pianoPart;
+    private Phrase swingTime() {
+        // build the ride line
+        Phrase phr = new Phrase();
+        int ride = 51;
+        phr.addNote(new Note(ride, C,50));
+        phr.addNote(new Note(ride, 0.67,50));
+        phr.addNote(new Note(ride, 0.33,50));
+        phr.addNote(new Note(ride, C,50));
+        phr.addNote(new Note(ride, C,50));
+        return phr;
+    }
 
+    public static Phrase swingAccents() {
+        // build the bass line from the rootPitch
+        Phrase phr = new Phrase();
+        int snare = 38;
+        for (int i=0;i<4;i++) {
+            phr.addNote(new Note(REST, 0.67,50));
+            phr.addNote(new Note(snare, 0.33,
+                    (int)(Math.random()*60)));
+        }
+        return phr;
     }
 
 
-    //Compose the chords depending in the attributes.
-    private  int[] getChordsForPhrase(int pitch,int extension, String type)
-    {
-        int[] pitchArray = new int[3];
-        if(type.equals("m") && extension == 7)
-        {
-            int[] pitchArrayMinor7 = new int[4];
-            pitchArrayMinor7[0] = pitch;
-            pitchArrayMinor7[1] = pitch + 3;
-            pitchArrayMinor7[2] = pitch + 7;
-            pitchArrayMinor7[3] = pitch + 10;
-            return pitchArrayMinor7;
-        }
-        else if(type.equals("M") && extension == 7)
-        {
-            int[] pitchArrayMajor7 = new int[4];
-            pitchArrayMajor7[0] = pitch;
-            pitchArrayMajor7[1] = pitch + 4;
-            pitchArrayMajor7[2] = pitch + 7;
-            pitchArrayMajor7[3] = pitch + 11;
-            return pitchArrayMajor7;
 
-        }
-        else if(type.equals("D") && extension == 7)
-        {
 
-            int[] pitchArrayDominant7 = new int[4];
-            pitchArrayDominant7[0] = pitch;
-            pitchArrayDominant7[1] = pitch + 4;
-            pitchArrayDominant7[2] = pitch + 7;
-            pitchArrayDominant7[3] = pitch + 10;
-            return pitchArrayDominant7;
 
-        }
-        else if (type.equals("Db") && extension == 7)
-        {
-            int[] pitchArrayDominantB7 = new int[4];
-            pitchArrayDominantB7[0] = pitch-1;
-            pitchArrayDominantB7[1] = pitch + 3;
-            pitchArrayDominantB7[2] = pitch + 6;
-            pitchArrayDominantB7[3] = pitch + 9;
-            return pitchArrayDominantB7;
-        }
-        else if(type.equals("M") && extension == 0)
-        {
-            int[] pitchArrayTriad = new int[3];
-            pitchArrayTriad[0] = pitch ;
-            pitchArrayTriad[1] = pitch + 4;
-            pitchArrayTriad[2] = pitch + 7;
-            return pitchArrayTriad;
-        }
-        else if (type.equals("m") && extension == 0)
-        {
-            int[] pitchArrayTriad = new int[3];
-            pitchArrayTriad[0] = pitch ;
-            pitchArrayTriad[1] = pitch + 3;
-            pitchArrayTriad[2] = pitch + 7;
-            return pitchArrayTriad;
-        }else if(type.equals("Dsus"))
-        {
-            int[] pitchArrayTriad = new int[3];
-            pitchArrayTriad[0] = pitch ;
-            pitchArrayTriad[1] = pitch + 7;
-            pitchArrayTriad[2] = pitch + 10;
-            return pitchArrayTriad;
-        }
-        else
-        {
-            pitchArray[0] = pitch;
-            pitchArray[1] = rootPitch + 4;
-            pitchArray[2] = rootPitch + 7;
 
-        }
 
-        return pitchArray;
-    }
 
 
 

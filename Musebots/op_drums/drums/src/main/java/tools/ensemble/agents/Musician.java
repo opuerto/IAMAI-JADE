@@ -50,7 +50,18 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
     public static List sectionBchords;
     public static List sectionCchords;
 
+    // The on I passed the leadership
     public static AID lastMusicianIpassedTheLeadership = null;
+
+    //The one that request me to play a solo
+    public static AID lastMusicianPassedMeTheLeadership = null;
+    public static synchronized void setLastMusicianPassedMeTheLeadership(AID var1)
+    {
+        lastMusicianPassedMeTheLeadership = var1;
+    }
+    public static AID getLastMusicianPassedMeTheLeadership(){
+        return lastMusicianPassedMeTheLeadership;
+    }
 
     public static synchronized void setLeader(Boolean lead) {
         leader = lead;

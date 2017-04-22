@@ -51,7 +51,7 @@ public class ComposeIntro extends OneShotBehaviour implements DataStoreComposer,
     //The Score of the intro.
     Score introScore = new Score("The intro Score");
     Phrase introPhrase = new Phrase("The intro Phrase");
-    Part pianoPart = new Part("the piano part",PIANO,2);//Part(java.lang.String title, int instrument, int channel)
+    Part pianoPart = new Part("the piano part",PIANO,1);//Part(java.lang.String title, int instrument, int channel)
 
     //Instance to the behaviour
 

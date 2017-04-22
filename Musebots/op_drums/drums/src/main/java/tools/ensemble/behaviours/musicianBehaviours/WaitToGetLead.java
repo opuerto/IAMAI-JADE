@@ -103,6 +103,7 @@ public class WaitToGetLead extends OneShotBehaviour {
             informToLeader = accept.createReply();
             informToLeader.setPerformative(ACLMessage.INFORM);
             inform.setPerformative(ACLMessage.PROPAGATE);
+            Musician.setLastMusicianPassedMeTheLeadership(accept.getSender());
             state = 1;
             return inform;
         }
@@ -120,7 +121,7 @@ public class WaitToGetLead extends OneShotBehaviour {
 
     //Hacemos una simulación para que pueda dar que existe o no coche (sobre un 80% probab).
     private boolean deciteToPlay() {
-        return (Math.random() * 100 > 1);
+        return (Math.random() * 100 > 0);
     }
 
 }
