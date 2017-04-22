@@ -79,14 +79,14 @@
             <state relative-caret-position="28679">
               <caret line="1785" column="10" selection-start-line="1785" selection-start-column="10" selection-end-line="1785" selection-end-column="10" />
               <folding>
-                <marker date="1492885061262" expanded="true" signature="944:1001" placeholder="..." />
-                <marker date="1492885061262" expanded="true" signature="1122:1220" placeholder="..." />
-                <marker date="1492885061262" expanded="true" signature="1162:1205" placeholder="..." />
-                <marker date="1492885061262" expanded="true" signature="1265:1374" placeholder="..." />
-                <marker date="1492885061262" expanded="true" signature="1290:1359" placeholder="..." />
-                <marker date="1492885061262" expanded="true" signature="1304:1345" placeholder="..." />
-                <marker date="1492885061262" expanded="true" signature="2325:2546" placeholder="..." />
-                <marker date="1492885061262" expanded="true" signature="2375:2546" placeholder="..." />
+                <marker date="1492885638082" expanded="true" signature="944:1001" placeholder="..." />
+                <marker date="1492885638082" expanded="true" signature="1122:1220" placeholder="..." />
+                <marker date="1492885638082" expanded="true" signature="1162:1205" placeholder="..." />
+                <marker date="1492885638082" expanded="true" signature="1265:1374" placeholder="..." />
+                <marker date="1492885638082" expanded="true" signature="1290:1359" placeholder="..." />
+                <marker date="1492885638082" expanded="true" signature="1304:1345" placeholder="..." />
+                <marker date="1492885638082" expanded="true" signature="2325:2546" placeholder="..." />
+                <marker date="1492885638082" expanded="true" signature="2375:2546" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -1135,12 +1135,12 @@
       <workItem from="1492082535466" duration="944000" />
       <workItem from="1492179865382" duration="13796000" />
       <workItem from="1492852559461" duration="6773000" />
-      <workItem from="1492875358311" duration="7360000" />
+      <workItem from="1492875358311" duration="7816000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="677143000" />
+    <option name="totallyTimeSpent" value="677599000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -1653,14 +1653,14 @@
         <state relative-caret-position="28679">
           <caret line="1785" column="10" selection-start-line="1785" selection-start-column="10" selection-end-line="1785" selection-end-column="10" />
           <folding>
-            <marker date="1492885061262" expanded="true" signature="944:1001" placeholder="..." />
-            <marker date="1492885061262" expanded="true" signature="1122:1220" placeholder="..." />
-            <marker date="1492885061262" expanded="true" signature="1162:1205" placeholder="..." />
-            <marker date="1492885061262" expanded="true" signature="1265:1374" placeholder="..." />
-            <marker date="1492885061262" expanded="true" signature="1290:1359" placeholder="..." />
-            <marker date="1492885061262" expanded="true" signature="1304:1345" placeholder="..." />
-            <marker date="1492885061262" expanded="true" signature="2325:2546" placeholder="..." />
-            <marker date="1492885061262" expanded="true" signature="2375:2546" placeholder="..." />
+            <marker date="1492885638082" expanded="true" signature="944:1001" placeholder="..." />
+            <marker date="1492885638082" expanded="true" signature="1122:1220" placeholder="..." />
+            <marker date="1492885638082" expanded="true" signature="1162:1205" placeholder="..." />
+            <marker date="1492885638082" expanded="true" signature="1265:1374" placeholder="..." />
+            <marker date="1492885638082" expanded="true" signature="1290:1359" placeholder="..." />
+            <marker date="1492885638082" expanded="true" signature="1304:1345" placeholder="..." />
+            <marker date="1492885638082" expanded="true" signature="2325:2546" placeholder="..." />
+            <marker date="1492885638082" expanded="true" signature="2375:2546" placeholder="..." />
           </folding>
         </state>
       </provider>
