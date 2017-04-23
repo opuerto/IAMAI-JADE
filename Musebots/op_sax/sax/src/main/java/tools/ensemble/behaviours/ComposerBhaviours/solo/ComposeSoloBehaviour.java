@@ -117,7 +117,7 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
 
                         Composer.getSoloScore().setTempo(Musician.getTempo());
                         Composer.getSoloScore().addPart(randomWalkSectionA());
-                        View.notation(Composer.getSoloScore());
+
 
                         break;
                     case 'B':

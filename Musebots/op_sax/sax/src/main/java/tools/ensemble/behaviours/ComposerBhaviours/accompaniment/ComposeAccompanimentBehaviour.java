@@ -260,24 +260,20 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
             rootPitch = chordAttrbute.getRootPitch();
             String noteType = chordAttrbute.getMajorOrMinor();
             int extension = chordAttrbute.getExtension();
-            int[] notes = {rootPitch+3,rootPitch+7};
-            int randomN;
+
             for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
             {
-                randomN =  (int)Math.random() * notes.length;
-                if(j <3 )
+
+                int[] p = getChordsForPhrase(rootPitch,extension,noteType);
+                if(j<2)
                 {
                     phrase.add(new Note(REST,QUARTER_NOTE,60));
-
                 }
                 else
                 {
-                    phrase.add(new Note(notes[randomN],QUARTER_NOTE,60));
-
+                    phrase.add(new Note(p[j],QUARTER_NOTE,60));
                 }
-                //phrase.add(new Note(rootPitch-2,C,80));
-                //phrase.add(new Note(rootPitch-3,C,80));
-                //phrase.add(new Note(rootPitch-5,C,80));
+
             }
         }
 
@@ -318,20 +314,15 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
 
             for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
             {
-                phrase.add(new Note(rootPitch,QUARTER_NOTE,60));
-                //TimeManager.MainPhrase.add(new Note(rootPitch,QUARTER_NOTE,60));
-                //if(j<1)
-                //{
-                //    phrase.add(new Note(rootPitch,C,80));
-                // }
-                // else
-                //{
-                //    phrase.add(new Note(REST,C,80));
-                // }
-
-                //phrase.add(new Note(rootPitch+4,C,80));
-                //phrase.add(new Note(rootPitch+7,C,80));
-                //phrase.add(new Note(rootPitch+4,C,80));
+                int[] p = getChordsForPhrase(rootPitch,extension,noteType);
+                if(j<2)
+                {
+                    phrase.add(new Note(REST,QUARTER_NOTE,60));
+                }
+                else
+                {
+                    phrase.add(new Note(p[j],QUARTER_NOTE,60));
+                }
 
             }
         }
@@ -369,18 +360,15 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
 
             for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
             {
-
-                if(j<1)
+                int[] p = getChordsForPhrase(rootPitch,extension,noteType);
+                if(j<2)
                 {
-                    phrase.add(new Note(rootPitch,C,60));
+                    phrase.add(new Note(REST,QUARTER_NOTE,60));
                 }
                 else
                 {
-                    phrase.add(new Note(rootPitch+3,C,60));
+                    phrase.add(new Note(p[j],QUARTER_NOTE,60));
                 }
-                //phrase.add(new Note(rootPitch-2,C,80));
-                //phrase.add(new Note(rootPitch-3,C,80));
-                //phrase.add(new Note(rootPitch-5,C,80));
             }
         }
 
