@@ -267,8 +267,7 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
             if (rhythmNumb == 2) rhythmLength = rhythm3.length;
             if (rhythmNumb == 3) rhythmLength = rhythm4.length;
 
-            for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
-            {
+
                 phrase.addNote(new Note(REST, 0.70));
                 for (int k = 0; k < rhythmLength; k++)
                 {
@@ -299,7 +298,7 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
                 }
 
 
-            }
+
 
         }
         bassPart.add(phrase);
@@ -332,8 +331,7 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
             if (rhythmNumb == 2) rhythmLength = rhythm3.length;
             if (rhythmNumb == 3) rhythmLength = rhythm4.length;
 
-            for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
-            {
+
                 phrase.addNote(new Note(REST, 0.66));
                 for (int k = 0; k < rhythmLength; k++)
                 {
@@ -364,7 +362,7 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
                 }
 
 
-            }
+
 
         }
         bassPart.add(phrase);

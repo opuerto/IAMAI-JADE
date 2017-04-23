@@ -37,12 +37,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="GetEveryTimeManager.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GetEveryTimeManager.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/timeManagerBehaviours/GetEveryTimeManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
+            <state relative-caret-position="221">
               <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -106,7 +108,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1241">
               <caret line="96" column="11" selection-start-line="96" selection-start-column="11" selection-end-line="96" selection-end-column="11" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -196,11 +200,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ComposeSoloBehaviour.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ComposeSoloBehaviour.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/ComposeSoloBehaviour.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6443">
-              <caret line="395" column="54" selection-start-line="395" selection-start-column="54" selection-end-line="395" selection-end-column="54" />
+            <state relative-caret-position="146">
+              <caret line="241" column="13" selection-start-line="241" selection-start-column="13" selection-end-line="241" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -211,7 +215,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1445">
               <caret line="109" column="49" selection-start-line="109" selection-start-column="49" selection-end-line="109" selection-end-column="49" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -221,7 +227,13 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="3927">
               <caret line="250" column="38" selection-start-line="250" selection-start-column="38" selection-end-line="250" selection-end-column="38" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#1479#1490#0" expanded="false" />
+                <element signature="e#1555#1564#0" expanded="false" />
+                <element signature="e#1678#1679#0" expanded="false" />
+                <element signature="e#1702#1703#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -229,8 +241,8 @@
       <file leaf-file-name="PassLeadToAccomBehaviour.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/PassLeadToAccomBehaviour.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4114">
-              <caret line="259" column="62" selection-start-line="259" selection-start-column="62" selection-end-line="259" selection-end-column="62" />
+            <state relative-caret-position="4250">
+              <caret line="267" column="55" selection-start-line="264" selection-start-column="32" selection-end-line="267" selection-end-column="55" />
               <folding>
                 <element signature="imports" expanded="false" />
                 <element signature="e#1353#1354#0" expanded="false" />
@@ -245,7 +257,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="3655">
               <caret line="238" column="9" selection-start-line="238" selection-start-column="9" selection-end-line="238" selection-end-column="9" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -595,8 +609,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -943,7 +957,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1508,15 +1522,16 @@
       <workItem from="1492852548992" duration="11553000" />
       <workItem from="1492875418993" duration="7731000" />
       <workItem from="1492899439717" duration="651000" />
+      <workItem from="1492969122727" duration="1286000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="303664000" />
+    <option name="totallyTimeSpent" value="304958000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1592" y="-8" width="1296" height="1000" extended-state="6" />
-    <editor active="false" />
+    <frame x="1592" y="-8" width="1296" height="1000" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1526,11 +1541,11 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21107267" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21107267" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3001618" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3001618" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1810,11 +1825,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1802">
           <caret line="169" column="0" selection-start-line="169" selection-start-column="0" selection-end-line="169" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <marker date="1491101181350" expanded="true" signature="7910:7983" placeholder="/**...*/" />
-            <marker date="1491101181350" expanded="true" signature="8028:9068" placeholder="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1836,7 +1846,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1241">
           <caret line="96" column="11" selection-start-line="96" selection-start-column="11" selection-end-line="96" selection-end-column="11" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1995,7 +2007,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3655">
           <caret line="238" column="9" selection-start-line="238" selection-start-column="9" selection-end-line="238" selection-end-column="9" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2011,16 +2025,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/timeManagerBehaviours/GetEveryTimeManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
+        <state relative-caret-position="221">
           <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/ComposerBhaviours/solo/ComposeSoloBehaviour.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6443">
-          <caret line="395" column="54" selection-start-line="395" selection-start-column="54" selection-end-line="395" selection-end-column="54" />
+        <state relative-caret-position="146">
+          <caret line="241" column="13" selection-start-line="241" selection-start-column="13" selection-end-line="241" selection-end-column="13" />
           <folding />
         </state>
       </provider>
@@ -2029,14 +2045,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3927">
           <caret line="250" column="38" selection-start-line="250" selection-start-column="38" selection-end-line="250" selection-end-column="38" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#1479#1490#0" expanded="false" />
+            <element signature="e#1555#1564#0" expanded="false" />
+            <element signature="e#1678#1679#0" expanded="false" />
+            <element signature="e#1702#1703#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tools/ensemble/behaviours/musicianBehaviours/PassLeadToAccomBehaviour.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4114">
-          <caret line="259" column="62" selection-start-line="259" selection-start-column="62" selection-end-line="259" selection-end-column="62" />
+        <state relative-caret-position="4250">
+          <caret line="267" column="55" selection-start-line="264" selection-start-column="32" selection-end-line="267" selection-end-column="55" />
           <folding>
             <element signature="imports" expanded="false" />
             <element signature="e#1353#1354#0" expanded="false" />
@@ -2049,7 +2071,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1445">
           <caret line="109" column="49" selection-start-line="109" selection-start-column="49" selection-end-line="109" selection-end-column="49" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

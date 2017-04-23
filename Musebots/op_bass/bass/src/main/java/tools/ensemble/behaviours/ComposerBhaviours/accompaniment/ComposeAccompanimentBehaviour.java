@@ -209,15 +209,26 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
             for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
             {
 
-                if(j<1)
+
+                int[] p = getNewInterval(rootPitch,extension,noteType);
+
+                if(p.length == 3)
                 {
-                    phrase.add(new Note(rootPitch,QUARTER_NOTE,60));
+                    if(j < 3)
+                    {
+                        phrase.add(new Note(p[j],QUARTER_NOTE,60));
+                    }
+                    else
+                    {
+                        System.out.println("We need to ad a beat here");
+                        phrase.add(new Note(rootPitch,QUARTER_NOTE,60));
+                    }
+
 
                 }
                 else
                 {
-                    phrase.add(new Note(rootPitch+3,QUARTER_NOTE,60));
-
+                    phrase.add(new Note(p[j],QUARTER_NOTE,60));
                 }
 
             }
@@ -251,7 +262,26 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
 
             for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
             {
-                phrase.add(new Note(rootPitch,QUARTER_NOTE,60));
+                int[] p = getNewInterval(rootPitch,extension,noteType);
+
+                if(p.length == 3)
+                {
+                    if(j < 3)
+                    {
+                        phrase.add(new Note(p[j],QUARTER_NOTE,60));
+                    }
+                    else
+                    {
+                        System.out.println("We need to ad a beat here");
+                        phrase.add(new Note(rootPitch,QUARTER_NOTE,60));
+                    }
+
+
+                }
+                else
+                {
+                    phrase.add(new Note(p[j],QUARTER_NOTE,60));
+                }
 
 
             }
@@ -264,86 +294,11 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
 
     }
 
-    private Part composeSectionAs()
-    {
-        Part pianoPart = new Part("Piano Part",PIANO,2);
-        //Part bassPart = new Part("Bass Part",BASS,3);
-        Phrase phrase = new Phrase();
-
-        int size = Musician.getSectionAchords().size();
-        for(int i = 0; i < size; i++)
-        {
-            //rootPitch = ((Long) Musician.sectionAchords.get(i)).intValue();
-            ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.getSectionAchords().get(i);
-            System.out.println(chordAttrbute);
-            rootPitch = chordAttrbute.getRootPitch()-24;
-            String noteType = chordAttrbute.getMajorOrMinor();
-            int extension = chordAttrbute.getExtension();
-
-            for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
-            {
-
-                if(j<1)
-                {
-                    phrase.add(new Note(rootPitch,C,50));
-                }
-                else
-                {
-                    phrase.add(new Note(rootPitch+3,C,50));
-                }
-                //phrase.add(new Note(rootPitch-2,C,80));
-                //phrase.add(new Note(rootPitch-3,C,80));
-                //phrase.add(new Note(rootPitch-5,C,80));
-            }
-        }
-
-        pianoPart.addPhrase(phrase);
-
-        return  pianoPart;
-    }
-    private Part composeSectionBs()
-    {
-
-        Part pianoPart = new Part("Piano Part",PIANO,2);
-        Phrase phrase = new Phrase();
-
-        int size = Musician.getSectionBchords().size();
-        for(int i = 0; i < size; i++)
-        {
-            //rootPitch = ((Long) Musician.sectionAchords.get(i)).intValue();
-            ChordsAttributes chordAttrbute = (ChordsAttributes) Musician.getSectionBchords().get(i);
-            System.out.println(chordAttrbute);
-            rootPitch = chordAttrbute.getRootPitch()-24;
-            String noteType = chordAttrbute.getMajorOrMinor();
-            int extension = chordAttrbute.getExtension();
-
-            for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
-            {
-                phrase.add(new Note(rootPitch,C,50));
-                //if(j<1)
-                //{
-                //    phrase.add(new Note(rootPitch,C,80));
-                // }
-                // else
-                //{
-                //    phrase.add(new Note(REST,C,80));
-                // }
-
-                //phrase.add(new Note(rootPitch+4,C,80));
-                //phrase.add(new Note(rootPitch+7,C,80));
-                //phrase.add(new Note(rootPitch+4,C,80));
-
-            }
-        }
-
-        pianoPart.addPhrase(phrase);
-        return pianoPart;
-
-    }
 
 
-    //Compose the chords depending in the attributes.
-    private  int[] getChordsForPhrase(int pitch,int extension, String type)
+
+
+    private int[] getNewInterval(int pitch, int extension, String type)
     {
         int[] pitchArray = new int[3];
         if(type.equals("m") && extension == 7)

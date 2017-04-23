@@ -117,6 +117,7 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
 
                         Composer.getSoloScore().setTempo(Musician.getTempo());
                         Composer.getSoloScore().addPart(randomWalkSectionA());
+                        View.notation(Composer.getSoloScore());
 
                         break;
                     case 'B':
@@ -202,9 +203,11 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
             double[] rhythm2 = {0.30,0.70,0.30,0.70,1.34};
             double[] rhythm3 = {1.0,0.30,0.70,0.30,1.0};
             double[] rhythm4 = {0.30,0.70,1.0,1.34};
+            double[] rhythm5 = {0.30,0.30,0.30,0.70,1.0,0.70};
+            double[] rhythm6 = {1.0,1.0,0.7,0.30,0.30};
             int temp = 0;
             boolean ok = false;
-            int rhythmNumb = (int)(Math.random() *4);
+            int rhythmNumb = (int)(Math.random() *6);
             int rhythmLength = 0;
             int intervalNumb = 0;
             //choose a rhythm to use for the phrase
@@ -212,40 +215,45 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
             if (rhythmNumb == 1) rhythmLength = rhythm2.length;
             if (rhythmNumb == 2) rhythmLength = rhythm3.length;
             if (rhythmNumb == 3) rhythmLength = rhythm4.length;
+            if (rhythmNumb == 4) rhythmLength = rhythm5.length;
+            if (rhythmNumb == 5) rhythmLength = rhythm6.length;
 
-            for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
+
+            phrase.addNote(new Note(REST, 0.70));
+            for (int k = 0; k < rhythmLength; k++)
             {
-                phrase.addNote(new Note(REST, 0.70));
-                for (int k = 0; k < rhythmLength; k++)
+                while (ok == false)
                 {
-                        while (ok == false)
-                        {
-                            int intervalLenght = getNewInterval(rootPitch,extension,noteType).length;
-                            int[] p = new int[intervalLenght];
-                            p =  getNewInterval(rootPitch,extension,noteType);
-                            intervalNumb = (int)(Math.random()*intervalLenght);
-                            if (temp != p[intervalNumb])
-                            {
-                                temp = p[intervalNumb];
-                                ok = true;
-                                break;
-                            }
+                    int intervalLenght = getNewInterval(rootPitch,extension,noteType).length;
+                    int[] p = new int[intervalLenght];
+                    p =  getNewInterval(rootPitch,extension,noteType);
+                    intervalNumb = (int)(Math.random()*intervalLenght);
+                    if (temp != p[intervalNumb])
+                    {
+                        temp = p[intervalNumb];
+                        ok = true;
+                        break;
+                    }
 
-                        }
-                    //add the next note to the phrase
-                    if (rhythmNumb == 0) phrase.addNote(
-                            new Note(temp, rhythm1[k]));
-                    if (rhythmNumb == 1) phrase.addNote(
-                            new Note(temp, rhythm2[k]));
-                    if (rhythmNumb == 2) phrase.addNote(
-                            new Note(temp, rhythm3[k]));
-                    if (rhythmNumb == 3) phrase.addNote(
-                            new Note(temp, rhythm4[k]));
-                    ok = false;
                 }
-
-
+                //add the next note to the phrase
+                if (rhythmNumb == 0) phrase.addNote(
+                        new Note(temp, rhythm1[k]));
+                if (rhythmNumb == 1) phrase.addNote(
+                        new Note(temp, rhythm2[k]));
+                if (rhythmNumb == 2) phrase.addNote(
+                        new Note(temp, rhythm3[k]));
+                if (rhythmNumb == 3) phrase.addNote(
+                        new Note(temp, rhythm4[k]));
+                if (rhythmNumb == 4) phrase.addNote(
+                        new Note(temp, rhythm5[k]));
+                if (rhythmNumb == 5) phrase.addNote(
+                        new Note(temp, rhythm6[k]));
+                ok = false;
             }
+
+
+
 
         }
         saxPart.add(phrase);
@@ -267,9 +275,11 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
             double[] rhythm2 = {0.30,0.70,0.30,0.70,1.34};
             double[] rhythm3 = {1.0,0.30,0.70,0.30,1.0};
             double[] rhythm4 = {0.30,0.70,1.0,1.34};
+            double[] rhythm5 = {0.30,0.30,0.30,0.70,1.0,0.70};
+            double[] rhythm6 = {1.0,1.0,0.7,0.30,0.30};
             int temp = 0;
             boolean ok = false;
-            int rhythmNumb = (int)(Math.random() *4);
+            int rhythmNumb = (int)(Math.random() *6);
             int rhythmLength = 0;
             int intervalNumb = 0;
             //choose a rhythm to use for the phrase
@@ -277,9 +287,9 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
             if (rhythmNumb == 1) rhythmLength = rhythm2.length;
             if (rhythmNumb == 2) rhythmLength = rhythm3.length;
             if (rhythmNumb == 3) rhythmLength = rhythm4.length;
+            if (rhythmNumb == 4) rhythmLength = rhythm5.length;
+            if (rhythmNumb == 5) rhythmLength = rhythm6.length;
 
-            for(int j = 0; j < Musician.getTimeSignatureDenominator(); j++)
-            {
                 phrase.addNote(new Note(REST, 0.66));
                 for (int k = 0; k < rhythmLength; k++)
                 {
@@ -306,11 +316,15 @@ public class ComposeSoloBehaviour extends OneShotBehaviour implements DataStoreC
                             new Note(temp, rhythm3[k]));
                     if (rhythmNumb == 3) phrase.addNote(
                             new Note(temp, rhythm4[k]));
+                    if (rhythmNumb == 4) phrase.addNote(
+                            new Note(temp, rhythm5[k]));
+                    if (rhythmNumb == 5) phrase.addNote(
+                            new Note(temp, rhythm6[k]));
                     ok = false;
                 }
 
 
-            }
+
 
         }
         saxPart.add(phrase);
