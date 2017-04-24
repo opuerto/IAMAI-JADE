@@ -7,7 +7,7 @@ import java.util.List;
  */
 public interface SongStructure {
 
-    public static final String FORM = "AAB";//AAB AABA ABAC
+    public static final String FORM = "AABA";//AAB AABA ABAC
     public static final int TEMPO = 120;
     public static final int NUMERATOR = 4;
     public static final int DENOMINATOR = 4;

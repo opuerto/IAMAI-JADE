@@ -271,7 +271,15 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                 }
                 else
                 {
-                    phrase.add(new Note(p[j],QUARTER_NOTE,60));
+                    if(p.length == 3)
+                    {
+                        phrase.add(new Note(REST,QUARTER_NOTE,60));
+                    }
+                    else
+                    {
+                        phrase.add(new Note(p[j],QUARTER_NOTE,60));
+                    }
+
                 }
 
             }

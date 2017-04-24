@@ -86,7 +86,7 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
                     //Find a receiver
                     findAllReceivers();
                     constructACLMessage();
-                    myAgent.doWait(11000);
+                    //myAgent.doWait(11000);
                     requestSoloNegotiation RequestSolo = new requestSoloNegotiation(myAgent,msg);
                     RequestSolo.setDataStore(getDataStore());
                     myAgent.addBehaviour(RequestSolo);
@@ -232,6 +232,10 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
                     reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
                     acceptances.addElement(reply);
                     //I only need to find one candidate
+                    /*if(sender.equals("play_piano"))
+                    {
+                        accept = reply;
+                    }*/
                     if (!findMycandidate)
                     {
 
