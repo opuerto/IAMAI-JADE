@@ -220,8 +220,8 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                     }
                     else
                     {
-                        System.out.println("We need to ad a beat here");
-                        phrase.add(new Note(rootPitch,QUARTER_NOTE,60));
+
+                        phrase.add(new Note(REST,QUARTER_NOTE,60));
                     }
 
 
@@ -272,8 +272,8 @@ public class ComposeAccompanimentBehaviour extends OneShotBehaviour implements D
                     }
                     else
                     {
-                        System.out.println("We need to ad a beat here");
-                        phrase.add(new Note(rootPitch,QUARTER_NOTE,60));
+
+                        phrase.add(new Note(REST,QUARTER_NOTE,60));
                     }
 
 

@@ -320,6 +320,7 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
     {
         public void action()
         {
+
             //Since I got into this state remove FIRST_LEADER from the data store.
             getDataStore().remove(FIRST_LEADER);
             setTempo(TEMPO);
@@ -327,6 +328,9 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
             setTimeSignatureDenominator(DENOMINATOR);
             setTuneForm(FORM);
 
+            /*Song A */
+
+           /*
             //set the chords for section A
             sectionAchords = new ArrayList();
             //Create the individual chords.
@@ -376,7 +380,118 @@ public class Musician extends Agent implements MusicianStates,DataStorteMusician
             //set the chords for section C
             sectionCchords = new ArrayList();
             //Create the individual chords for section C.
-            getSectionCchords().add(CM7);
+            getSectionCchords().add(CM7);*/
+
+            /*Song B*/
+          /*  sectionAchords = new ArrayList();
+            //Create the individual chords.
+            ChordsAttributes C7 = new ChordsAttributes();
+            C7.setRootPitch(C4);
+            C7.setMajorOrMinor("D");
+            C7.setExtension(7);
+            //Create the individual chords.
+            ChordsAttributes F7 = new ChordsAttributes();
+            F7.setRootPitch(F4);
+            F7.setMajorOrMinor("D");
+            F7.setExtension(7);
+            //Create the individual chords.
+            ChordsAttributes G7 = new ChordsAttributes();
+            G7.setRootPitch(G4);
+            G7.setMajorOrMinor("D");
+            G7.setExtension(7);
+            //add to the section
+            getSectionAchords().add(C7);
+            getSectionAchords().add(F7);
+            getSectionAchords().add(C7);
+            getSectionAchords().add(C7);
+            getSectionAchords().add(F7);
+            getSectionAchords().add(F7);
+            getSectionAchords().add(C7);
+            getSectionAchords().add(C7);
+            getSectionAchords().add(G7);
+            getSectionAchords().add(F7);
+            getSectionAchords().add(C7);
+            getSectionAchords().add(C7);
+            //set the chords for section B
+            sectionBchords = new ArrayList();
+            //Create the individual chords for section B.
+            ChordsAttributes CM7 = new ChordsAttributes();
+            CM7.setRootPitch(C4);
+            CM7.setMajorOrMinor("M");
+            CM7.setExtension(7);
+            getSectionBchords().add(CM7);
+            getSectionBchords().add(CM7);
+            //set the chords for section C
+            sectionCchords = new ArrayList();
+            //Create the individual chords for section C.
+            getSectionCchords().add(CM7);*/
+
+             /*Song C - Sunday*/
+
+            sectionAchords = new ArrayList();
+            //Create the individual chords.
+            ChordsAttributes Cchord = new ChordsAttributes();
+            Cchord.setRootPitch(C4);
+            Cchord.setMajorOrMinor("M");
+            Cchord.setExtension(0);
+
+            //Create the individual chords.
+            ChordsAttributes G7 = new ChordsAttributes();
+            G7.setRootPitch(G4);
+            G7.setMajorOrMinor("D");
+            G7.setExtension(7);
+
+            //Create the individual chords.
+            ChordsAttributes A7 = new ChordsAttributes();
+            A7.setRootPitch(A4);
+            A7.setMajorOrMinor("D");
+            A7.setExtension(7);
+
+            //Create the individual chords.
+            ChordsAttributes Dm7 = new ChordsAttributes();
+            Dm7.setRootPitch(D4);
+            Dm7.setMajorOrMinor("m");
+            Dm7.setExtension(7);
+
+            //Create the individual chords.
+            ChordsAttributes E7 = new ChordsAttributes();
+            E7.setRootPitch(E4);
+            E7.setMajorOrMinor("D");
+            E7.setExtension(7);
+
+            //Create the individual chords.
+            ChordsAttributes D7 = new ChordsAttributes();
+            D7.setRootPitch(D4);
+            D7.setMajorOrMinor("D");
+            D7.setExtension(7);
+
+            //Add to the section A
+            getSectionAchords().add(Cchord);
+            getSectionAchords().add(Cchord);
+            getSectionAchords().add(G7);
+            getSectionAchords().add(A7);
+            getSectionAchords().add(Dm7);
+            getSectionAchords().add(G7);
+            getSectionAchords().add(Cchord);
+            getSectionAchords().add(Cchord);
+
+            sectionBchords = new ArrayList();
+            //Create the individual chords for section B.
+            //Add to the section B
+            getSectionBchords().add(E7);
+            getSectionBchords().add(E7);
+            getSectionBchords().add(A7);
+            getSectionBchords().add(A7);
+            getSectionBchords().add(D7);
+            getSectionBchords().add(D7);
+            getSectionBchords().add(G7);
+            getSectionBchords().add(G7);
+
+            //set the chords for section C
+            sectionCchords = new ArrayList();
+            //Create the individual chords for section C.
+            getSectionCchords().add(G7);
+
 
             //create instance of the object ScoreElements and set the object in the DataStore of the behaviour
             ScoreElements se = new ScoreElements();

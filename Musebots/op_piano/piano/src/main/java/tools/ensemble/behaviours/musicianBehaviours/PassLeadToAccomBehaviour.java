@@ -8,6 +8,7 @@ import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.ContractNetInitiator;
+import tools.ensemble.agents.Composer;
 import tools.ensemble.agents.Musician;
 import tools.ensemble.interfaces.DataStorteMusicians;
 import tools.ensemble.ontologies.musicians.vocabulary.actions.PlayIntroAction;
@@ -86,7 +87,7 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
                     //Find a receiver
                     findAllReceivers();
                     constructACLMessage();
-                    myAgent.doWait(11000);
+                    //myAgent.doWait(11000);
                     requestSoloNegotiation RequestSolo = new requestSoloNegotiation(myAgent,msg);
                     RequestSolo.setDataStore(getDataStore());
                     myAgent.addBehaviour(RequestSolo);
@@ -232,7 +233,14 @@ public class PassLeadToAccomBehaviour extends OneShotBehaviour implements DataSt
                     reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
                     acceptances.addElement(reply);
                     //I only need to find one candidate
-                    if (!findMycandidate)
+
+                  /*  if(sender.equals("play_sax"))
+                    {
+                        accept = reply;
+                        Composer.timeSolos++;
+                    }*/
+
+                   if (!findMycandidate)
                     {
 
                         if (receivers.size() > 1)

@@ -118,10 +118,10 @@ public class ComposeIntro extends OneShotBehaviour implements DataStoreComposer,
         String noteType = chordAttribute.getMajorOrMinor();
         int extension = chordAttribute.getExtension();
         // build the rhythms
-        double[] rhythm1 = {0.30,0.70,0.30,0.70,0.30,0.70,0.30};
-        double[] rhythm2 = {0.30,0.70,0.30,0.70,1.34};
-        double[] rhythm3 = {1.0,0.30,0.70,0.30,1.0};
-        double[] rhythm4 = {0.30,0.70,1.0,1.34};
+        double[] rhythm1 = {0.66,0.30,0.70,0.30,0.70,0.30,0.70,0.30};
+        double[] rhythm2 = {0.66,0.30,0.70,0.30,0.70,1.34};
+        double[] rhythm3 = {0.66,1.0,0.30,0.70,0.30,1.0};
+        double[] rhythm4 = {0.66,0.30,0.70,1.0,1.34};
         int temp = 0;
         boolean ok = false;
         int rhythmNumb = (int)(Math.random() *4);
@@ -135,7 +135,7 @@ public class ComposeIntro extends OneShotBehaviour implements DataStoreComposer,
 
         for (int i = 0; i < lenght; i++)
         {
-            introPhrase.addNote(new Note(REST, 0.66));
+
             for(int k=0;k<rhythmLength;k++) {
                 while (ok == false) {
                     int intervalLenght = getNewInterval(rootPitch,extension,noteType).length;
